@@ -361,3 +361,4 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/src/Overlord.Domain.ObjectDetector/Model/coco/coco.weights
