@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text.Json;
 
 namespace Overlord.Domain.ObjectDetector.Tests
 {
@@ -34,6 +35,7 @@ namespace Overlord.Domain.ObjectDetector.Tests
         {
             foreach (TrafficObjectInfo item in items)
             {
+                mat.PutText(item.Id, new Point(item.X, item.Y), HersheyFonts.HersheyPlain, 1.0, Scalar.Aqua);
                 mat.Rectangle(new Point(item.X, item.Y), new Point(item.X + item.Width, item.Y + item.Height), Scalar.Aqua);
             }
 
@@ -143,6 +145,25 @@ namespace Overlord.Domain.ObjectDetector.Tests
             Console.WriteLine($"detection elapse: {_stopwatch.ElapsedMilliseconds}ms");
 
             Assert.AreEqual(11, items.Count);
+
+            //ShowResultImage(items, mat);
+        }
+
+        [Test]
+        public void TestDetectHighwayMatPtr()
+        {
+            using YoloWrapper yolo = new YoloWrapper(_config);
+            using Mat mat = new Mat("Images/Traffic_002.jpg", ImreadModes.Color);
+
+            Stopwatch _stopwatch = new Stopwatch();
+            _stopwatch.Start();
+            var items = yolo.Detect(mat, 0.6F).ToList();
+            _stopwatch.Stop();
+            Console.WriteLine($"detection elapse: {_stopwatch.ElapsedMilliseconds}ms");
+
+            //string json = JsonSerializer.Serialize(items);
+
+            Assert.AreEqual(10, items.Count);
 
             //ShowResultImage(items, mat);
         }

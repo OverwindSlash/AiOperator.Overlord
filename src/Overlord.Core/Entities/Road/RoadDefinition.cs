@@ -14,6 +14,7 @@ namespace Overlord.Core.Entities.Road
         private List<Tuple<EnterLine, LeaveLine>> _countLines;
 
         public string RoadName { get; set; }
+        public string DeviceNo { get; set; }
         public string PrePositionName { get; set; }
         public float DetectionThresh { get; set; }
         public bool IsObjectAnalyzableRetain { get; set; }

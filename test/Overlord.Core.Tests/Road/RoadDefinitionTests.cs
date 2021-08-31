@@ -12,7 +12,7 @@ namespace Overlord.Core.Tests.Road
         private const int ImageWidth = 1920;
         private const int ImageHeight = 1080;
 
-        private string rdJson = "{\"RoadName\":\"hc_k41_700_1\",\"PrePositionName\":\"prepos0\",\"DetectionThresh\":0.7,\"IsObjectAnalyzableRetain\":false,\"TrackingChangeHistory\":true,\"TrackingFramesStory\":50,\"TrackingMaxDistance\":40," + 
+        private string rdJson = "{\"RoadName\":\"hc_k41_700_1\",\"DeviceNo\":\"DAF6AD5D3A9BDE8FE310\",\"PrePositionName\":\"prepos0\",\"DetectionThresh\":0.7,\"IsObjectAnalyzableRetain\":false,\"TrackingChangeHistory\":true,\"TrackingFramesStory\":50,\"TrackingMaxDistance\":40," + 
                                 "\"AnalysisAreas\":[" +
                                 "{\"Name\":\"driveway region\",\"Points\":[" +
                                 "{\"NormalizedX\":0,\"NormalizedY\":0.6462962962962963}," +
@@ -69,6 +69,7 @@ namespace Overlord.Core.Tests.Road
             RoadDefinition roadDefinition = new RoadDefinition();
 
             roadDefinition.RoadName = "hc_k41_700_1";
+            roadDefinition.DeviceNo = "DAF6AD5D3A9BDE8FE310";
             roadDefinition.PrePositionName = "prepos0";
 
             // analysis param
@@ -231,6 +232,121 @@ namespace Overlord.Core.Tests.Road
             Assert.AreEqual(1, roadDefinition.ExcludedAreas.Count);
             Assert.AreEqual(5, roadDefinition.Lanes.Count);
             Assert.AreEqual(1, roadDefinition.CountLines.Count);
+        }
+
+        [Test]
+        public void TestSaveRoadDefinition_hc_k41_700_2()
+        {
+            int w = 1920;
+            int h = 1080;
+
+            RoadDefinition roadDefinition = new RoadDefinition();
+
+            roadDefinition.RoadName = "hc_k41_700_2";
+            roadDefinition.DeviceNo = "DAF6AD5D3A9BDE8FE310";
+            roadDefinition.PrePositionName = "prepos0";
+            
+            // analysis param
+            roadDefinition.DetectionThresh = 0.7F;
+            roadDefinition.IsObjectAnalyzableRetain = false;
+            roadDefinition.TrackingChangeHistory = true;
+            roadDefinition.TrackingFramesStory = 50;
+            roadDefinition.TrackingMaxDistance = 40;
+
+            {
+                // tracking area
+                AnalysisArea analysisArea = new AnalysisArea();
+                analysisArea.AddPoint(new NormalizedPoint(w, h, 0, 707));
+                analysisArea.AddPoint(new NormalizedPoint(w, h, 982, 296));
+                analysisArea.AddPoint(new NormalizedPoint(w, h, 1444, 292));
+                analysisArea.AddPoint(new NormalizedPoint(w, h, 1432, 1080));
+                analysisArea.AddPoint(new NormalizedPoint(w, h, 0, 1080));
+                analysisArea.Name = "driveway region";
+
+                roadDefinition.AddAnalysisArea(analysisArea);
+            }
+            
+            {
+                // lane 1
+                Lane lane = new Lane();
+                lane.AddPoint(new NormalizedPoint(w, h, 0, 707));
+                lane.AddPoint(new NormalizedPoint(w, h, 982, 296));
+                lane.AddPoint(new NormalizedPoint(w, h, 1024, 296));
+                lane.AddPoint(new NormalizedPoint(w, h, 957, 338));
+                lane.AddPoint(new NormalizedPoint(w, h, 0, 790));
+                lane.Name = "downward emergency lane";
+                lane.Type = LaneType.EmergencyLane;
+                lane.Index = 1;
+
+                roadDefinition.Lanes.Add(lane);
+            }
+
+            {
+                // lane 2
+                Lane lane = new Lane();
+                lane.AddPoint(new NormalizedPoint(w, h, 0, 790));
+                lane.AddPoint(new NormalizedPoint(w, h, 957, 338));
+                lane.AddPoint(new NormalizedPoint(w, h, 1024, 296));
+                lane.AddPoint(new NormalizedPoint(w, h, 1171, 294));
+                lane.AddPoint(new NormalizedPoint(w, h, 72, 1080));
+                lane.AddPoint(new NormalizedPoint(w, h, 0, 1080));
+                lane.Name = "downward driveway lane";
+                lane.Type = LaneType.DriveLane;
+                lane.Index = 2;
+
+                roadDefinition.Lanes.Add(lane);
+            }
+
+            {
+                // lane 3
+                Lane lane = new Lane();
+                lane.AddPoint(new NormalizedPoint(w, h, 72, 1080));
+                lane.AddPoint(new NormalizedPoint(w, h, 1171, 294));
+                lane.AddPoint(new NormalizedPoint(w, h, 1326, 292));
+                lane.AddPoint(new NormalizedPoint(w, h, 1341, 329));
+                lane.AddPoint(new NormalizedPoint(w, h, 1350, 387));
+                lane.AddPoint(new NormalizedPoint(w, h, 1339, 546));
+                lane.AddPoint(new NormalizedPoint(w, h, 1209, 1080));
+                lane.Name = "upward driveway lane";
+                lane.Type = LaneType.DriveLane;
+                lane.Index = 3;
+
+                roadDefinition.Lanes.Add(lane);
+            }
+
+            {
+                // lane 4
+                Lane lane = new Lane();
+                lane.AddPoint(new NormalizedPoint(w, h, 1209, 1080));
+                lane.AddPoint(new NormalizedPoint(w, h, 1339, 546));
+                lane.AddPoint(new NormalizedPoint(w, h, 1350, 387));
+                lane.AddPoint(new NormalizedPoint(w, h, 1341, 329));
+                lane.AddPoint(new NormalizedPoint(w, h, 1326, 292));
+                lane.AddPoint(new NormalizedPoint(w, h, 1443, 292));
+                lane.AddPoint(new NormalizedPoint(w, h, 1432, 1080));
+                lane.Name = "upward emergency lane";
+                lane.Type = LaneType.EmergencyLane;
+                lane.Index = 4;
+
+                roadDefinition.Lanes.Add(lane);
+            }
+
+            // count line
+            EnterLine enterLine = new EnterLine();
+            enterLine.Start = new NormalizedPoint(w, h, 460, 802);
+            enterLine.Stop = new NormalizedPoint(w, h, 1434, 858);
+            enterLine.Name = "upward driveway lane count line (enter)";
+
+            LeaveLine leaveLine = new LeaveLine();
+            leaveLine.Start = new NormalizedPoint(w, h, 819, 546);
+            leaveLine.Stop = new NormalizedPoint(w, h, 1439, 562);
+            leaveLine.Name = "upward driveway lane count line (leave)";
+
+            roadDefinition.CountLines.Add(new Tuple<EnterLine, LeaveLine>(enterLine, leaveLine));
+
+            roadDefinition.SetImageSize(ImageWidth, ImageHeight);
+
+            string jsonString = JsonSerializer.Serialize(roadDefinition);
         }
     }
 }
