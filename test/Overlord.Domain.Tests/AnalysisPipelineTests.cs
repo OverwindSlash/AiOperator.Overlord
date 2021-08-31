@@ -7,6 +7,8 @@ using Overlord.Domain.Interfaces;
 using Overlord.Domain.Pipeline;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
 
 namespace Overlord.Domain.Tests
 {
@@ -69,6 +71,35 @@ namespace Overlord.Domain.Tests
 
             FrameInfo frameInfo = new FrameInfo(0L, mat);
             pipeline.Analyze(frameInfo);
+
+            Assert.AreEqual(14, frameInfo.ObjectInfos.Count);
+        }
+
+        [Test]
+        public void TestAnalysisPipeline_AddDetectionAndSnapshotHandlers()
+        {
+            AnalysisPipeline pipeline = new AnalysisPipeline();
+            pipeline.LoadRoadDefinition("RoadDefinition/demoRd.json", ImageWidth, ImageHeight);
+
+            using Mat mat = new Mat("Images/Traffic_001.jpg", ImreadModes.Color);
+
+            // mock for detector
+            IObjectDetector detector = Substitute.For<IObjectDetector>();
+            string json = File.ReadAllText("Json/Traffic001_AnalysisResult.json");
+            List<TrafficObjectInfo> trafficObjectInfos = JsonSerializer.Deserialize<List<TrafficObjectInfo>>(json);
+            detector.Detect(mat, 0.7f).Returns(trafficObjectInfos);
+
+            DetectionHandler detectionHandler = new DetectionHandler(detector);
+            pipeline.AddAnalysisHandler(detectionHandler);
+
+            SnapshotHandler snapshotHandler = new SnapshotHandler();
+            pipeline.AddAnalysisHandler(snapshotHandler);
+
+            FrameInfo frameInfo = new FrameInfo(1L, mat);
+            pipeline.Analyze(frameInfo);
+
+            Assert.AreEqual(14, frameInfo.ObjectInfos.Count);
+            Assert.AreEqual(1, snapshotHandler.Service.GetCacheSceneCount());
         }
     }
 }

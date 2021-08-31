@@ -1,11 +1,11 @@
-﻿using Overlord.Domain.Event;
+﻿using OpenCvSharp;
+using Overlord.Domain.Event;
 using System;
 using System.Collections.Concurrent;
-using OpenCvSharp;
 
 namespace Overlord.Domain.Services
 {
-    public class SnapshotService : IObserver<ObjectExpiredEvent>
+    public class SnapshotService : IObserver<ObjectExpiredEvent>, IDisposable
     {
         // frameId -> Scene
         private readonly ConcurrentDictionary<long, Mat> _scenesOfFrame;
@@ -23,6 +23,22 @@ namespace Overlord.Domain.Services
             }
         }
 
+        public int GetCacheSceneCount()
+        {
+            return _scenesOfFrame.Count;
+        }
+
+        public Mat GetSceneByByFrameId(long frameId)
+        {
+            if (_scenesOfFrame.ContainsKey(frameId))
+            {
+                _scenesOfFrame.TryGetValue(frameId, out var scene);
+                return scene;
+            }
+
+            return new Mat();
+        }
+
         public void OnCompleted()
         {
             throw new NotImplementedException();
@@ -36,6 +52,14 @@ namespace Overlord.Domain.Services
         public void OnNext(ObjectExpiredEvent value)
         {
             throw new NotImplementedException();
+        }
+
+        public void Dispose()
+        {
+            foreach (Mat scene in _scenesOfFrame.Values)
+            {
+                scene.Dispose();
+            }
         }
     }
 }

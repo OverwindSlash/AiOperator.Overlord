@@ -7,6 +7,8 @@ namespace Overlord.Domain.Handlers
     {
         private readonly SnapshotService _snapshotService;
 
+        public SnapshotService Service => _snapshotService;
+
         public SnapshotHandler()
         {
             _snapshotService = new SnapshotService();
@@ -14,8 +16,13 @@ namespace Overlord.Domain.Handlers
 
         public override FrameInfo Analyze(FrameInfo frameInfo)
         {
-            _snapshotService.AddSceneByFrameId(frameInfo.FrameId, frameInfo.Scene);
+            Service.AddSceneByFrameId(frameInfo.FrameId, frameInfo.Scene);
             return frameInfo;
+        }
+
+        public override void Dispose()
+        {
+            Service.Dispose();
         }
     }
 }

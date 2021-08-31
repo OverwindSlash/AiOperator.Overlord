@@ -13,6 +13,7 @@ namespace Overlord.Domain.ObjectDetector.Tests
     public class YoloWrapperTests
     {
         private YoloConfiguration _config;
+
         public YoloWrapperTests()
         {
             string configPath = @"Model/coco";
@@ -68,6 +69,8 @@ namespace Overlord.Domain.ObjectDetector.Tests
             var items = yolo.Detect(mat, 0.7F).ToList();
             _stopwatch.Stop();
             Console.WriteLine($"detection elapse: {_stopwatch.ElapsedMilliseconds}ms");
+
+            //string json = JsonSerializer.Serialize(items);
 
             Assert.AreEqual(14, items.Count);
 
