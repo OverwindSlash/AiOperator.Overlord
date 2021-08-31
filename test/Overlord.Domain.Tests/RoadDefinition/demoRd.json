@@ -1,0 +1,269 @@
+{
+  "RoadName": "hc_k41_700_1",
+  "PrePositionName": "prepos0",
+  "DetectionThresh": 0.7,
+  "IsObjectAnalyzableRetain": false,
+  "TrackingChangeHistory": true,
+  "TrackingFramesStory": 50,
+  "TrackingMaxDistance": 40,
+  "AnalysisAreas": [
+    {
+      "Name": "driveway region",
+      "Points": [
+        {
+          "NormalizedX": 0,
+          "NormalizedY": 0.6462962962962963
+        },
+        {
+          "NormalizedX": 0.5734375,
+          "NormalizedY": 0.4027777777777778
+        },
+        {
+          "NormalizedX": 0.7255208333333333,
+          "NormalizedY": 0.40185185185185185
+        },
+        {
+          "NormalizedX": 0.7182291666666667,
+          "NormalizedY": 1
+        },
+        {
+          "NormalizedX": 0,
+          "NormalizedY": 1
+        }
+      ]
+    },
+    {
+      "Name": "ramp region",
+      "Points": [
+        {
+          "NormalizedX": 0,
+          "NormalizedY": 0.41759259259259257
+        },
+        {
+          "NormalizedX": 0.17864583333333334,
+          "NormalizedY": 0.2518518518518518
+        },
+        {
+          "NormalizedX": 0.24635416666666668,
+          "NormalizedY": 0.3138888888888889
+        },
+        {
+          "NormalizedX": 0,
+          "NormalizedY": 0.4675925925925926
+        }
+      ]
+    }
+  ],
+  "ExcludedAreas": [
+    {
+      "Name": "warn sign region",
+      "Points": [
+        {
+          "NormalizedX": 0.5630208333333333,
+          "NormalizedY": 0.38055555555555554
+        },
+        {
+          "NormalizedX": 0.5901041666666667,
+          "NormalizedY": 0.38055555555555554
+        },
+        {
+          "NormalizedX": 0.5890625,
+          "NormalizedY": 0.42962962962962964
+        },
+        {
+          "NormalizedX": 0.5630208333333333,
+          "NormalizedY": 0.42962962962962964
+        }
+      ]
+    },
+    {
+      "Name": "warn sign region",
+      "Points": [
+        {
+          "NormalizedX": 0.5208333333333334,
+          "NormalizedY": 0.8333333333333334
+        },
+        {
+          "NormalizedX": 0.5729166666666666,
+          "NormalizedY": 0.8333333333333334
+        },
+        {
+          "NormalizedX": 0.5729166666666666,
+          "NormalizedY": 1
+        },
+        {
+          "NormalizedX": 0.5208333333333334,
+          "NormalizedY": 1
+        }
+      ]
+    }
+  ],
+  "Lanes": [
+    {
+      "Name": "downward emergency lane",
+      "Index": 1,
+      "Type": 1,
+      "ForbiddenTypes": [ "person", "bicycle", "motorbike", "car", "bus", "truck", "train" ],
+      "Points": [
+        {
+          "NormalizedX": 0,
+          "NormalizedY": 0.6462962962962963
+        },
+        {
+          "NormalizedX": 0.44114583333333335,
+          "NormalizedY": 0.4583333333333333
+        },
+        {
+          "NormalizedX": 0.4473958333333333,
+          "NormalizedY": 0.4722222222222222
+        },
+        {
+          "NormalizedX": 0,
+          "NormalizedY": 0.7027777777777777
+        }
+      ]
+    },
+    {
+      "Name": "downward driveway lane",
+      "Index": 2,
+      "Type": 0,
+      "ForbiddenTypes": [ "person", "bicycle", "motorbike" ],
+      "Points": [
+        {
+          "NormalizedX": 0,
+          "NormalizedY": 0.7027777777777777
+        },
+        {
+          "NormalizedX": 0.5911458333333334,
+          "NormalizedY": 0.40370370370370373
+        },
+        {
+          "NormalizedX": 0.6416666666666667,
+          "NormalizedY": 0.40370370370370373
+        },
+        {
+          "NormalizedX": 0,
+          "NormalizedY": 0.9101851851851852
+        }
+      ]
+    },
+    {
+      "Name": "upward driveway lane",
+      "Index": 3,
+      "Type": 0,
+      "ForbiddenTypes": [ "person", "bicycle", "motorbike" ],
+      "Points": [
+        {
+          "NormalizedX": 0,
+          "NormalizedY": 0.9101851851851852
+        },
+        {
+          "NormalizedX": 0.6416666666666667,
+          "NormalizedY": 0.40370370370370373
+        },
+        {
+          "NormalizedX": 0.68125,
+          "NormalizedY": 0.40370370370370373
+        },
+        {
+          "NormalizedX": 0.6286458333333333,
+          "NormalizedY": 0.5305555555555556
+        },
+        {
+          "NormalizedX": 0.634375,
+          "NormalizedY": 0.5305555555555556
+        },
+        {
+          "NormalizedX": 0.7244791666666667,
+          "NormalizedY": 0.44074074074074077
+        },
+        {
+          "NormalizedX": 0.7244791666666667,
+          "NormalizedY": 0.4787037037037037
+        },
+        {
+          "NormalizedX": 0.696875,
+          "NormalizedY": 0.5083333333333333
+        },
+        {
+          "NormalizedX": 0.584375,
+          "NormalizedY": 1
+        }
+      ]
+    },
+    {
+      "Name": "upward emergency lane",
+      "Index": 4,
+      "Type": 1,
+      "ForbiddenTypes": [ "person", "bicycle", "motorbike", "car", "bus", "truck", "train", "traffic light" ],
+      "Points": [
+        {
+          "NormalizedX": 0.584375,
+          "NormalizedY": 1
+        },
+        {
+          "NormalizedX": 0.696875,
+          "NormalizedY": 0.5083333333333333
+        },
+        {
+          "NormalizedX": 0.7244791666666667,
+          "NormalizedY": 0.4787037037037037
+        },
+        {
+          "NormalizedX": 0.7182291666666667,
+          "NormalizedY": 1
+        }
+      ]
+    },
+    {
+      "Name": "upward ramp lane",
+      "Index": 5,
+      "Type": 2,
+      "ForbiddenTypes": [ "bicycle", "motorbike" ],
+      "Points": [
+        {
+          "NormalizedX": 0.3671875,
+          "NormalizedY": 0.6666666666666666
+        },
+        {
+          "NormalizedX": 0.5682291666666667,
+          "NormalizedY": 0.3611111111111111
+        },
+        {
+          "NormalizedX": 0.6354166666666666,
+          "NormalizedY": 0.30925925925925923
+        },
+        {
+          "NormalizedX": 0.5890625,
+          "NormalizedY": 0.6666666666666666
+        }
+      ]
+    }
+  ],
+  "CountLines": [
+    {
+      "Item1": {
+        "Name": "upward driveway lane count line (enter)",
+        "Start": {
+          "NormalizedX": 0.14010416666666667,
+          "NormalizedY": 0.8324074074074074
+        },
+        "Stop": {
+          "NormalizedX": 0.7192708333333333,
+          "NormalizedY": 0.8888888888888888
+        }
+      },
+      "Item2": {
+        "Name": "upward driveway lane count line (leave)",
+        "Start": {
+          "NormalizedX": 0.3463541666666667,
+          "NormalizedY": 0.6601851851851852
+        },
+        "Stop": {
+          "NormalizedX": 0.7213541666666666,
+          "NormalizedY": 0.7027777777777777
+        }
+      }
+    }
+  ]
+}

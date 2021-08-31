@@ -1,0 +1,19 @@
+﻿using System;
+
+namespace Overlord.Domain.Event
+{
+    public class EventBase
+    {
+        private readonly Guid _eventId;
+        private readonly DateTime _timestamp;
+
+        public Guid EventId => _eventId;
+        public DateTime Timestamp => _timestamp;
+
+        public EventBase()
+        {
+            _eventId = new Guid();
+            _timestamp = DateTime.Now;
+        }
+    }
+}
