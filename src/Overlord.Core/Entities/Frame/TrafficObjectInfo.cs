@@ -1,13 +1,12 @@
 using OpenCvSharp;
 using System;
-using System.Drawing;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Overlord.Core.Entities.Frame
 {
     public class TrafficObjectInfo : IDisposable
     {
         public long FrameId { get; set; }
+        public DateTime TimeStamp { get; set; }
 
         // traffic object type and id
         public string Id => $"{Type}:{TrackingId}";

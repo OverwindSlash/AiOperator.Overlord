@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text.Json;
-using NSubstitute;
+﻿using NSubstitute;
 using NUnit.Framework;
 using OpenCvSharp;
 using Overlord.Core.Entities.Frame;
 using Overlord.Core.Entities.Road;
 using Overlord.Domain.Handlers;
 using Overlord.Domain.Interfaces;
+using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
 
 namespace Overlord.Domain.Tests
 {
@@ -40,6 +39,10 @@ namespace Overlord.Domain.Tests
 
             laneHandler.Analyze(frameInfo);
             Assert.AreEqual(10, frameInfo.ObjectInfos.Count);
+            foreach (TrafficObjectInfo toi in frameInfo.ObjectInfos)
+            {
+                Assert.True(toi.IsLaneCalculated);
+            }
 
             // foreach (Lane lane in roadDefinition.Lanes)
             // {

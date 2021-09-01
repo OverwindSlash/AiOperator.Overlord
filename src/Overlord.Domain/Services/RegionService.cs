@@ -5,6 +5,7 @@ using Overlord.Domain.Event;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Overlord.Domain.Services
 {
@@ -87,7 +88,11 @@ namespace Overlord.Domain.Services
 
         public void OnNext(ObjectExpiredEvent value)
         {
-            ReleaseAnalyzableObjectById(value.Id);
+            Task.Run(() =>
+            {
+                ReleaseAnalyzableObjectById(value.Id);
+            });
+
         }
 
         public void ReleaseAnalyzableObjectById(string id)

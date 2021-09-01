@@ -17,10 +17,14 @@ namespace Overlord.Core.Entities.Road
         public string DeviceNo { get; set; }
         public string PrePositionName { get; set; }
         public float DetectionThresh { get; set; }
-        public bool IsObjectAnalyzableRetain { get; set; }
         public bool TrackingChangeHistory { get; set; }
         public int TrackingFramesStory { get; set; }
         public int TrackingMaxDistance { get; set; }
+
+        // Analysis step parameters
+        public bool IsObjectAnalyzableRetain { get; set; }
+        public int MaxObjectSnapshots { get; set; }
+        public int MotionCalculationFrameInterval { get; set; }
 
         public List<AnalysisArea> AnalysisAreas
         {
@@ -70,9 +74,13 @@ namespace Overlord.Core.Entities.Road
             CountLines = new List<Tuple<EnterLine, LeaveLine>>();
 
             DetectionThresh = 0.7f;
+            IsObjectAnalyzableRetain = false;
             TrackingChangeHistory = true;
             TrackingFramesStory = 50;
             TrackingMaxDistance = 40;
+
+            MaxObjectSnapshots = 10;
+            MotionCalculationFrameInterval = 10;
         }
         
         public override void SetImageSize(int width, int height)

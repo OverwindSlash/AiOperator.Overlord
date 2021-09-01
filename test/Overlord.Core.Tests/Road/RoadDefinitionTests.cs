@@ -12,7 +12,8 @@ namespace Overlord.Core.Tests.Road
         private const int ImageWidth = 1920;
         private const int ImageHeight = 1080;
 
-        private string rdJson = "{\"RoadName\":\"hc_k41_700_1\",\"DeviceNo\":\"DAF6AD5D3A9BDE8FE310\",\"PrePositionName\":\"prepos0\",\"DetectionThresh\":0.7,\"IsObjectAnalyzableRetain\":false,\"TrackingChangeHistory\":true,\"TrackingFramesStory\":50,\"TrackingMaxDistance\":40," + 
+        private string rdJson = "{\"RoadName\":\"hc_k41_700_1\",\"DeviceNo\":\"DAF6AD5D3A9BDE8FE310\",\"PrePositionName\":\"prepos0\",\"DetectionThresh\":0.7,\"TrackingChangeHistory\":true,\"TrackingFramesStory\":50,\"TrackingMaxDistance\":40," +
+                                "\"IsObjectAnalyzableRetain\":false,\"MaxObjectSnapshots\":10,\"MotionCalculationFrameInterval\":10," + 
                                 "\"AnalysisAreas\":[" +
                                 "{\"Name\":\"driveway region\",\"Points\":[" +
                                 "{\"NormalizedX\":0,\"NormalizedY\":0.6462962962962963}," +
@@ -72,12 +73,16 @@ namespace Overlord.Core.Tests.Road
             roadDefinition.DeviceNo = "DAF6AD5D3A9BDE8FE310";
             roadDefinition.PrePositionName = "prepos0";
 
-            // analysis param
+            // detection param
             roadDefinition.DetectionThresh = 0.7F;
-            roadDefinition.IsObjectAnalyzableRetain = false;
             roadDefinition.TrackingChangeHistory = true;
             roadDefinition.TrackingFramesStory = 50;
             roadDefinition.TrackingMaxDistance = 40;
+
+            // analysis step param
+            roadDefinition.IsObjectAnalyzableRetain = false;
+            roadDefinition.MaxObjectSnapshots = 10;
+            roadDefinition.MotionCalculationFrameInterval = 10;
 
             {
                 // analysis area

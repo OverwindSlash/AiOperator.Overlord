@@ -8,6 +8,8 @@ namespace Overlord.Core.Entities.Frame
     {
         public long FrameId { get; }
 
+        public DateTime TimeStamp { get; }
+
         public Mat Scene { get; set; }
         
         public List<TrafficObjectInfo> ObjectInfos { get; set; }
@@ -16,6 +18,7 @@ namespace Overlord.Core.Entities.Frame
         {
             FrameId = frameId;
             Scene = scene;
+            TimeStamp = DateTime.Now;
         }
 
         public void Dispose()

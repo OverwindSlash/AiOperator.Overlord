@@ -23,6 +23,12 @@ namespace Overlord.Domain.Handlers
         public override FrameInfo Analyze(FrameInfo frameInfo)
         {
             frameInfo.ObjectInfos = _detector.Detect(frameInfo.Scene, _roadDefinition.DetectionThresh);
+            foreach (TrafficObjectInfo toi in frameInfo.ObjectInfos)
+            {
+                toi.FrameId = frameInfo.FrameId;
+                toi.TimeStamp = frameInfo.TimeStamp;
+            }
+
             return frameInfo;
         }
 

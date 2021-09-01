@@ -1,4 +1,5 @@
 ﻿using Overlord.Core.Entities.Frame;
+using Overlord.Core.Entities.Road;
 using Overlord.Domain.Services;
 
 namespace Overlord.Domain.Handlers
@@ -14,15 +15,23 @@ namespace Overlord.Domain.Handlers
             _snapshotService = new SnapshotService();
         }
 
+        public override void SetRoadDefinition(RoadDefinition roadDefinition)
+        {
+            base.SetRoadDefinition(roadDefinition);
+            _snapshotService.SetRoadDefinition(roadDefinition);
+        }
+
         public override FrameInfo Analyze(FrameInfo frameInfo)
         {
-            Service.AddSceneByFrameId(frameInfo.FrameId, frameInfo.Scene);
+            _snapshotService.AddSceneByFrameId(frameInfo.FrameId, frameInfo.Scene);
+            _snapshotService.AddSnapshotOfObjectById(frameInfo);
+
             return frameInfo;
         }
 
         public override void Dispose()
         {
-            Service.Dispose();
+            _snapshotService.Dispose();
         }
     }
 }

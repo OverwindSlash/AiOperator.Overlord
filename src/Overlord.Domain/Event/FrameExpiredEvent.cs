@@ -6,6 +6,8 @@ namespace Overlord.Domain.Event
     {
         private readonly long _frameId;
 
+        public long FrameId => _frameId;
+
         public FrameExpiredEvent(long frameId)
         {
             _frameId = frameId;

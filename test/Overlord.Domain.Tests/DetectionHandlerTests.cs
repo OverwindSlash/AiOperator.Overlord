@@ -34,10 +34,12 @@ namespace Overlord.Domain.Tests
             DetectionHandler handler = new DetectionHandler(detector);
             handler.SetRoadDefinition(roadDefinition);
 
-            FrameInfo frameInfo = new FrameInfo(0L, mat);
+            FrameInfo frameInfo = new FrameInfo(1L, mat);
             handler.Analyze(frameInfo);
             
             Assert.AreEqual(14, frameInfo.ObjectInfos.Count);
+            Assert.AreEqual(1L, frameInfo.ObjectInfos[0].FrameId);
+            Assert.AreEqual(frameInfo.TimeStamp, frameInfo.ObjectInfos[0].TimeStamp);
         }
 
         [Test]

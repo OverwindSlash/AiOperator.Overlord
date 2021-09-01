@@ -21,6 +21,8 @@ namespace Overlord.Domain.Services
 
         public int CalculateLane(TrafficObjectInfo toi)
         {
+            toi.IsLaneCalculated = true;
+
             if (!toi.IsAnalyzable)
             {
                 return NotNeedToCalculateLane;
