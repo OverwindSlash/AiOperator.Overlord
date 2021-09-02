@@ -21,9 +21,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Overlord.Domain.ObjectDetec
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Overlord.Domain.Tests", "test\Overlord.Domain.Tests\Overlord.Domain.Tests.csproj", "{360D2027-F08A-4D4D-B581-B2353497CE0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Overlord.Domain.ObjectTracker", "src\Overlord.Domain.ObjectTracker\Overlord.Domain.ObjectTracker.csproj", "{F95F34C3-5C3E-4652-8C49-DD5FA2673089}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Overlord.Domain.ObjectTracker", "src\Overlord.Domain.ObjectTracker\Overlord.Domain.ObjectTracker.csproj", "{F95F34C3-5C3E-4652-8C49-DD5FA2673089}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Overlord.Domain.ObjectTracker.Tests", "test\Overlord.Domain.ObjectTracker.Tests\Overlord.Domain.ObjectTracker.Tests.csproj", "{BAE2D427-04CA-49ED-803F-E40F813AE9AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Overlord.Domain.ObjectTracker.Tests", "test\Overlord.Domain.ObjectTracker.Tests\Overlord.Domain.ObjectTracker.Tests.csproj", "{BAE2D427-04CA-49ED-803F-E40F813AE9AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Overlord.Domain.Geography", "src\Overlord.Domain.Geography\Overlord.Domain.Geography.csproj", "{23C7660B-01B9-4311-9586-2A47259F0D39}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Overlord.Domain.Geography.Tests", "test\Overlord.Domain.Geography.Tests\Overlord.Domain.Geography.Tests.csproj", "{CBD316D0-C531-482B-B3F3-54B7130C0552}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,6 +71,14 @@ Global
 		{BAE2D427-04CA-49ED-803F-E40F813AE9AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BAE2D427-04CA-49ED-803F-E40F813AE9AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BAE2D427-04CA-49ED-803F-E40F813AE9AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23C7660B-01B9-4311-9586-2A47259F0D39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23C7660B-01B9-4311-9586-2A47259F0D39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23C7660B-01B9-4311-9586-2A47259F0D39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23C7660B-01B9-4311-9586-2A47259F0D39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBD316D0-C531-482B-B3F3-54B7130C0552}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBD316D0-C531-482B-B3F3-54B7130C0552}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBD316D0-C531-482B-B3F3-54B7130C0552}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBD316D0-C531-482B-B3F3-54B7130C0552}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -81,6 +93,8 @@ Global
 		{360D2027-F08A-4D4D-B581-B2353497CE0D} = {E0C9AF1E-285A-4637-9F60-9B44D82D2D07}
 		{F95F34C3-5C3E-4652-8C49-DD5FA2673089} = {8D7705EF-70FE-4D6F-B2E1-A78C89962042}
 		{BAE2D427-04CA-49ED-803F-E40F813AE9AC} = {E0C9AF1E-285A-4637-9F60-9B44D82D2D07}
+		{23C7660B-01B9-4311-9586-2A47259F0D39} = {8D7705EF-70FE-4D6F-B2E1-A78C89962042}
+		{CBD316D0-C531-482B-B3F3-54B7130C0552} = {E0C9AF1E-285A-4637-9F60-9B44D82D2D07}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B7ABA201-0535-43E7-A5DF-71E8097158B1}
