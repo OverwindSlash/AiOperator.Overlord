@@ -60,6 +60,12 @@ namespace Overlord.Core.Entities.Frame
         public bool InEventUnderConstruction{ get; set; }
         public bool InEventDangerousGoods{ get; set; }
 
+        public TrafficObjectInfo()
+        {
+            PlateInfo = new PlateInfo();
+            MotionInfo = new MotionInfo();
+        }
+
         public void Dispose()
         {
             Snapshot?.Dispose();

@@ -5,6 +5,7 @@ using Overlord.Domain.ObjectDetector.Config;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text.Json;
 
@@ -167,5 +168,57 @@ namespace Overlord.Domain.ObjectDetector.Tests
 
             //ShowResultImage(items, mat);
         }
+
+        [Test]
+        public void TestDetectHighwayForMotionMatPtr()
+        {
+            using YoloWrapper yolo = new YoloWrapper(_config);
+            using Mat mat = new Mat("Images/pl_000001.jpg", ImreadModes.Color);
+
+            Stopwatch _stopwatch = new Stopwatch();
+            _stopwatch.Start();
+            var items = yolo.Detect(mat, 0.6F).ToList();
+            _stopwatch.Stop();
+            Console.WriteLine($"detection elapse: {_stopwatch.ElapsedMilliseconds}ms");
+
+            //string json = JsonSerializer.Serialize(items);
+
+            Assert.AreEqual(8, items.Count);
+
+            //ShowResultImage(items, mat);
+        }
+
+        // [Test]
+        // public void TestDetectHighwayMatPtrForMotionCalculation()
+        // {
+        //     using YoloWrapper yolo = new YoloWrapper(_config);
+        //
+        //     DateTime timestamp = new DateTime(2021, 9, 1, 18, 0, 0);
+        //
+        //     for (int i = 1; i <= 10; i++)
+        //     {
+        //         string filename = $"Images/pl_0000{i:D2}.jpg";
+        //         using Mat mat = new Mat(filename, ImreadModes.Color);
+        //
+        //         Stopwatch _stopwatch = new Stopwatch();
+        //         _stopwatch.Start();
+        //         var items = yolo.Detect(mat, 0.6F).ToList();
+        //         _stopwatch.Stop();
+        //         Console.WriteLine($"detection elapse: {_stopwatch.ElapsedMilliseconds}ms");
+        //
+        //         FrameInfo frameInfo = new FrameInfo(i, mat);
+        //         foreach (TrafficObjectInfo toi in items)
+        //         {
+        //             toi.FrameId = frameInfo.FrameId;
+        //             toi.TimeStamp = timestamp.AddMilliseconds(200 * i);
+        //             toi.IsAnalyzable = true;
+        //         }
+        //
+        //         string json = JsonSerializer.Serialize(items);
+        //         File.WriteAllText($"Json/pl_0000{i:D2}.json", json);
+        //     }
+        //
+        //     //ShowResultImage(items, mat);
+        // }
     }
 }

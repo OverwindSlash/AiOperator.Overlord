@@ -65,9 +65,9 @@ namespace Overlord.Domain.Services
             TrafficObjectInfo currentToi = objectToiHistory.Values.Last();
             MotionInfo currentMotionInfo = currentToi.MotionInfo;
 
-            if (historyCount >= _motionCalculationFrameInterval)
+            if (historyCount > _motionCalculationFrameInterval)
             {
-                TrafficObjectInfo lastToi = objectToiHistory.Values[historyCount - _motionCalculationFrameInterval];
+                TrafficObjectInfo lastToi = objectToiHistory.Values[(historyCount - 1) - _motionCalculationFrameInterval];
                 MotionInfo lastMotionInfo = lastToi.MotionInfo;
 
                 currentMotionInfo.LastToiFrameId = lastToi.FrameId;
@@ -78,6 +78,16 @@ namespace Overlord.Domain.Services
 
                 currentMotionInfo.Offset = Math.Sqrt(currentMotionInfo.XOffset * currentMotionInfo.XOffset + currentMotionInfo.YOffset * currentMotionInfo.YOffset);
             }
+        }
+
+        public SortedList<long, TrafficObjectInfo> GetMotionHistoryById(string objectId)
+        {
+            if (_motionHistory.ContainsKey(objectId))
+            {
+                return _motionHistory[objectId];
+            }
+
+            return new SortedList<long, TrafficObjectInfo>();
         }
 
         public void OnCompleted()

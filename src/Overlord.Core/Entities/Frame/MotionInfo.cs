@@ -20,7 +20,7 @@ namespace Overlord.Core.Entities.Frame
 
         private double CalculateSpeed()
         {
-            throw new System.NotImplementedException();
+            return Offset;
         }
     }
 }

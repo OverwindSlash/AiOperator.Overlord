@@ -6,7 +6,9 @@ namespace Overlord.Domain.Handlers
 {
     public class MotionHandler : AnalysisHandlerBase
     {
-        private MotionService _motionService;
+        private readonly MotionService _motionService;
+
+        public MotionService Service => _motionService;
 
         public MotionHandler()
         {
