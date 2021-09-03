@@ -25,6 +25,8 @@ namespace Overlord.Core.Entities.Road
         public bool IsObjectAnalyzableRetain { get; set; }
         public int MaxObjectSnapshots { get; set; }
         public int MotionCalculationFrameInterval { get; set; }
+        public List<int> UvQuadrilateral { get; set; }
+        public List<float> LonLatQuadrilateral { get; set; }
 
         public List<AnalysisArea> AnalysisAreas
         {
@@ -81,6 +83,9 @@ namespace Overlord.Core.Entities.Road
 
             MaxObjectSnapshots = 10;
             MotionCalculationFrameInterval = 10;
+
+            UvQuadrilateral = new List<int>(8);
+            LonLatQuadrilateral = new List<float>(8);
         }
         
         public override void SetImageSize(int width, int height)

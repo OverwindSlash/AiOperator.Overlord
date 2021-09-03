@@ -2,7 +2,7 @@
   "RoadName": "hc_k41_700_2",
   "DeviceNo": "DAF6AD5D3A9BDE8FE310",
   "PrePositionName": "prepos0",
-  "DetectionThresh": 0.6,
+  "DetectionThresh": 0.7,
   "TrackingChangeHistory": true,
   "TrackingFramesStory": 50,
   "TrackingMaxDistance": 40,

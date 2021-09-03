@@ -17,4 +17,10 @@
     <ProjectReference Include="..\..\src\Overlord.Domain.Geography\Overlord.Domain.Geography.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="RoadDefinition\hc_k41_700_2.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -9,18 +9,6 @@ namespace Overlord.Core.Entities.Frame
         public int XOffset { get; set; }
         public int YOffset { get; set; }
         public double Offset { get; set; }
-
-        public double Speed
-        {
-            get
-            {
-                return CalculateSpeed();
-            }
-        }
-
-        private double CalculateSpeed()
-        {
-            return Offset;
-        }
+        public double Speed { get; set; }
     }
 }

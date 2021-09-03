@@ -1,6 +1,7 @@
 ﻿using Overlord.Core.Entities.Frame;
 using Overlord.Core.Entities.Road;
 using Overlord.Domain.Event;
+using Overlord.Domain.Interfaces;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -13,6 +14,8 @@ namespace Overlord.Domain.Services
     {
         private RoadDefinition _roadDefinition;
         private int _motionCalculationFrameInterval;
+
+        private ISpeeder _speeder;
 
         // objectId -> (frameId, toi)
         private readonly ConcurrentDictionary<string, SortedList<long, TrafficObjectInfo>> _motionHistory;
@@ -31,6 +34,9 @@ namespace Overlord.Domain.Services
             {
                 throw new ArgumentException("road definition file not correct.");
             }
+
+            // TODO: Use DI to set _speeder value
+            //_speeder.SetRoadDefinition(roadDefinition);
         }
 
         public void AddTrafficObjectInfoHistory(long frameId, TrafficObjectInfo toi)
@@ -77,6 +83,9 @@ namespace Overlord.Domain.Services
                 currentMotionInfo.YOffset = currentToi.CenterY - lastToi.CenterY;
 
                 currentMotionInfo.Offset = Math.Sqrt(currentMotionInfo.XOffset * currentMotionInfo.XOffset + currentMotionInfo.YOffset * currentMotionInfo.YOffset);
+
+                // TODO: Use DI to set _speeder value
+                //currentMotionInfo.Speed = _speeder.CalculateSpeed(currentToi);
             }
         }
 

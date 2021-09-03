@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Overlord.Core\Overlord.Core.csproj" />
+    <ProjectReference Include="..\Overlord.Domain\Overlord.Domain.csproj" />
   </ItemGroup>
 
 </Project>
