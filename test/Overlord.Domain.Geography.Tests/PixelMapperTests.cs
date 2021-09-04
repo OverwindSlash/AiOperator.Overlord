@@ -137,7 +137,6 @@ namespace Overlord.Domain.Geography.Tests
 
             double distanceTo = llc1.DistanceTo(llc10);
             double speed = distanceTo / (1.8 / 60.0 / 60.0);
-
         }
 
         [Test]

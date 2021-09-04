@@ -12,5 +12,7 @@ namespace Overlord.Core.Entities.Frame
 
         public bool IsSpeedCalculated { get; set; }
         public double Speed { get; set; }
+        public double Direction { get; set; }
+        public double Distance { get; set; }
     }
 }

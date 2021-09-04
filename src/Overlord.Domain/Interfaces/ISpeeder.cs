@@ -7,5 +7,7 @@ namespace Overlord.Domain.Interfaces
     {
         void SetRoadDefinition(RoadDefinition roadDefinition);
         double CalculateSpeed(TrafficObjectInfo toi);
+        double CalculateDirection(TrafficObjectInfo toi);
+        double CalculateDistance(TrafficObjectInfo toi);
     }
 }

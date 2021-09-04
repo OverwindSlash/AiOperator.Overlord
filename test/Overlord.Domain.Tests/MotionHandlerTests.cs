@@ -159,6 +159,7 @@ namespace Overlord.Domain.Tests
             Assert.AreEqual(1, toi6.MotionInfo.LastToiFrameId);
             Assert.AreEqual(1000, toi6.MotionInfo.LastToiTimespan.TotalMilliseconds);
             Assert.AreEqual(79.82, toi6.MotionInfo.Speed, 0.01);
+            Assert.AreEqual(79, toi6.MotionInfo.Direction, 1);
 
 
             // second frame
@@ -167,6 +168,7 @@ namespace Overlord.Domain.Tests
             Assert.AreEqual(2, toi7.MotionInfo.LastToiFrameId);
             Assert.AreEqual(1000, toi7.MotionInfo.LastToiTimespan.TotalMilliseconds);
             Assert.AreEqual(82.84, toi7.MotionInfo.Speed, 0.01);
+            Assert.AreEqual(78, toi7.MotionInfo.Direction, 1);
 
             // last frame
             Assert.AreEqual(toi10.CenterX - toi5.CenterX, toi10.MotionInfo.XOffset);
@@ -174,6 +176,7 @@ namespace Overlord.Domain.Tests
             Assert.AreEqual(5, toi10.MotionInfo.LastToiFrameId);
             Assert.AreEqual(1000, toi10.MotionInfo.LastToiTimespan.TotalMilliseconds);
             Assert.AreEqual(88.44, toi10.MotionInfo.Speed, 0.01);
+            Assert.AreEqual(77, toi10.MotionInfo.Direction, 1);
         }
     }
 }

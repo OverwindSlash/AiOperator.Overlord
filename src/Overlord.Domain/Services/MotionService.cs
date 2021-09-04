@@ -89,7 +89,9 @@ namespace Overlord.Domain.Services
 
                 if (_speeder != null)
                 {
-                    currentMotionInfo.Speed = _speeder.CalculateSpeed(currentToi);
+                    currentMotionInfo.Distance = _speeder.CalculateDistance(currentToi);
+                    currentMotionInfo.Speed = currentMotionInfo.Distance / currentMotionInfo.LastToiTimespan.TotalHours;
+                    currentMotionInfo.Direction = _speeder.CalculateDirection(currentToi);
                     currentMotionInfo.IsSpeedCalculated = true;
                 }
             }
