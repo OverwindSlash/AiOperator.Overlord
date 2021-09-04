@@ -9,6 +9,8 @@ namespace Overlord.Core.Entities.Frame
         public int XOffset { get; set; }
         public int YOffset { get; set; }
         public double Offset { get; set; }
+
+        public bool IsSpeedCalculated { get; set; }
         public double Speed { get; set; }
     }
 }

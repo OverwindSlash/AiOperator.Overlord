@@ -9,8 +9,8 @@
   "IsObjectAnalyzableRetain": false,
   "MaxObjectSnapshots": 10,
   "MotionCalculationFrameInterval": 10,
-  "UvQuadrilateral": [ 1326, 598, 901, 620, 1025, 299, 1131, 276 ],
-  "LonLatQuadrilateral": [ 120.658646, 31.224102, 120.65872, 31.224012, 120.65726, 31.223541, 120.656845, 31.223684 ],
+  "UvQuadrilateral": [ 1327, 599, 1312, 276, 1026, 299, 900, 621 ],
+  "LonLatQuadrilateral": [ 120.658646, 31.224104, 120.656845, 31.223679, 120.657265, 31.223536, 120.65872, 31.224007 ],
   "AnalysisAreas": [
     {
       "Name": "driveway region",

@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Overlord.Domain.Geography\Overlord.Domain.Geography.csproj" />
     <ProjectReference Include="..\..\src\Overlord.Domain.ObjectDetector\Overlord.Domain.ObjectDetector.csproj" />
     <ProjectReference Include="..\..\src\Overlord.Domain\Overlord.Domain.csproj" />
   </ItemGroup>

@@ -261,18 +261,18 @@ namespace Overlord.Core.Tests.Road
             roadDefinition.PrePositionName = "prepos0";
             
             // analysis param
-            roadDefinition.DetectionThresh = 0.7F;
+            roadDefinition.DetectionThresh = 0.6F;
             roadDefinition.IsObjectAnalyzableRetain = false;
             roadDefinition.TrackingChangeHistory = true;
             roadDefinition.TrackingFramesStory = 50;
             roadDefinition.TrackingMaxDistance = 40;
 
             // pixel to geography coordinates.
-            int[] uvs = { 1326, 598, 901, 620, 1025, 299, 1131, 276 };
+            int[] uvs = { 1327, 599, 1312, 276, 1026, 299, 900, 621 };
             roadDefinition.UvQuadrilateral.AddRange(uvs);
 
-            float[] lonlats = { (float)120.6586438007756, (float)31.224101211225364, (float)120.65872464827149, (float)31.22401242993521,
-                (float)120.65726041029022, (float)31.223541501683588, (float)120.65684269822808, (float)31.223684324436487};
+            float[] lonlats = { (float)120.6586424915274, (float)31.22410363108796, (float)120.65684588050745, (float)31.223679024166824,
+                (float)120.65726808409714, (float)31.22353620140584, (float)120.6587233390233, (float)31.22400712968413};
             roadDefinition.LonLatQuadrilateral.AddRange(lonlats);
 
             {

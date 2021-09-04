@@ -11,9 +11,9 @@ namespace Overlord.Domain.Handlers
 
         public MotionService Service => _motionService;
 
-        public MotionHandler()
+        public MotionHandler(ISpeeder speeder)
         {
-            _motionService = new MotionService();
+            _motionService = new MotionService(speeder);
         }
 
         public override void SetRoadDefinition(RoadDefinition roadDefinition)

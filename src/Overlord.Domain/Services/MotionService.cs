@@ -20,9 +20,10 @@ namespace Overlord.Domain.Services
         // objectId -> (frameId, toi)
         private readonly ConcurrentDictionary<string, SortedList<long, TrafficObjectInfo>> _motionHistory;
 
-        public MotionService()
+        public MotionService(ISpeeder speeder)
         {
             _motionHistory = new ConcurrentDictionary<string, SortedList<long, TrafficObjectInfo>>();
+            _speeder = speeder;
         }
 
         public void SetRoadDefinition(RoadDefinition roadDefinition)
@@ -35,8 +36,10 @@ namespace Overlord.Domain.Services
                 throw new ArgumentException("road definition file not correct.");
             }
 
-            // TODO: Use DI to set _speeder value
-            //_speeder.SetRoadDefinition(roadDefinition);
+            if (_speeder != null)
+            {
+                _speeder.SetRoadDefinition(roadDefinition);
+            }
         }
 
         public void AddTrafficObjectInfoHistory(long frameId, TrafficObjectInfo toi)
@@ -84,8 +87,11 @@ namespace Overlord.Domain.Services
 
                 currentMotionInfo.Offset = Math.Sqrt(currentMotionInfo.XOffset * currentMotionInfo.XOffset + currentMotionInfo.YOffset * currentMotionInfo.YOffset);
 
-                // TODO: Use DI to set _speeder value
-                //currentMotionInfo.Speed = _speeder.CalculateSpeed(currentToi);
+                if (_speeder != null)
+                {
+                    currentMotionInfo.Speed = _speeder.CalculateSpeed(currentToi);
+                    currentMotionInfo.IsSpeedCalculated = true;
+                }
             }
         }
 

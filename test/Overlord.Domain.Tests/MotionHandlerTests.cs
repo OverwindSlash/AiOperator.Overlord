@@ -1,8 +1,11 @@
-﻿using NUnit.Framework;
+﻿using NSubstitute;
+using NUnit.Framework;
 using OpenCvSharp;
 using Overlord.Core.Entities.Frame;
 using Overlord.Core.Entities.Road;
+using Overlord.Domain.Geography;
 using Overlord.Domain.Handlers;
+using Overlord.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,7 +27,10 @@ namespace Overlord.Domain.Tests
             string json = File.ReadAllText("Json/pl_000001.json");
             frameInfo.ObjectInfos = JsonSerializer.Deserialize<List<TrafficObjectInfo>>(json);
 
-            MotionHandler handler = new MotionHandler();
+            // mock speeder.
+            ISpeeder speeder = Substitute.For<ISpeeder>();
+
+            MotionHandler handler = new MotionHandler(speeder);
             handler.SetRoadDefinition(roadDefinition);
             handler.Analyze(frameInfo);
 
@@ -43,7 +49,10 @@ namespace Overlord.Domain.Tests
             string json = File.ReadAllText("Json/pl_000001.json");
             frameInfo.ObjectInfos = JsonSerializer.Deserialize<List<TrafficObjectInfo>>(json);
 
-            MotionHandler handler = new MotionHandler();
+            // mock speeder.
+            ISpeeder speeder = Substitute.For<ISpeeder>();
+
+            MotionHandler handler = new MotionHandler(speeder);
             handler.SetRoadDefinition(roadDefinition);
             handler.Analyze(frameInfo);
 
@@ -69,7 +78,10 @@ namespace Overlord.Domain.Tests
             string json2 = File.ReadAllText("Json/pl_000002.json");
             frameInfo2.ObjectInfos = JsonSerializer.Deserialize<List<TrafficObjectInfo>>(json2);
 
-            MotionHandler handler = new MotionHandler();
+            // mock speeder.
+            ISpeeder speeder = Substitute.For<ISpeeder>();
+
+            MotionHandler handler = new MotionHandler(speeder);
             handler.SetRoadDefinition(roadDefinition);
 
             handler.Analyze(frameInfo1);
@@ -101,7 +113,10 @@ namespace Overlord.Domain.Tests
 
             DateTime timestamp = new DateTime(2021, 9, 1, 18, 0, 0);
 
-            MotionHandler handler = new MotionHandler();
+            // use real geography speeder
+            ISpeeder speeder = new GeographySpeeder();
+
+            MotionHandler handler = new MotionHandler(speeder);
             handler.SetRoadDefinition(roadDefinition);
 
             for (int i = 1; i <= 10; i++)
@@ -143,18 +158,22 @@ namespace Overlord.Domain.Tests
             Assert.AreEqual(toi6.CenterY - toi1.CenterY, toi6.MotionInfo.YOffset);
             Assert.AreEqual(1, toi6.MotionInfo.LastToiFrameId);
             Assert.AreEqual(1000, toi6.MotionInfo.LastToiTimespan.TotalMilliseconds);
+            Assert.AreEqual(79.82, toi6.MotionInfo.Speed, 0.01);
+
 
             // second frame
             Assert.AreEqual(toi7.CenterX - toi2.CenterX, toi7.MotionInfo.XOffset);
             Assert.AreEqual(toi7.CenterY - toi2.CenterY, toi7.MotionInfo.YOffset);
             Assert.AreEqual(2, toi7.MotionInfo.LastToiFrameId);
             Assert.AreEqual(1000, toi7.MotionInfo.LastToiTimespan.TotalMilliseconds);
+            Assert.AreEqual(82.84, toi7.MotionInfo.Speed, 0.01);
 
             // last frame
             Assert.AreEqual(toi10.CenterX - toi5.CenterX, toi10.MotionInfo.XOffset);
             Assert.AreEqual(toi10.CenterY - toi5.CenterY, toi10.MotionInfo.YOffset);
             Assert.AreEqual(5, toi10.MotionInfo.LastToiFrameId);
             Assert.AreEqual(1000, toi10.MotionInfo.LastToiTimespan.TotalMilliseconds);
+            Assert.AreEqual(88.44, toi10.MotionInfo.Speed, 0.01);
         }
     }
 }
