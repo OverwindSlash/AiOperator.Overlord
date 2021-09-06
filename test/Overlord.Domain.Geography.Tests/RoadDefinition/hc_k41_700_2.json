@@ -11,6 +11,7 @@
   "MotionCalculationFrameInterval": 10,
   "UvQuadrilateral": [ 1327, 599, 1312, 276, 1026, 299, 900, 621 ],
   "LonLatQuadrilateral": [ 120.658646, 31.224104, 120.656845, 31.223679, 120.657265, 31.223536, 120.65872, 31.224007 ],
+  "IsDoubleLineCounting": true,
   "AnalysisAreas": [
     {
       "Name": "driveway region",
@@ -178,23 +179,47 @@
       "Item1": {
         "Name": "upward driveway lane count line (enter)",
         "Start": {
-          "NormalizedX": 0.23958333333333334,
-          "NormalizedY": 0.7425925925925926
+          "NormalizedX": 0.4296875,
+          "NormalizedY": 0.5768518518518518
         },
         "Stop": {
-          "NormalizedX": 0.746875,
-          "NormalizedY": 0.7944444444444444
+          "NormalizedX": 0.7484375,
+          "NormalizedY": 0.5768518518518518
         }
       },
       "Item2": {
         "Name": "upward driveway lane count line (leave)",
         "Start": {
-          "NormalizedX": 0.4265625,
-          "NormalizedY": 0.5055555555555555
+          "NormalizedX": 0.5333333333333333,
+          "NormalizedY": 0.42314814814814816
         },
         "Stop": {
-          "NormalizedX": 0.7494791666666667,
-          "NormalizedY": 0.5203703703703704
+          "NormalizedX": 0.7015625,
+          "NormalizedY": 0.42314814814814816
+        }
+      }
+    },
+    {
+      "Item1": {
+        "Name": "downward driveway lane count line (enter)",
+        "Start": {
+          "NormalizedX": 0.2890625,
+          "NormalizedY": 0.44907407407407407
+        },
+        "Stop": {
+          "NormalizedX": 0.5166666666666667,
+          "NormalizedY": 0.44907407407407407
+        }
+      },
+      "Item2": {
+        "Name": "upward driveway lane count line (leave)",
+        "Start": {
+          "NormalizedX": 0.090625,
+          "NormalizedY": 0.5962962962962963
+        },
+        "Stop": {
+          "NormalizedX": 0.4114583333333333,
+          "NormalizedY": 0.5962962962962963
         }
       }
     }

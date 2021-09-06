@@ -14,7 +14,8 @@ namespace Overlord.Core.Tests.Road
 
         private string rdJson = "{\"RoadName\":\"hc_k41_700_1\",\"DeviceNo\":\"DAF6AD5D3A9BDE8FE310\",\"PrePositionName\":\"prepos0\",\"DetectionThresh\":0.6,\"TrackingChangeHistory\":true,\"TrackingFramesStory\":50,\"TrackingMaxDistance\":40," +
                                 "\"IsObjectAnalyzableRetain\":false,\"MaxObjectSnapshots\":10,\"MotionCalculationFrameInterval\":10," +
-                                "\"UvQuadrilateral\":[1326,598,901,620,1025,299,1131,276],\"LonLatQuadrilateral\":[120.658646,31.224102,120.65872,31.224012,120.65726,31.223541,120.656845,31.223684]," + 
+                                "\"UvQuadrilateral\":[1326,598,901,620,1025,299,1131,276],\"LonLatQuadrilateral\":[120.658646,31.224102,120.65872,31.224012,120.65726,31.223541,120.656845,31.223684]," +
+                                "\"IsDoubleLineCounting\":true," +
                                 "\"AnalysisAreas\":[" +
                                 "{\"Name\":\"driveway region\",\"Points\":[" +
                                 "{\"NormalizedX\":0,\"NormalizedY\":0.6462962962962963}," +
@@ -92,6 +93,9 @@ namespace Overlord.Core.Tests.Road
             float[] lonlats = { (float)120.6586438007756, (float)31.224101211225364, (float)120.65872464827149, (float)31.22401242993521,
                 (float)120.65726041029022, (float)31.223541501683588, (float)120.65684269822808, (float)31.223684324436487};
             roadDefinition.LonLatQuadrilateral.AddRange(lonlats);
+
+            // double line counting
+            roadDefinition.IsDoubleLineCounting = true;
 
             {
                 // analysis area
@@ -275,6 +279,9 @@ namespace Overlord.Core.Tests.Road
                 (float)120.65726808409714, (float)31.22353620140584, (float)120.6587233390233, (float)31.22400712968413};
             roadDefinition.LonLatQuadrilateral.AddRange(lonlats);
 
+            // double line counting
+            roadDefinition.IsDoubleLineCounting = true;
+
             {
                 // tracking area
                 AnalysisArea analysisArea = new AnalysisArea();
@@ -353,18 +360,36 @@ namespace Overlord.Core.Tests.Road
                 roadDefinition.Lanes.Add(lane);
             }
 
-            // count line
-            EnterLine enterLine = new EnterLine();
-            enterLine.Start = new NormalizedPoint(w, h, 460, 802);
-            enterLine.Stop = new NormalizedPoint(w, h, 1434, 858);
-            enterLine.Name = "upward driveway lane count line (enter)";
+            {
+                // count line (upward)
+                EnterLine enterLine = new EnterLine();
+                enterLine.Start = new NormalizedPoint(w, h, 825, 623);
+                enterLine.Stop = new NormalizedPoint(w, h, 1437, 623);
+                enterLine.Name = "upward driveway lane count line (enter)";
 
-            LeaveLine leaveLine = new LeaveLine();
-            leaveLine.Start = new NormalizedPoint(w, h, 819, 546);
-            leaveLine.Stop = new NormalizedPoint(w, h, 1439, 562);
-            leaveLine.Name = "upward driveway lane count line (leave)";
+                LeaveLine leaveLine = new LeaveLine();
+                leaveLine.Start = new NormalizedPoint(w, h, 1024, 457);
+                leaveLine.Stop = new NormalizedPoint(w, h, 1347, 457);
+                leaveLine.Name = "upward driveway lane count line (leave)";
 
-            roadDefinition.CountLines.Add(new Tuple<EnterLine, LeaveLine>(enterLine, leaveLine));
+                roadDefinition.CountLines.Add(new Tuple<EnterLine, LeaveLine>(enterLine, leaveLine));
+            }
+
+            {
+                // count line (downward)
+                EnterLine enterLine = new EnterLine();
+                enterLine.Start = new NormalizedPoint(w, h, 555, 485);
+                enterLine.Stop = new NormalizedPoint(w, h, 992, 485);
+                enterLine.Name = "downward driveway lane count line (enter)";
+
+                LeaveLine leaveLine = new LeaveLine();
+                leaveLine.Start = new NormalizedPoint(w, h, 174, 644);
+                leaveLine.Stop = new NormalizedPoint(w, h, 790, 644);
+                leaveLine.Name = "upward driveway lane count line (leave)";
+
+                roadDefinition.CountLines.Add(new Tuple<EnterLine, LeaveLine>(enterLine, leaveLine));
+            }
+
 
             roadDefinition.SetImageSize(ImageWidth, ImageHeight);
 

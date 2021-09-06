@@ -28,6 +28,9 @@ namespace Overlord.Core.Entities.Road
         public List<int> UvQuadrilateral { get; set; }
         public List<float> LonLatQuadrilateral { get; set; }
 
+        // Counting
+        public bool IsDoubleLineCounting { get; set; }
+
         public List<AnalysisArea> AnalysisAreas
         {
             get
@@ -86,6 +89,8 @@ namespace Overlord.Core.Entities.Road
 
             UvQuadrilateral = new List<int>(8);
             LonLatQuadrilateral = new List<float>(8);
+
+            IsDoubleLineCounting = true;
         }
         
         public override void SetImageSize(int width, int height)
@@ -175,6 +180,13 @@ namespace Overlord.Core.Entities.Road
         {
             string jsonString = File.ReadAllText(filename);
             var roadDefinition = JsonSerializer.Deserialize<RoadDefinition>(jsonString);
+
+            // foreach (Tuple<EnterLine, LeaveLine> countLine in roadDefinition.CountLines)
+            // {
+            //     countLine.Item1.LeaveLine = countLine.Item2;
+            //     countLine.Item2.EnterLine = countLine.Item1;
+            // }
+
             return roadDefinition;
         }
     }
