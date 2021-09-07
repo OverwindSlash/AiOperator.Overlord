@@ -1,7 +1,7 @@
-﻿using System.Collections.Concurrent;
-using Overlord.Core.Entities.Frame;
+﻿using Overlord.Core.Entities.Frame;
 using Overlord.Core.Entities.Road;
 using Overlord.Domain.Services;
+using System.Collections.Concurrent;
 
 namespace Overlord.Domain.Handlers
 {

@@ -56,7 +56,7 @@ namespace Overlord.Core.Entities.Frame
         public bool InEventEmergencyLaneOccupied { get; set; }
         public bool InEventStopped { get; set; }
         public bool InEventReversed { get; set; }
-        public bool InEventWaste{ get; set; }
+        public bool InEventWasteDropped{ get; set; }
         public bool InEventUnderConstruction{ get; set; }
         public bool InEventDangerousGoods{ get; set; }
 
@@ -64,6 +64,12 @@ namespace Overlord.Core.Entities.Frame
         {
             PlateInfo = new PlateInfo();
             MotionInfo = new MotionInfo();
+        }
+
+        public bool IsContainObject(TrafficObjectInfo toi)
+        {
+            return (X < toi.X) && (Y < toi.Y) && ((X + Width) > (toi.X + toi.Width)) &&
+                   ((Y + Height) > (toi.Y + toi.Height));
         }
 
         public void Dispose()

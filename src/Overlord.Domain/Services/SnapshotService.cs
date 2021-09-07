@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Overlord.Core.Entities.Frame;
 using Overlord.Core.Entities.Road;
+using System.Linq;
 
 namespace Overlord.Domain.Services
 {
@@ -100,6 +101,39 @@ namespace Overlord.Domain.Services
             }
 
             return new Mat();
+        }
+
+        public void GenerateSnapVideo(string videoFile)
+        {
+            Task.Run(() =>
+            {
+                int imageWidth = 1920;
+                int imageHeight = 1080;
+
+                List<long> frameIds = _scenesOfFrame.Keys.ToList();
+                long id = frameIds[0];
+                if (_scenesOfFrame.TryGetValue(id, out var sample))
+                {
+                    imageWidth = sample.Width;
+                    imageHeight = sample.Height;
+                }
+
+                using var writer = new VideoWriter();
+                var success = writer.Open(videoFile, VideoCaptureAPIs.ANY, FourCC.MP4V, 25, new Size(imageWidth, imageHeight));
+                if (!success)
+                {
+                    return;
+                }
+
+                List<long> keys = _scenesOfFrame.Keys.OrderBy(id => id).ToList();
+                foreach (long frameId in keys)
+                {
+                    if (_scenesOfFrame.TryGetValue(frameId, out var image))
+                    {
+                        writer.Write(image);
+                    }
+                }
+            });
         }
 
         public void OnCompleted()

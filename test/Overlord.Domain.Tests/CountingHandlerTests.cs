@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text.Json;
-using NSubstitute;
+﻿using NSubstitute;
 using NUnit.Framework;
 using OpenCvSharp;
 using Overlord.Core.Entities.Frame;
 using Overlord.Core.Entities.Road;
 using Overlord.Domain.Handlers;
 using Overlord.Domain.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
 
 namespace Overlord.Domain.Tests
 {

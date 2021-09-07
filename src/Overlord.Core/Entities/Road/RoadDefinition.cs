@@ -31,6 +31,10 @@ namespace Overlord.Core.Entities.Road
         // Counting
         public bool IsDoubleLineCounting { get; set; }
 
+        // Event detection parameters
+        public int DriveLaneForbiddenDurationFrame { get; set; }
+        public int EmergencyLaneForbiddenDurationFrame { get; set; }
+
         public List<AnalysisArea> AnalysisAreas
         {
             get

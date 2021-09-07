@@ -95,7 +95,11 @@ namespace Overlord.Core.Tests.Road
             roadDefinition.LonLatQuadrilateral.AddRange(lonlats);
 
             // double line counting
-            roadDefinition.IsDoubleLineCounting = true;
+            roadDefinition.IsDoubleLineCounting = false;
+
+            // event detection parameters
+            roadDefinition.DriveLaneForbiddenDurationFrame = 10;
+            roadDefinition.EmergencyLaneForbiddenDurationFrame = 15;
 
             {
                 // analysis area
@@ -281,6 +285,10 @@ namespace Overlord.Core.Tests.Road
 
             // double line counting
             roadDefinition.IsDoubleLineCounting = true;
+
+            // event detection parameters
+            roadDefinition.DriveLaneForbiddenDurationFrame = 10;
+            roadDefinition.EmergencyLaneForbiddenDurationFrame = 15;
 
             {
                 // tracking area

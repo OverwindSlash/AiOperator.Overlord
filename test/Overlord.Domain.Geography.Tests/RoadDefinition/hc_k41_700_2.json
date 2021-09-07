@@ -12,6 +12,8 @@
   "UvQuadrilateral": [ 1327, 599, 1312, 276, 1026, 299, 900, 621 ],
   "LonLatQuadrilateral": [ 120.658646, 31.224104, 120.656845, 31.223679, 120.657265, 31.223536, 120.65872, 31.224007 ],
   "IsDoubleLineCounting": true,
+  "DriveLaneForbiddenDurationFrame": 10,
+  "EmergencyLaneForbiddenDurationFrame": 15,
   "AnalysisAreas": [
     {
       "Name": "driveway region",
