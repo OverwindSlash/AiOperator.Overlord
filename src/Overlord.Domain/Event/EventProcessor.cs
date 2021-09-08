@@ -11,6 +11,8 @@ namespace Overlord.Domain.Event
 
         private readonly ITrafficEventGenerator _trafficEventGenerator;
 
+        public Dictionary<string, DateTime> LastEventTime => _lastEventTime;
+
         public EventProcessor(int minTriggerIntervalSecs, ITrafficEventGenerator trafficEventGenerator)
         {
             _minTriggerIntervalSecs = minTriggerIntervalSecs;
@@ -18,6 +20,8 @@ namespace Overlord.Domain.Event
 
             _trafficEventGenerator = trafficEventGenerator;
         }
+
+        
 
         public bool IsEventNeedTrigger(string eventId)
         {
@@ -35,7 +39,7 @@ namespace Overlord.Domain.Event
             TimeSpan span = now - lastTriggerTime;
             if (span.TotalSeconds > _minTriggerIntervalSecs)
             {
-                // exceed min trigger time interval, trigger event.
+                // exceed min trigger time interval, update event timestamp and trigger event.
                 _lastEventTime[eventId] = now;
                 return true;
             }

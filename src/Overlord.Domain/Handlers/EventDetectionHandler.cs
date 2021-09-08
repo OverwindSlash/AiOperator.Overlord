@@ -12,6 +12,8 @@ namespace Overlord.Domain.Handlers
         private readonly SnapshotService _snapshotService;
         private readonly List<IEventAlgorithm> _eventAlgorithms;
 
+        public List<IEventAlgorithm> EventAlgorithms => _eventAlgorithms;
+
         public EventDetectionHandler(SnapshotService snapshotService)
         {
             _snapshotService = snapshotService;

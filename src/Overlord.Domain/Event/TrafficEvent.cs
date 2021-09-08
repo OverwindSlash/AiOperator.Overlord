@@ -8,6 +8,9 @@ namespace Overlord.Domain.Event
         public string DeviceNo { get; set; }
 
         [JsonIgnore]
+        public string EventCategory { get; set; }
+
+        [JsonIgnore]
         public int TypeId { get; set; }
 
         [JsonIgnore]

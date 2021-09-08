@@ -1,6 +1,7 @@
 ﻿using Overlord.Core.Entities.Frame;
 using Overlord.Core.Entities.Road;
 using System;
+using Overlord.Domain.Event;
 using Overlord.Domain.Services;
 
 namespace Overlord.Domain.EventAlg

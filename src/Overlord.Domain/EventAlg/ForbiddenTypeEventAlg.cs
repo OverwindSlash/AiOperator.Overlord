@@ -6,7 +6,6 @@ using Overlord.Domain.Event;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -66,12 +65,12 @@ namespace Overlord.Domain.EventAlg
             Lane lane = _lanes[toi.LaneIndex];
             if (lane.ForbiddenTypes.Contains(toi.Type))
             {
-                toi.InEventEnterForbiddenRegion = true;
-
                 if (IsInSpecialCases(toi, frameInfo))
                 {
                     return;
                 }
+
+                toi.InEventEnterForbiddenRegion = true;
 
                 bool isPositive = false;
                 if (lane.Type == LaneType.DriveLane)
@@ -121,6 +120,7 @@ namespace Overlord.Domain.EventAlg
 
                             // report event
                             TrafficEvent forbiddenEvent = _eventProcessor.CreateForbiddenEvent(_roadDefinition.DeviceNo, toi.TypeId, toi.TrackingId);
+                            forbiddenEvent.EventCategory = "Forbidden";
                             bool result = await _eventPublisher.Publish(forbiddenEvent);
                         }
                     });

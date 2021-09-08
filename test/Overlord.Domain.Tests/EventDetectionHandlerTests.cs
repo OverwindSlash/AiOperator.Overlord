@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Text.Json;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using OpenCvSharp;
 using Overlord.Core.Entities.Frame;
 using Overlord.Core.Entities.Road;
@@ -13,6 +8,11 @@ using Overlord.Domain.EventManagerSanbao;
 using Overlord.Domain.Geography;
 using Overlord.Domain.Handlers;
 using Overlord.Domain.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text.Json;
 
 namespace Overlord.Domain.Tests
 {
@@ -75,6 +75,12 @@ namespace Overlord.Domain.Tests
                 motionHandler.Analyze(frameInfo);
                 eventDetectionHandler.Analyze(frameInfo);
             }
+
+            Assert.True(eventProcessor.LastEventTime.Keys.Contains("F_person:1"));
+            Assert.True(eventProcessor.LastEventTime.Keys.Contains("F_car:2"));
+
+            Assert.AreEqual(1, eventPublisher.PublishedEventsByCategory.Count);
+            Assert.AreEqual(2, eventPublisher.PublishedEventsByCategory["Forbidden"].Count);
         }
     }
 }
