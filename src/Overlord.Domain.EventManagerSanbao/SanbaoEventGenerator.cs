@@ -25,6 +25,14 @@ namespace Overlord.Domain.EventManagerSanbao
             return trafficEvent;
         }
 
+        public TrafficEvent CreateStoppedEvent(string deviceNo, int typeId, long trackingId)
+        {
+            var trafficEvent = CreateBasicTrafficEvent(deviceNo, typeId, trackingId);
+            trafficEvent.EvtType = 128;
+
+            return trafficEvent;
+        }
+
         public TrafficEvent CreateSlowEvent(string deviceNo, int typeId, long trackingId)
         {
             var trafficEvent = CreateBasicTrafficEvent(deviceNo, typeId, trackingId);
@@ -37,14 +45,6 @@ namespace Overlord.Domain.EventManagerSanbao
         {
             var trafficEvent = CreateBasicTrafficEvent(deviceNo, typeId, trackingId);
             trafficEvent.EvtType = 10001;
-
-            return trafficEvent;
-        }
-
-        public TrafficEvent CreateStopEvent(string deviceNo, int typeId, long trackingId)
-        {
-            var trafficEvent = CreateBasicTrafficEvent(deviceNo, typeId, trackingId);
-            trafficEvent.EvtType = 128;
 
             return trafficEvent;
         }

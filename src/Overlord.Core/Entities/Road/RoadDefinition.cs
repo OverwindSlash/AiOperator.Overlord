@@ -34,6 +34,8 @@ namespace Overlord.Core.Entities.Road
         // Event detection parameters
         public int DriveLaneForbiddenDurationFrame { get; set; }
         public int EmergencyLaneForbiddenDurationFrame { get; set; }
+        public int StopEventSpeedUpperLimit { get; set; }
+        public int StopEventEnableDurationSec { get; set; }
 
         public List<AnalysisArea> AnalysisAreas
         {

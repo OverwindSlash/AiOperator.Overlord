@@ -21,8 +21,6 @@ namespace Overlord.Domain.Event
             _trafficEventGenerator = trafficEventGenerator;
         }
 
-        
-
         public bool IsEventNeedTrigger(string eventId)
         {
             DateTime now = DateTime.Now;
@@ -53,6 +51,11 @@ namespace Overlord.Domain.Event
         public TrafficEvent CreateForbiddenEvent(string deviceNo, int typeId, long trackingId)
         {
             return _trafficEventGenerator.CreateForbiddenEvent(deviceNo, typeId, trackingId);
+        }
+
+        public TrafficEvent CreateStoppedEvent(string deviceNo, int typeId, long trackingId)
+        {
+            return _trafficEventGenerator.CreateStoppedEvent(deviceNo, typeId, trackingId);
         }
     }
 }

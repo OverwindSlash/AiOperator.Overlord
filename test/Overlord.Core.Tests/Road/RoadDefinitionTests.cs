@@ -15,7 +15,7 @@ namespace Overlord.Core.Tests.Road
         private string rdJson = "{\"RoadName\":\"hc_k41_700_1\",\"DeviceNo\":\"DAF6AD5D3A9BDE8FE310\",\"PrePositionName\":\"prepos0\",\"DetectionThresh\":0.6,\"TrackingChangeHistory\":true,\"TrackingFramesStory\":50,\"TrackingMaxDistance\":40," +
                                 "\"IsObjectAnalyzableRetain\":false,\"MaxObjectSnapshots\":10,\"MotionCalculationFrameInterval\":10," +
                                 "\"UvQuadrilateral\":[1326,598,901,620,1025,299,1131,276],\"LonLatQuadrilateral\":[120.658646,31.224102,120.65872,31.224012,120.65726,31.223541,120.656845,31.223684]," +
-                                "\"IsDoubleLineCounting\":false,\"DriveLaneForbiddenDurationFrame\":10,\"EmergencyLaneForbiddenDurationFrame\":15," +
+                                "\"IsDoubleLineCounting\":false,\"DriveLaneForbiddenDurationFrame\":10,\"EmergencyLaneForbiddenDurationFrame\":15,\"StopEventSpeedUpperLimit\":5,\"StopEventEnableDurationSec\":5," +
                                 "\"AnalysisAreas\":[" +
                                 "{\"Name\":\"driveway region\",\"Points\":[" +
                                 "{\"NormalizedX\":0,\"NormalizedY\":0.6462962962962963}," +
@@ -100,6 +100,8 @@ namespace Overlord.Core.Tests.Road
             // event detection parameters
             roadDefinition.DriveLaneForbiddenDurationFrame = 10;
             roadDefinition.EmergencyLaneForbiddenDurationFrame = 15;
+            roadDefinition.StopEventSpeedUpperLimit = 5;
+            roadDefinition.StopEventEnableDurationSec = 5;
             
             {
                 // analysis area
@@ -289,6 +291,8 @@ namespace Overlord.Core.Tests.Road
             // event detection parameters
             roadDefinition.DriveLaneForbiddenDurationFrame = 10;
             roadDefinition.EmergencyLaneForbiddenDurationFrame = 15;
+            roadDefinition.StopEventSpeedUpperLimit = 5;
+            roadDefinition.StopEventEnableDurationSec = 5;
 
             {
                 // tracking area

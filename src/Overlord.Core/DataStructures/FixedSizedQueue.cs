@@ -8,11 +8,11 @@ namespace Overlord.Core.DataStructures
         private readonly ConcurrentQueue<T> _queue;
         private readonly int _sizeLimit;
 
-        private readonly object lockObject;
+        private readonly object _lockObject;
 
         private readonly Predicate<T> _conditionChecker;
         private int _positiveItemCount;
-        private double _positivePercentThresh;
+        private readonly double _positivePercentThresh;
 
         public FixedSizedQueue(int sizeLimit)
             : this(sizeLimit, t => true)
@@ -28,7 +28,7 @@ namespace Overlord.Core.DataStructures
             }
             _queue = new ConcurrentQueue<T>();
             _sizeLimit = sizeLimit;
-            lockObject = new object();
+            _lockObject = new object();
 
             _conditionChecker = conditionChecker;
             _positivePercentThresh = positivePercentThresh;
@@ -44,7 +44,7 @@ namespace Overlord.Core.DataStructures
 
             _queue.Enqueue(obj);
 
-            lock (lockObject)
+            lock (_lockObject)
             {
                 T overflow = default(T);
                 while (_queue.Count > _sizeLimit && _queue.TryDequeue(out overflow))
