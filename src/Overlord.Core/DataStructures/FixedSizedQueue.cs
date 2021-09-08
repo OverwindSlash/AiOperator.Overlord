@@ -31,6 +31,7 @@ namespace Overlord.Core.DataStructures
             lockObject = new object();
 
             _conditionChecker = conditionChecker;
+            _positivePercentThresh = positivePercentThresh;
             _positiveItemCount = 0;
         }
 
@@ -63,7 +64,7 @@ namespace Overlord.Core.DataStructures
                 return false;
             }
 
-            return _positiveItemCount / (double)_sizeLimit > 0.7;
+            return _positiveItemCount / (double)_sizeLimit > _positivePercentThresh;
         }
 
         public int Count()

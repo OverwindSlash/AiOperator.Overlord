@@ -100,7 +100,7 @@ namespace Overlord.Core.Tests.Road
             // event detection parameters
             roadDefinition.DriveLaneForbiddenDurationFrame = 10;
             roadDefinition.EmergencyLaneForbiddenDurationFrame = 15;
-
+            
             {
                 // analysis area
                 AnalysisArea analysisArea = new AnalysisArea();
