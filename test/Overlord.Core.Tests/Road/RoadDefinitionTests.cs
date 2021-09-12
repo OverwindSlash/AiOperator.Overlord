@@ -13,7 +13,7 @@ namespace Overlord.Core.Tests.Road
         private const int ImageHeight = 1080;
 
         private string rdJson = "{\"RoadName\":\"hc_k41_700_1\",\"DeviceNo\":\"DAF6AD5D3A9BDE8FE310\",\"PrePositionName\":\"prepos0\",\"DetectionThresh\":0.6,\"TrackingChangeHistory\":true,\"TrackingFramesStory\":50,\"TrackingMaxDistance\":40," +
-                                "\"IsObjectAnalyzableRetain\":false,\"MaxObjectSnapshots\":10,\"MotionCalculationFrameInterval\":10," +
+                                "\"IsObjectAnalyzableRetain\":false,\"MaxObjectSnapshots\":10,\"MotionCalculationFrameInterval\":5," +
                                 "\"UvQuadrilateral\":[1326,598,901,620,1025,299,1131,276],\"LonLatQuadrilateral\":[120.658646,31.224102,120.65872,31.224012,120.65726,31.223541,120.656845,31.223684]," +
                                 "\"IsDoubleLineCounting\":false,\"DriveLaneForbiddenDurationFrame\":10,\"EmergencyLaneForbiddenDurationFrame\":15,\"StopEventSpeedUpperLimit\":5,\"StopEventEnableDurationSec\":5," +
                                 "\"AnalysisAreas\":[" +
@@ -84,7 +84,7 @@ namespace Overlord.Core.Tests.Road
             // analysis step param
             roadDefinition.IsObjectAnalyzableRetain = false;
             roadDefinition.MaxObjectSnapshots = 10;
-            roadDefinition.MotionCalculationFrameInterval = 10;
+            roadDefinition.MotionCalculationFrameInterval = 5;
 
             // pixel to geography coordinates.
             int[] uvs = { 1326, 598, 901, 620, 1025, 299, 1131, 276 };
@@ -272,10 +272,14 @@ namespace Overlord.Core.Tests.Road
             
             // analysis param
             roadDefinition.DetectionThresh = 0.6F;
-            roadDefinition.IsObjectAnalyzableRetain = false;
             roadDefinition.TrackingChangeHistory = true;
             roadDefinition.TrackingFramesStory = 50;
             roadDefinition.TrackingMaxDistance = 40;
+
+            // analysis step param
+            roadDefinition.IsObjectAnalyzableRetain = false;
+            roadDefinition.MaxObjectSnapshots = 10;
+            roadDefinition.MotionCalculationFrameInterval = 5;
 
             // pixel to geography coordinates.
             int[] uvs = { 1327, 599, 1312, 276, 1026, 299, 900, 621 };

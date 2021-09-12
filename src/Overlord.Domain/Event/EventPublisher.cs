@@ -1,6 +1,5 @@
 ﻿using Overlord.Domain.Interfaces;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Overlord.Domain.Event

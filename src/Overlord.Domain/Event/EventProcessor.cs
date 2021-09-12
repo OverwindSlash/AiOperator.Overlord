@@ -1,12 +1,13 @@
 ﻿using Overlord.Domain.Interfaces;
 using System;
 using System.Collections.Concurrent;
+using System.Threading.Tasks;
 
 namespace Overlord.Domain.Event
 {
-    public class EventProcessor
+    public class EventProcessor : IObserver<ObjectExpiredEvent>
     {
-        private readonly int _minTriggerIntervalSecs = 30;
+        private readonly int _minTriggerIntervalSecs;
         private readonly ConcurrentDictionary<string, DateTime> _lastEventTime;
 
         private readonly ITrafficEventGenerator _trafficEventGenerator;
@@ -61,6 +62,33 @@ namespace Overlord.Domain.Event
         public TrafficEvent CreateStoppedEvent(string deviceNo, int typeId, long trackingId)
         {
             return _trafficEventGenerator.CreateStoppedEvent(deviceNo, typeId, trackingId);
+        }
+
+        public void OnCompleted()
+        {
+            // Do nothing
+        }
+
+        public void OnError(Exception error)
+        {
+            // Do nothing
+        }
+
+        public void OnNext(ObjectExpiredEvent value)
+        {
+            Task.Run(() =>
+            {
+                ReleaseLastEventTimeById(value.Id);
+            });
+        }
+
+        private void ReleaseLastEventTimeById(string id)
+        {
+            string forbiddenEventId = $"F_{id}";
+            _lastEventTime.TryRemove(forbiddenEventId, out var value1);
+
+            string stopEventId = $"S_{id}";
+            _lastEventTime.TryRemove(stopEventId, out var value2);
         }
     }
 }

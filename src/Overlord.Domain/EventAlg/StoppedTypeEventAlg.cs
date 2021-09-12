@@ -60,6 +60,11 @@ namespace Overlord.Domain.EventAlg
                 return;
             }
 
+            if (!toi.IsMotionCalculated)
+            {
+                return;
+            }
+
             if (!_toiHistory.ContainsKey(toi.Id))
             {
                 _toiHistory.TryAdd(toi.Id,

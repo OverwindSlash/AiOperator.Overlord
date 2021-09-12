@@ -10,7 +10,7 @@ namespace Overlord.Core.Entities.Frame
         public int YOffset { get; set; }
         public double Offset { get; set; }
 
-        public bool IsSpeedCalculated { get; set; }
+        public bool IsMotionCalculated { get; set; }
         public double Speed { get; set; }
         public double Direction { get; set; }
         public double Distance { get; set; }
