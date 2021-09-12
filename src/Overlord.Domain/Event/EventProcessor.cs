@@ -1,34 +1,39 @@
 ﻿using Overlord.Domain.Interfaces;
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 
 namespace Overlord.Domain.Event
 {
     public class EventProcessor
     {
         private readonly int _minTriggerIntervalSecs = 30;
-        private readonly Dictionary<string, DateTime> _lastEventTime;
+        private readonly ConcurrentDictionary<string, DateTime> _lastEventTime;
 
         private readonly ITrafficEventGenerator _trafficEventGenerator;
 
-        public Dictionary<string, DateTime> LastEventTime => _lastEventTime;
+        public ConcurrentDictionary<string, DateTime> LastEventTime => _lastEventTime;
 
         public EventProcessor(int minTriggerIntervalSecs, ITrafficEventGenerator trafficEventGenerator)
         {
             _minTriggerIntervalSecs = minTriggerIntervalSecs;
-            _lastEventTime = new Dictionary<string, DateTime>();
+            _lastEventTime = new ConcurrentDictionary<string, DateTime>();
 
             _trafficEventGenerator = trafficEventGenerator;
         }
 
         public bool IsEventNeedTrigger(string eventId)
         {
+            if (string.IsNullOrEmpty(eventId))
+            {
+                return false;
+            }
+
             DateTime now = DateTime.Now;
 
             // first trigger
             if (!_lastEventTime.ContainsKey(eventId))
             {
-                _lastEventTime.Add(eventId, now);
+                _lastEventTime.TryAdd(eventId, now);
                 return true;
             }
 

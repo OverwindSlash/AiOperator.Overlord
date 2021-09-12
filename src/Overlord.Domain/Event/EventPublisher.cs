@@ -9,14 +9,14 @@ namespace Overlord.Domain.Event
     {
         private readonly ITrafficEventPublisher _publisher;
 
-        private readonly ConcurrentDictionary<string, List<TrafficEvent>> _publishedEventsByCategory;
+        private readonly ConcurrentDictionary<string, ConcurrentBag<TrafficEvent>> _publishedEventsByCategory;
 
-        public ConcurrentDictionary<string, List<TrafficEvent>> PublishedEventsByCategory => _publishedEventsByCategory;
+        public ConcurrentDictionary<string, ConcurrentBag<TrafficEvent>> PublishedEventsByCategory => _publishedEventsByCategory;
 
         public EventPublisher(ITrafficEventPublisher publisher)
         {
             _publisher = publisher;
-            _publishedEventsByCategory = new ConcurrentDictionary<string, List<TrafficEvent>>();
+            _publishedEventsByCategory = new ConcurrentDictionary<string, ConcurrentBag<TrafficEvent>>();
         }
 
         public async Task<bool> Publish(TrafficEvent trafficEvent)
@@ -24,7 +24,7 @@ namespace Overlord.Domain.Event
             // TODO: Multi pipeline support
             if (!_publishedEventsByCategory.Keys.Contains(trafficEvent.EventCategory))
             {
-                _publishedEventsByCategory.TryAdd(trafficEvent.EventCategory, new List<TrafficEvent>());
+                _publishedEventsByCategory.TryAdd(trafficEvent.EventCategory, new ConcurrentBag<TrafficEvent>());
             }
 
             _publishedEventsByCategory.TryGetValue(trafficEvent.EventCategory, out var events);

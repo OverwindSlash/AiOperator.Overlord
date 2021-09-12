@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Threading;
 
 namespace Overlord.Domain.Tests
 {
@@ -76,6 +77,7 @@ namespace Overlord.Domain.Tests
                 eventDetectionHandler.Analyze(frameInfo);
             }
 
+            Assert.AreEqual(2, eventProcessor.LastEventTime.Count);
             Assert.True(eventProcessor.LastEventTime.Keys.Contains("F_person:1"));
             Assert.True(eventProcessor.LastEventTime.Keys.Contains("F_car:2"));
 
