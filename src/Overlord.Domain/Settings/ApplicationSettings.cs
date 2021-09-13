@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 
@@ -8,6 +9,8 @@ namespace Overlord.Domain.Settings
     {
         public int MinTriggerIntervalSecs { get; set; }
         public double PositivePercentThresh { get; set; }
+
+        public List<PipelineSetting> PipelineSettings { get; set; }
 
         public void LoadFromJson(string filename)
         {

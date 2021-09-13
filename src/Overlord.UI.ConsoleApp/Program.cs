@@ -1,4 +1,5 @@
 ﻿using System;
+using CommandLine;
 
 namespace Overlord.UI.ConsoleApp
 {
@@ -6,7 +7,11 @@ namespace Overlord.UI.ConsoleApp
     {
         static void Main(string[] args)
         {
-            
+            Parser.Default.ParseArguments<CmdOptions>(args).WithParsed(Run);
+        }
+
+        private static void Run(CmdOptions option)
+        {
         }
     }
 }
