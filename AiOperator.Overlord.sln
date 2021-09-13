@@ -29,7 +29,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Overlord.Domain.Geography",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Overlord.Domain.Geography.Tests", "test\Overlord.Domain.Geography.Tests\Overlord.Domain.Geography.Tests.csproj", "{CBD316D0-C531-482B-B3F3-54B7130C0552}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Overlord.Domain.EventManagerSanbao", "src\Overlord.Domain.EventManagerSanbao\Overlord.Domain.EventManagerSanbao.csproj", "{99ADA7C4-9B2D-4D65-B2F6-FC541F43CCB4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Overlord.Domain.EventManagerSanbao", "src\Overlord.Domain.EventManagerSanbao\Overlord.Domain.EventManagerSanbao.csproj", "{99ADA7C4-9B2D-4D65-B2F6-FC541F43CCB4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Overlord.UI.ConsoleApp", "src\Overlord.UI.ConsoleApp\Overlord.UI.ConsoleApp.csproj", "{F321D95E-81D5-40EA-8AC4-77C687D516B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -85,6 +87,10 @@ Global
 		{99ADA7C4-9B2D-4D65-B2F6-FC541F43CCB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99ADA7C4-9B2D-4D65-B2F6-FC541F43CCB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99ADA7C4-9B2D-4D65-B2F6-FC541F43CCB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F321D95E-81D5-40EA-8AC4-77C687D516B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F321D95E-81D5-40EA-8AC4-77C687D516B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F321D95E-81D5-40EA-8AC4-77C687D516B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F321D95E-81D5-40EA-8AC4-77C687D516B3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -102,6 +108,7 @@ Global
 		{23C7660B-01B9-4311-9586-2A47259F0D39} = {8D7705EF-70FE-4D6F-B2E1-A78C89962042}
 		{CBD316D0-C531-482B-B3F3-54B7130C0552} = {E0C9AF1E-285A-4637-9F60-9B44D82D2D07}
 		{99ADA7C4-9B2D-4D65-B2F6-FC541F43CCB4} = {8D7705EF-70FE-4D6F-B2E1-A78C89962042}
+		{F321D95E-81D5-40EA-8AC4-77C687D516B3} = {8D7705EF-70FE-4D6F-B2E1-A78C89962042}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B7ABA201-0535-43E7-A5DF-71E8097158B1}

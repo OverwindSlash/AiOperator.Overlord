@@ -5,13 +5,11 @@ using Overlord.Domain.ObjectDetector.Config;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Text.Json;
 
 namespace Overlord.Domain.ObjectDetector.Tests
 {
-    [TestFixture]
+    [TestFixture(Ignore = "Need GPU")]
     public class YoloWrapperTests
     {
         private YoloConfiguration _config;
