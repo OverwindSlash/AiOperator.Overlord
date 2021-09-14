@@ -9,6 +9,7 @@ namespace Overlord.Domain.Handlers
     {
         private CountingService _countingService;
 
+        public CountingService Service => _countingService;
         public ConcurrentDictionary<string, int> ObjsCrossedEnterLine => _countingService.ObjsCrossedEnterLine;
         public ConcurrentDictionary<string, int> ObjsCrossedLeaveLine => _countingService.ObjsCrossedLeaveLine;
         public ConcurrentDictionary<string, long> ObjsCounted => _countingService.ObjsCounted;

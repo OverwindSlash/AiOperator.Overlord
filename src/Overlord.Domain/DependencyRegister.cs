@@ -9,6 +9,7 @@ namespace Overlord.Domain
         private static readonly DependencyRegister _instance = new DependencyRegister();
         
         private readonly List<IObjectDetector> _detectors;
+        private readonly List<IMultiObjectTracker> _trackers;
         private readonly List<ITrafficEventGenerator> _eventGenerators;
         private readonly List<ITrafficEventPublisher> _eventPublishers;
         private readonly List<ISpeeder> _speeders;
@@ -16,6 +17,7 @@ namespace Overlord.Domain
         private DependencyRegister()
         {
             _detectors = new List<IObjectDetector>();
+            _trackers = new List<IMultiObjectTracker>();
             _eventGenerators = new List<ITrafficEventGenerator>();
             _eventPublishers = new List<ITrafficEventPublisher>();
             _speeders = new List<ISpeeder>();
@@ -29,6 +31,7 @@ namespace Overlord.Domain
         public void Reset()
         {
             _detectors.Clear();
+            _trackers.Clear();
             _eventGenerators.Clear();
             _eventPublishers.Clear();
             _speeders.Clear();
@@ -42,6 +45,16 @@ namespace Overlord.Domain
             }
             
             _detectors.Add(detector);
+        }
+
+        public void AddMultiObjectTracker(IMultiObjectTracker tracker)
+        {
+            if (tracker == null)
+            {
+                throw new ArgumentException("invalid object tracker.");
+            }
+
+            _trackers.Add(tracker);
         }
         
         public void AddEventGenerator(ITrafficEventGenerator eventGenerator)
@@ -79,6 +92,13 @@ namespace Overlord.Domain
             CheckPipelineIndex(pipelineIndex);
 
             return _detectors[pipelineIndex];
+        }
+
+        public IMultiObjectTracker GetTracker(int pipelineIndex)
+        {
+            CheckPipelineIndex(pipelineIndex);
+
+            return _trackers[pipelineIndex];
         }
 
         public ITrafficEventGenerator GetEventGenerator(int pipelineIndex)

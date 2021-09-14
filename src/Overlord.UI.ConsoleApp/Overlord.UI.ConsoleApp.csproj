@@ -9,4 +9,14 @@
     <PackageReference Include="CommandLineParser" Version="2.8.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Overlord.Application\Overlord.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="RoadDefinition\hc_k41_700_2.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

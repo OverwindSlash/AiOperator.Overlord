@@ -7,7 +7,6 @@ namespace Overlord.Domain.Settings
 {
     public class ApplicationSettings
     {
-        public int MinTriggerIntervalSecs { get; set; }
         public double PositivePercentThresh { get; set; }
 
         public List<PipelineSetting> PipelineSettings { get; set; }
@@ -16,7 +15,6 @@ namespace Overlord.Domain.Settings
         {
             if (!File.Exists(filename))
             {
-                MinTriggerIntervalSecs = 30;
                 PositivePercentThresh = 0.7;
             }
 
@@ -24,8 +22,8 @@ namespace Overlord.Domain.Settings
             ApplicationSettings settings = JsonSerializer.Deserialize<ApplicationSettings>(json)
                                            ?? throw new ArgumentNullException("application settings corrupted.");
 
-            this.MinTriggerIntervalSecs = settings.MinTriggerIntervalSecs;
             this.PositivePercentThresh = settings.PositivePercentThresh;
+            this.PipelineSettings = settings.PipelineSettings;
         }
     }
 }

@@ -1,10 +1,11 @@
-﻿using Overlord.Core.Entities.Frame;
-using Overlord.Domain.Event;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Overlord.Core.DataStructures;
+using Overlord.Core.Entities.Frame;
+using Overlord.Domain.Event;
 
-namespace Overlord.Core.DataStructures
+namespace Overlord.Domain.Pipeline
 {
     public class FrameLifeTimeManager : IObservable<ObjectExpiredEvent>, IObservable<FrameExpiredEvent>
     {

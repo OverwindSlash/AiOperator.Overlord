@@ -37,8 +37,19 @@ namespace Overlord.Domain.EventAlg
 
             _toiHistory = new ConcurrentDictionary<string, FixedSizedQueue<TrafficObjectInfo>>();
             _fps = fps;
+
             _snapshotDir = Path.Combine(_captureRoot, "Snapshot", "Stopped");
             _videoDir = Path.Combine(_captureRoot, "Video", "Stopped");
+
+            if (!Directory.Exists(_snapshotDir))
+            {
+                Directory.CreateDirectory(_snapshotDir);
+            }
+
+            if (!Directory.Exists(_videoDir))
+            {
+                Directory.CreateDirectory(_videoDir);
+            }
         }
 
         public override void SetRoadDefinition(RoadDefinition roadDefinition)

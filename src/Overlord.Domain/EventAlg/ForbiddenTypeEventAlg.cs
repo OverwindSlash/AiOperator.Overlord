@@ -6,7 +6,6 @@ using Overlord.Domain.Event;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -35,6 +34,16 @@ namespace Overlord.Domain.EventAlg
            
             _snapshotDir = Path.Combine(_captureRoot, "Snapshot", "Forbidden");
             _videoDir = Path.Combine(_captureRoot, "Video", "Forbidden");
+
+            if (!Directory.Exists(_snapshotDir))
+            {
+                Directory.CreateDirectory(_snapshotDir);
+            }
+
+            if (!Directory.Exists(_videoDir))
+            {
+                Directory.CreateDirectory(_videoDir);
+            }
         }
 
         public override void SetRoadDefinition(RoadDefinition roadDefinition)

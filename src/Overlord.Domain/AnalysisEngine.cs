@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using OpenCvSharp;
 using Overlord.Domain.Event;
 using Overlord.Domain.EventAlg;
@@ -7,6 +5,8 @@ using Overlord.Domain.Handlers;
 using Overlord.Domain.Interfaces;
 using Overlord.Domain.Pipeline;
 using Overlord.Domain.Settings;
+using System;
+using System.Collections.Generic;
 
 namespace Overlord.Domain
 {
@@ -21,59 +21,29 @@ namespace Overlord.Domain
             _pipelines = new List<AnalysisPipeline>();
         }
 
-        public void LoadLaunchSettings(string filename)
+        public AnalysisPipeline AddAndGetPipeline(PipelineSetting settings)
         {
-            ApplicationSettings settings = new ApplicationSettings();
-            settings.LoadFromJson(filename);
+            AnalysisPipeline pipeline = new AnalysisPipeline();
 
-            int pipelineIndex = 0;
-            foreach (PipelineSetting pipelineSetting in settings.PipelineSettings)
-            {
-                string videoUri = pipelineSetting.VideoSource;
-                string roadDefFile = pipelineSetting.RoadDefinitionFile;
-                
-                var (width, height) = GetVideoWidthAndHeight(videoUri);
+            pipeline.Name = settings.Name;
+            pipeline.Fps = settings.Fps;
 
-                AnalysisPipeline pipeline = new AnalysisPipeline();
-                pipeline.LoadRoadDefinition(roadDefFile, width, height);
+            pipeline.VideoUri = settings.VideoUri;
+            var (width, height) = GetVideoWidthAndHeight(pipeline.VideoUri);
 
-                IObjectDetector detector = _dependencyRegister.GetDetector(pipelineIndex);
-                DetectionHandler detectionHandler = new DetectionHandler(detector);
-                pipeline.AddAnalysisHandler(detectionHandler);
-                
-                RegionHandler regionHandler = new RegionHandler();
-                pipeline.AddAnalysisHandler(regionHandler);
-                
-                SnapshotHandler snapshotHandler = new SnapshotHandler();
-                pipeline.AddAnalysisHandler(snapshotHandler);
+            pipeline.RoadDefinitionFile = settings.RoadDefinitionFile;
+            pipeline.LoadRoadDefinition(pipeline.RoadDefinitionFile, width, height);
 
-                LaneHandler laneHandler = new LaneHandler();
-                pipeline.AddAnalysisHandler(laneHandler);
-                
-                EventDetectionHandler eventDetectionHandler = new EventDetectionHandler(snapshotHandler.Service);
-                pipeline.AddAnalysisHandler(eventDetectionHandler);
+            _pipelines.Add(pipeline);;
 
-                ITrafficEventGenerator generator = _dependencyRegister.GetEventGenerator(pipelineIndex);
-                EventProcessor eventProcessor = new EventProcessor(settings.MinTriggerIntervalSecs, generator);
+            InitializeDefaultHandlers(pipeline, _pipelines.IndexOf(pipeline), settings);
 
-                ITrafficEventPublisher publisher = _dependencyRegister.GetEventPublisher(pipelineIndex);
-                EventPublisher eventPublisher = new EventPublisher(publisher);
-
-                string captureRoot = @"D:\Capture";
-                StoppedTypeEventAlg stoppedAlg = new StoppedTypeEventAlg(captureRoot, 1, eventProcessor, eventPublisher);
-                eventDetectionHandler.AddEventAlgorithm(stoppedAlg);
-
-                ISpeeder speeder = _dependencyRegister.GetSpeeder(pipelineIndex);
-                MotionHandler motionHandler = new MotionHandler(speeder);
-                pipeline.AddAnalysisHandler(motionHandler);
-
-                pipelineIndex++;
-            }
+            return pipeline;
         }
 
         private static (int width, int height) GetVideoWidthAndHeight(string videoUri)
         {
-            var capture = new VideoCapture(videoUri, VideoCaptureAPIs.FFMPEG);
+            using var capture = new VideoCapture(videoUri, VideoCaptureAPIs.FFMPEG);
             if (!capture.IsOpened())
             {
                 // TODO: Report error!
@@ -85,19 +55,74 @@ namespace Overlord.Domain
             return (width, height);
         }
 
-        public void AddPipeline(AnalysisPipeline pipeline)
+        private void InitializeDefaultHandlers(AnalysisPipeline pipeline, int pipelineIndex, PipelineSetting settings)
         {
-            if (pipeline == null)
+            // Detection
+            IObjectDetector detector = _dependencyRegister.GetDetector(pipelineIndex);
+            DetectionHandler detectionHandler = new DetectionHandler(detector);
+            pipeline.AddAnalysisHandler(detectionHandler);
+
+            // Region
+            RegionHandler regionHandler = new RegionHandler();
+            pipeline.AddAnalysisHandler(regionHandler);
+
+            // Tracking
+            IMultiObjectTracker tracker = _dependencyRegister.GetTracker(pipelineIndex);
+            TrackingHandler trackingHandler = new TrackingHandler(tracker);
+            pipeline.AddAnalysisHandler(trackingHandler);
+
+            // Snapshot
+            SnapshotHandler snapshotHandler = new SnapshotHandler();
+            pipeline.AddAnalysisHandler(snapshotHandler);
+            pipeline.Subscribe((IObserver<ObjectExpiredEvent>)snapshotHandler.Service);
+            pipeline.Subscribe((IObserver<FrameExpiredEvent>)snapshotHandler.Service);
+
+            // Lane
+            LaneHandler laneHandler = new LaneHandler();
+            pipeline.AddAnalysisHandler(laneHandler);
+
+            // Motion
+            ISpeeder speeder = _dependencyRegister.GetSpeeder(pipelineIndex);
+            MotionHandler motionHandler = new MotionHandler(speeder);
+            pipeline.AddAnalysisHandler(motionHandler);
+            pipeline.Subscribe(motionHandler.Service);
+
+            // Counting
+            CountingHandler countingHandler = new CountingHandler();
+            pipeline.AddAnalysisHandler(countingHandler);
+            pipeline.Subscribe(countingHandler.Service);
+
+            // Event Detection
+            EventDetectionHandler eventDetectionHandler = new EventDetectionHandler(snapshotHandler.Service);
+            pipeline.AddAnalysisHandler(eventDetectionHandler);
+
+            ITrafficEventGenerator generator = _dependencyRegister.GetEventGenerator(pipelineIndex);
+            EventProcessor eventProcessor = new EventProcessor(settings.MinTriggerIntervalSecs, generator);
+            pipeline.Subscribe(eventProcessor);
+
+            ITrafficEventPublisher publisher = _dependencyRegister.GetEventPublisher(pipelineIndex);
+            EventPublisher eventPublisher = new EventPublisher(publisher);
+            pipeline.Subscribe(eventPublisher);
+
+            string captureRoot = settings.CaptureRoot;
+
+            StoppedTypeEventAlg stoppedAlg = new StoppedTypeEventAlg(captureRoot, settings.Fps, eventProcessor, eventPublisher);
+            eventDetectionHandler.AddEventAlgorithm(stoppedAlg);
+            pipeline.Subscribe(stoppedAlg);
+
+            ForbiddenTypeEventAlg forbiddenAlg = new ForbiddenTypeEventAlg(captureRoot, eventProcessor, eventPublisher);
+            eventDetectionHandler.AddEventAlgorithm(forbiddenAlg);
+            pipeline.Subscribe(forbiddenAlg);
+        }
+
+        public AnalysisPipeline GetPipelineByIndex(int pipelineIndex)
+        {
+            if ((pipelineIndex > _pipelines.Count - 1) || (pipelineIndex < 0))
             {
-                throw new ArgumentException("analysis pipeline is null");
+                throw new ArgumentException("invalid pipeline index.");
             }
 
-            if (_pipelines.Contains(pipeline))
-            {
-                return;
-            }
-            
-            _pipelines.Add(pipeline);
+            return _pipelines[pipelineIndex];
         }
 
         public void Dispose()

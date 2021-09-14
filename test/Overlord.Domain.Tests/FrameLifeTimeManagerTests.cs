@@ -1,11 +1,11 @@
-﻿using System;
-using NSubstitute;
+﻿using NSubstitute;
 using NUnit.Framework;
 using OpenCvSharp;
-using Overlord.Core.DataStructures;
 using Overlord.Core.Entities.Frame;
-using System.Collections.Generic;
 using Overlord.Domain.Event;
+using Overlord.Domain.Pipeline;
+using System;
+using System.Collections.Generic;
 
 namespace Overlord.Domain.Tests
 {

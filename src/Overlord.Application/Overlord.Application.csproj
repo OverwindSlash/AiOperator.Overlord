@@ -8,6 +8,7 @@
     <ProjectReference Include="..\Overlord.Domain.EventManagerSanbao\Overlord.Domain.EventManagerSanbao.csproj" />
     <ProjectReference Include="..\Overlord.Domain.Geography\Overlord.Domain.Geography.csproj" />
     <ProjectReference Include="..\Overlord.Domain.ObjectDetector\Overlord.Domain.ObjectDetector.csproj" />
+    <ProjectReference Include="..\Overlord.Domain.ObjectTracker\Overlord.Domain.ObjectTracker.csproj" />
     <ProjectReference Include="..\Overlord.Domain\Overlord.Domain.csproj" />
   </ItemGroup>
 
