@@ -15,14 +15,14 @@ namespace Overlord.Domain.ObjectTracker
         private readonly ILogger<SortTracker> _logger;
         private int _trackerIndex = 1; // MOT Evaluations requires a start index of 1
 
-        public SortTracker(float iouThreshold = 0.3f, int maxMisses = 3)
+        public SortTracker(float iouThreshold = 0.1f, int maxMisses = 25)
         {
             _trackers = new Dictionary<int, (Track, KalmanBoxTracker)>();
             IouThreshold = iouThreshold;
             MaxMisses = maxMisses;
         }
 
-        public SortTracker(ILogger<SortTracker> logger, float iouThreshold = 0.3f, int maxMisses = 3)
+        public SortTracker(ILogger<SortTracker> logger, float iouThreshold = 0.1f, int maxMisses = 25)
             : this(iouThreshold, maxMisses)
         {
             _logger = logger;

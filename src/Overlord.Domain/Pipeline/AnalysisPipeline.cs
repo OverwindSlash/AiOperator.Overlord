@@ -1,16 +1,16 @@
 ﻿using Overlord.Core.Entities.Frame;
 using Overlord.Core.Entities.Road;
+using Overlord.Domain.Event;
 using Overlord.Domain.Handlers;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Overlord.Domain.Event;
 
 namespace Overlord.Domain.Pipeline
 {
     public class AnalysisPipeline : IDisposable, IObservable<ObjectExpiredEvent>, IObservable<FrameExpiredEvent>
     {
-        private const int DefaultFrameCount = 50;
+        private const int DefaultFrameLiftTime = 125;
         private readonly List<IAnalysisHandler> _analysisHandlers;
         private readonly FrameLifeTimeManager _frameLifeTimeManager;
 
@@ -34,7 +34,7 @@ namespace Overlord.Domain.Pipeline
         public AnalysisPipeline()
         {
             _analysisHandlers = new List<IAnalysisHandler>();
-            _frameLifeTimeManager = new FrameLifeTimeManager(DefaultFrameCount);
+            _frameLifeTimeManager = new FrameLifeTimeManager(DefaultFrameLiftTime);
             _initialized = false;
         }
 

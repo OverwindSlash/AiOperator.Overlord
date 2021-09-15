@@ -1,13 +1,13 @@
 ﻿using CommandLine;
 using OpenCvSharp;
 using Overlord.Application;
+using Overlord.Core.Entities.Frame;
+using Overlord.Domain.Pipeline;
+using Overlord.Domain.Settings;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using Overlord.Core.Entities.Frame;
-using Overlord.Domain.Pipeline;
-using Overlord.Domain.Settings;
 
 namespace Overlord.UI.ConsoleApp
 {
@@ -36,6 +36,7 @@ namespace Overlord.UI.ConsoleApp
                 // });
             }
 
+            // TODO: Support multi-thread
             PerformPipelineAnalysis(pipelines[0]);
         }
 
@@ -84,9 +85,9 @@ namespace Overlord.UI.ConsoleApp
                         if (objectInfo.InEventEnterForbiddenRegion) { message += "F "; }
                         if (objectInfo.InEventStopped) { message += "P "; }
 
-                        //frame.PutText(objectInfo.Id, new Point(objectInfo.X, objectInfo.Y - 20), HersheyFonts.HersheyPlain, 1.0, Scalar.White);
+                        frame.PutText(objectInfo.TrackingId.ToString(), new Point(objectInfo.X, objectInfo.Y - 20), HersheyFonts.HersheyPlain, 2.0, Scalar.White);
 
-                        frame.PutText(objectInfo.MotionInfo.Speed.ToString("F0"), new Point(objectInfo.X+10, objectInfo.Y), HersheyFonts.HersheyPlain, 2.0, Scalar.LightCyan);
+                        //frame.PutText(objectInfo.MotionInfo.Speed.ToString("F0"), new Point(objectInfo.X+10, objectInfo.Y), HersheyFonts.HersheyPlain, 2.0, Scalar.LightCyan);
                         //frame.Rectangle(new Point(objectInfo.X, objectInfo.Y), new Point(objectInfo.X + objectInfo.Width, objectInfo.Y + objectInfo.Height), Scalar.Red);
 
                         if (!string.IsNullOrEmpty(message))
