@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Overlord.UI.ConsoleApp": {
+      "commandName": "Project",
+      "commandLineArgs": "-i 0"
+    }
+  }
+}

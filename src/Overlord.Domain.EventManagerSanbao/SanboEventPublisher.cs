@@ -61,7 +61,8 @@ namespace Overlord.Domain.EventManagerSanbao
         private string GenerateServerPath(string localFilePath)
         {
             string urlPrefix = "http://10.115.1.11/";
-            return localFilePath.Replace(@"D:/", urlPrefix);
+            string url = localFilePath.Replace(@"D:\", urlPrefix);
+            return url.Replace(@"\", "/");
         }
     }
 }

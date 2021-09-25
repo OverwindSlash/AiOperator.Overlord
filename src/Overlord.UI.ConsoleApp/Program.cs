@@ -91,19 +91,19 @@ namespace Overlord.UI.ConsoleApp
                         if (objectInfo.InEventSlowSpeed)
                         {
                             message += "S "; 
-                            Console.WriteLine($"慢速事件：{objectInfo.Id}");
+                            //Console.WriteLine($"慢速事件：{objectInfo.Id}");
                         }
 
                         if (objectInfo.InEventEnterForbiddenRegion)
                         {
                             message += "F ";
-                            Console.WriteLine($"禁行事件：{objectInfo.Id}");
+                            //Console.WriteLine($"禁行事件：{objectInfo.Id}");
                         }
 
                         if (objectInfo.InEventStopped)
                         {
                             message += "P ";
-                            Console.WriteLine($"禁停事件：{objectInfo.Id}");
+                            //Console.WriteLine($"禁停事件：{objectInfo.Id}");
                         }
 
                         //frame.PutText(objectInfo.TrackingId.ToString(), new Point(objectInfo.X, objectInfo.Y - 20), HersheyFonts.HersheyPlain, 2.0, Scalar.White);

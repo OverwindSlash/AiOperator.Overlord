@@ -26,13 +26,16 @@ namespace Overlord.Application
 
         public void InitializeEngine(string appSettingFile)
         {
+            _settings = new ApplicationSettings();
+            _settings.LoadFromJson(appSettingFile);
+
             _dependencyRegister.Reset();
             
             string configPath = @"Model/coco";
             YoloConfiguration yoloConfig = ConfigurationLoader.Load(configPath);
             IObjectDetector detector = new YoloWrapper(yoloConfig);
 
-            for (int i = 0; i < MaxPipelineCount; i++)
+            for (int i = 0; i < _settings.PipelineSettings.Count; i++)
             {
                 _dependencyRegister.AddObjectDetector(detector);
                 _dependencyRegister.AddMultiObjectTracker(new SortTracker());
@@ -47,9 +50,6 @@ namespace Overlord.Application
             }
             
             _engine = new AnalysisEngine(_dependencyRegister);
-
-            _settings = new ApplicationSettings();
-            _settings.LoadFromJson(appSettingFile);
         }
 
         public AnalysisPipeline OpenAnalysisPipeline(PipelineSetting pipelineSetting)
