@@ -108,8 +108,10 @@ namespace Overlord.Domain.EventAlg
                         _snapshotService.GenerateSnapVideo(videoFile);
 
                         // report event
-                        TrafficEvent stoppedEvent = _eventProcessor.CreateStoppedEvent(_roadDefinition.DeviceNo, toi.TypeId, toi.TrackingId);
+                        TrafficEvent stoppedEvent = _eventProcessor.CreateStoppedEvent(_roadDefinition.DeviceNo, toi.LaneIndex, toi.TypeId, toi.TrackingId);
                         stoppedEvent.EventCategory = "Stopped";
+                        stoppedEvent.LocalImageFilePath = snapshotFile;
+                        stoppedEvent.LocalVideoFilePath = videoFile;
                         bool result = await _eventPublisher.Publish(stoppedEvent);
                     }
                 });

@@ -54,14 +54,14 @@ namespace Overlord.Domain.Event
             }
         }
 
-        public TrafficEvent CreateForbiddenEvent(string deviceNo, int typeId, long trackingId)
+        public TrafficEvent CreateForbiddenEvent(string deviceNo, int laneIndex, int typeId, long trackingId)
         {
-            return _trafficEventGenerator.CreateForbiddenEvent(deviceNo, typeId, trackingId);
+            return _trafficEventGenerator.CreateForbiddenEvent(deviceNo, laneIndex, typeId, trackingId);
         }
 
-        public TrafficEvent CreateStoppedEvent(string deviceNo, int typeId, long trackingId)
+        public TrafficEvent CreateStoppedEvent(string deviceNo, int laneIndex, int typeId, long trackingId)
         {
-            return _trafficEventGenerator.CreateStoppedEvent(deviceNo, typeId, trackingId);
+            return _trafficEventGenerator.CreateStoppedEvent(deviceNo, laneIndex, typeId, trackingId);
         }
 
         public void OnCompleted()

@@ -38,7 +38,7 @@ namespace Overlord.UI.ConsoleApp
             }
 
             // TODO: Support multi-thread
-            PerformPipelineAnalysis(pipelines[2]);
+            PerformPipelineAnalysis(pipelines[option.PipelineIndex]);
         }
 
         private static void PerformPipelineAnalysis(AnalysisPipeline pipeline)

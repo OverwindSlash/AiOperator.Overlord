@@ -129,8 +129,10 @@ namespace Overlord.Domain.EventAlg
                             _snapshotService.GenerateSnapVideo(videoFile);
 
                             // report event
-                            TrafficEvent forbiddenEvent = _eventProcessor.CreateForbiddenEvent(_roadDefinition.DeviceNo, toi.TypeId, toi.TrackingId);
+                            TrafficEvent forbiddenEvent = _eventProcessor.CreateForbiddenEvent(_roadDefinition.DeviceNo, toi.LaneIndex, toi.TypeId, toi.TrackingId);
                             forbiddenEvent.EventCategory = "Forbidden";
+                            forbiddenEvent.LocalImageFilePath = snapshotFile;
+                            forbiddenEvent.LocalVideoFilePath = videoFile;
                             bool result = await _eventPublisher.Publish(forbiddenEvent);
                         }
                     });

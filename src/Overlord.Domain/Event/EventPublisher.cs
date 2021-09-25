@@ -22,7 +22,6 @@ namespace Overlord.Domain.Event
 
         public async Task<bool> Publish(TrafficEvent trafficEvent)
         {
-            // TODO: Multi pipeline support
             if (!_publishedEventsByCategory.Keys.Contains(trafficEvent.EventCategory))
             {
                 _publishedEventsByCategory.TryAdd(trafficEvent.EventCategory, new ConcurrentBag<TrafficEvent>());
@@ -34,8 +33,7 @@ namespace Overlord.Domain.Event
                 events.Add(trafficEvent);
             }
 
-            // TODO: Real publish logic
-            return false;
+            return await _publisher.ReportEvent(trafficEvent);;
         }
 
         public void OnCompleted()

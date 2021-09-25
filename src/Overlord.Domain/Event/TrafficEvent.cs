@@ -6,6 +6,9 @@ namespace Overlord.Domain.Event
     {
         [JsonIgnore]
         public string DeviceNo { get; set; }
+        
+        [JsonIgnore]
+        public int LaneIndex { get; set; }
 
         [JsonIgnore]
         public string EventCategory { get; set; }
@@ -15,5 +18,11 @@ namespace Overlord.Domain.Event
 
         [JsonIgnore]
         public long TrackingId { get; set; }
+        
+        [JsonIgnore]
+        public string LocalImageFilePath { get; set; }
+        
+        [JsonIgnore]
+        public string LocalVideoFilePath { get; set; }
     }
 }

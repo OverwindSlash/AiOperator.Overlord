@@ -8,5 +8,6 @@ namespace Overlord.Domain.Settings
         public int Fps { get; set; }
         public int MinTriggerIntervalSecs { get; set; }
         public string CaptureRoot { get; set; }
+        public string PublishApiUri { get; set; }
     }
 }

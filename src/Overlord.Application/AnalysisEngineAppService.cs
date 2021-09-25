@@ -37,7 +37,7 @@ namespace Overlord.Application
                 _dependencyRegister.AddObjectDetector(detector);
                 _dependencyRegister.AddMultiObjectTracker(new SortTracker());
                 _dependencyRegister.AddEventGenerator(new SanbaoEventGenerator());
-                _dependencyRegister.AddEventPublisher(new SanboEventPublisher());
+                _dependencyRegister.AddEventPublisher(new SanboEventPublisher(_settings.PipelineSettings[i].PublishApiUri));
                 _dependencyRegister.AddSpeeder(new GeographySpeeder());
             }
 

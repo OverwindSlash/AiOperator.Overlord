@@ -19,6 +19,8 @@ namespace Overlord.Domain.Tests
     [TestFixture]
     public class EventDetectionHandlerTests
     {
+        private string _reportApiUri = "http://localhost:21021/api/services/app/Demo/ReportEvent";
+        
         [Test]
         public void TestGenerateForbiddenEventDetector()
         {
@@ -42,7 +44,7 @@ namespace Overlord.Domain.Tests
             ITrafficEventGenerator generator = new SanbaoEventGenerator();
             EventProcessor eventProcessor = new EventProcessor(30, generator);
 
-            ITrafficEventPublisher publisher = new SanboEventPublisher();
+            ITrafficEventPublisher publisher = new SanboEventPublisher(_reportApiUri);
             EventPublisher eventPublisher = new EventPublisher(publisher);
 
             string captureRoot = @"D:\Capture";
@@ -110,7 +112,7 @@ namespace Overlord.Domain.Tests
             ITrafficEventGenerator generator = new SanbaoEventGenerator();
             EventProcessor eventProcessor = new EventProcessor(30, generator);
 
-            ITrafficEventPublisher publisher = new SanboEventPublisher();
+            ITrafficEventPublisher publisher = new SanboEventPublisher(_reportApiUri);
             EventPublisher eventPublisher = new EventPublisher(publisher);
 
             string captureRoot = @"D:\Capture";

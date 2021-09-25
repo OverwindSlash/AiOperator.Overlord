@@ -6,60 +6,62 @@ namespace Overlord.Domain.EventManagerSanbao
 {
     public class SanbaoEventGenerator : ITrafficEventGenerator
     {
-        private SanbaoTrafficEvent CreateBasicTrafficEvent(string deviceNo, int typeId, long trackingId)
+        private SanbaoTrafficEvent CreateBasicTrafficEvent(string deviceNo, int laneIndex, int typeId, long trackingId)
         {
             var trafficEvent = new SanbaoTrafficEvent();
             var id = GenerateId(deviceNo);
 
+            trafficEvent.DeviceNo = deviceNo;
+            trafficEvent.LaneIndex = laneIndex;
             trafficEvent.ID = id;
             trafficEvent.ObjId = trackingId;
             trafficEvent.VehicleType = GenerateVehicleType(typeId);
             return trafficEvent;
         }
-
-        public TrafficEvent CreateForbiddenEvent(string deviceNo, int typeId, long trackingId)
+        
+        public TrafficEvent CreateForbiddenEvent(string deviceNo, int laneIndex, int typeId, long trackingId)
         {
-            var trafficEvent = CreateBasicTrafficEvent(deviceNo, typeId, trackingId);
+            var trafficEvent = CreateBasicTrafficEvent(deviceNo, laneIndex, typeId, trackingId);
             trafficEvent.EvtType = 64;
 
             return trafficEvent;
         }
 
-        public TrafficEvent CreateStoppedEvent(string deviceNo, int typeId, long trackingId)
+        public TrafficEvent CreateStoppedEvent(string deviceNo, int laneIndex, int typeId, long trackingId)
         {
-            var trafficEvent = CreateBasicTrafficEvent(deviceNo, typeId, trackingId);
+            var trafficEvent = CreateBasicTrafficEvent(deviceNo, laneIndex, typeId, trackingId);
             trafficEvent.EvtType = 128;
 
             return trafficEvent;
         }
 
-        public TrafficEvent CreateSlowEvent(string deviceNo, int typeId, long trackingId)
+        public TrafficEvent CreateSlowEvent(string deviceNo, int laneIndex, int typeId, long trackingId)
         {
-            var trafficEvent = CreateBasicTrafficEvent(deviceNo, typeId, trackingId);
+            var trafficEvent = CreateBasicTrafficEvent(deviceNo, laneIndex, typeId, trackingId);
             trafficEvent.EvtType = 2;
 
             return trafficEvent;
         }
 
-        public TrafficEvent CreateAmbleEvent(string deviceNo, int typeId, long trackingId)
+        public TrafficEvent CreateAmbleEvent(string deviceNo, int laneIndex, int typeId, long trackingId)
         {
-            var trafficEvent = CreateBasicTrafficEvent(deviceNo, typeId, trackingId);
+            var trafficEvent = CreateBasicTrafficEvent(deviceNo, laneIndex, typeId, trackingId);
             trafficEvent.EvtType = 10001;
 
             return trafficEvent;
         }
 
-        public TrafficEvent CreateJamEvent(string deviceNo, int typeId, long trackingId)
+        public TrafficEvent CreateJamEvent(string deviceNo, int laneIndex, int typeId, long trackingId)
         {
-            var trafficEvent = CreateBasicTrafficEvent(deviceNo, typeId, trackingId);
+            var trafficEvent = CreateBasicTrafficEvent(deviceNo, laneIndex, typeId, trackingId);
             trafficEvent.EvtType = 1024;
 
             return trafficEvent;
         }
 
-        public TrafficEvent CreateReverseEvent(string deviceNo, int typeId, long trackingId)
+        public TrafficEvent CreateReverseEvent(string deviceNo, int laneIndex, int typeId, long trackingId)
         {
-            var trafficEvent = CreateBasicTrafficEvent(deviceNo, typeId, trackingId);
+            var trafficEvent = CreateBasicTrafficEvent(deviceNo, laneIndex, typeId, trackingId);
             trafficEvent.EvtType = 10000;
 
             return trafficEvent;
@@ -105,5 +107,7 @@ namespace Overlord.Domain.EventManagerSanbao
 
             return vehicleType;
         }
+
+        
     }
 }

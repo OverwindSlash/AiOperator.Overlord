@@ -12,7 +12,7 @@ namespace Overlord.Domain.Event
 
         public EventBase()
         {
-            _eventId = new Guid();
+            _eventId = Guid.NewGuid();
             _timestamp = DateTime.Now;
         }
     }
