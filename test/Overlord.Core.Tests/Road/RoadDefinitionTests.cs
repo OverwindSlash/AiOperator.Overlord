@@ -13,9 +13,10 @@ namespace Overlord.Core.Tests.Road
         private const int ImageHeight = 1080;
 
         private string rdJson = "{\"RoadName\":\"hc_k41_700_1\",\"DeviceNo\":\"DAF6AD5D3A9BDE8FE310\",\"PrePositionName\":\"prepos0\",\"DetectionThresh\":0.6,\"TrackingChangeHistory\":true,\"TrackingFramesStory\":50,\"TrackingMaxDistance\":40," +
-                                "\"IsObjectAnalyzableRetain\":false,\"MaxObjectSnapshots\":10,\"MotionCalculationFrameInterval\":5," +
+                                "\"IsObjectAnalyzableRetain\":false,\"MaxObjectSnapshots\":10,\"MotionCalculationFrameInterval\":10," +
                                 "\"UvQuadrilateral\":[1326,598,901,620,1025,299,1131,276],\"LonLatQuadrilateral\":[120.658646,31.224102,120.65872,31.224012,120.65726,31.223541,120.656845,31.223684]," +
-                                "\"IsDoubleLineCounting\":false,\"DriveLaneForbiddenDurationFrame\":10,\"EmergencyLaneForbiddenDurationFrame\":15,\"StopEventSpeedUpperLimit\":5,\"StopEventEnableDurationSec\":5," +
+                                "\"IsDoubleLineCounting\":false,\"DriveLaneForbiddenDurationFrame\":10,\"EmergencyLaneForbiddenDurationFrame\":15,\"StopEventSpeedUpperLimit\":10,\"StopEventEnableDurationSec\":5," +
+                                "\"SlowVehicleSpeedUpperLimit\":30,\"SlowVehicleSpeedLowerLimit\":10,\"SlowVehicleEnableDurationSec\":5," + 
                                 "\"AnalysisAreas\":[" +
                                 "{\"Name\":\"driveway region\",\"Points\":[" +
                                 "{\"NormalizedX\":0,\"NormalizedY\":0.6462962962962963}," +
@@ -84,7 +85,7 @@ namespace Overlord.Core.Tests.Road
             // analysis step param
             roadDefinition.IsObjectAnalyzableRetain = false;
             roadDefinition.MaxObjectSnapshots = 10;
-            roadDefinition.MotionCalculationFrameInterval = 5;
+            roadDefinition.MotionCalculationFrameInterval = 10;
 
             // pixel to geography coordinates.
             int[] uvs = { 1326, 598, 901, 620, 1025, 299, 1131, 276 };
@@ -100,9 +101,12 @@ namespace Overlord.Core.Tests.Road
             // event detection parameters
             roadDefinition.DriveLaneForbiddenDurationFrame = 10;
             roadDefinition.EmergencyLaneForbiddenDurationFrame = 15;
-            roadDefinition.StopEventSpeedUpperLimit = 5;
+            roadDefinition.StopEventSpeedUpperLimit = 10;
             roadDefinition.StopEventEnableDurationSec = 5;
-            
+            roadDefinition.SlowVehicleSpeedUpperLimit = 30;
+            roadDefinition.SlowVehicleSpeedLowerLimit = 10;
+            roadDefinition.SlowVehicleEnableDurationSec = 5;
+
             {
                 // analysis area
                 AnalysisArea analysisArea = new AnalysisArea();
@@ -297,6 +301,9 @@ namespace Overlord.Core.Tests.Road
             roadDefinition.EmergencyLaneForbiddenDurationFrame = 15;
             roadDefinition.StopEventSpeedUpperLimit = 5;
             roadDefinition.StopEventEnableDurationSec = 5;
+            roadDefinition.SlowVehicleSpeedUpperLimit = 30;
+            roadDefinition.SlowVehicleSpeedLowerLimit = 10;
+            roadDefinition.SlowVehicleEnableDurationSec = 5;
 
             {
                 // tracking area
@@ -451,6 +458,9 @@ namespace Overlord.Core.Tests.Road
             roadDefinition.EmergencyLaneForbiddenDurationFrame = 25;
             roadDefinition.StopEventSpeedUpperLimit = 5;
             roadDefinition.StopEventEnableDurationSec = 5;
+            roadDefinition.SlowVehicleSpeedUpperLimit = 30;
+            roadDefinition.SlowVehicleSpeedLowerLimit = 10;
+            roadDefinition.SlowVehicleEnableDurationSec = 5;
 
             {
                 // tracking area
@@ -620,6 +630,9 @@ namespace Overlord.Core.Tests.Road
             roadDefinition.EmergencyLaneForbiddenDurationFrame = 25;
             roadDefinition.StopEventSpeedUpperLimit = 5;
             roadDefinition.StopEventEnableDurationSec = 5;
+            roadDefinition.SlowVehicleSpeedUpperLimit = 30;
+            roadDefinition.SlowVehicleSpeedLowerLimit = 10;
+            roadDefinition.SlowVehicleEnableDurationSec = 5;
 
             {
                 // tracking area

@@ -16,6 +16,9 @@
   "EmergencyLaneForbiddenDurationFrame": 25,
   "StopEventSpeedUpperLimit": 5,
   "StopEventEnableDurationSec": 5,
+  "SlowVehicleSpeedUpperLimit": 30,
+  "SlowVehicleSpeedLowerLimit": 10,
+  "SlowVehicleEnableDurationSec": 3,
   "AnalysisAreas": [
     {
       "Name": "driveway region",

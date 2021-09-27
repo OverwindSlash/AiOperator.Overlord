@@ -64,6 +64,11 @@ namespace Overlord.Domain.Event
             return _trafficEventGenerator.CreateStoppedEvent(deviceNo, laneIndex, typeId, trackingId);
         }
 
+        public TrafficEvent CreateSlowVehicleEvent(string deviceNo, int laneIndex, int typeId, long trackingId)
+        {
+            return _trafficEventGenerator.CreateSlowEvent(deviceNo, laneIndex, typeId, trackingId);
+        }
+
         public void OnCompleted()
         {
             // Do nothing
@@ -90,5 +95,7 @@ namespace Overlord.Domain.Event
             string stopEventId = $"S_{id}";
             _lastEventTime.TryRemove(stopEventId, out var value2);
         }
+
+        
     }
 }

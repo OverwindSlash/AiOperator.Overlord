@@ -2,13 +2,12 @@
 using OpenCvSharp;
 using Overlord.Application;
 using Overlord.Core.Entities.Frame;
+using Overlord.Core.Entities.Geometric;
 using Overlord.Domain.Pipeline;
 using Overlord.Domain.Settings;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Threading.Tasks;
-using Overlord.Core.Entities.Geometric;
 
 namespace Overlord.UI.ConsoleApp
 {
@@ -38,10 +37,10 @@ namespace Overlord.UI.ConsoleApp
             }
 
             // TODO: Support multi-thread
-            PerformPipelineAnalysis(pipelines[option.PipelineIndex]);
+            PerformPipelineAnalysis(pipelines[option.PipelineIndex], option.NoDisplay);
         }
 
-        private static void PerformPipelineAnalysis(AnalysisPipeline pipeline)
+        private static void PerformPipelineAnalysis(AnalysisPipeline pipeline, bool noDisplay)
         {
             VideoCapture capture = new VideoCapture(pipeline.VideoUri, VideoCaptureAPIs.FFMPEG);
             if (!capture.IsOpened())
@@ -66,6 +65,11 @@ namespace Overlord.UI.ConsoleApp
                 else
                 {
                     continue;
+                }
+
+                if (frameId % 7500 == 0)
+                {
+                    Console.WriteLine($"{DateTime.Now.ToString()} Analysising...");
                 }
 
                 Stopwatch sw = new Stopwatch();
@@ -108,7 +112,7 @@ namespace Overlord.UI.ConsoleApp
 
                         //frame.PutText(objectInfo.TrackingId.ToString(), new Point(objectInfo.X, objectInfo.Y - 20), HersheyFonts.HersheyPlain, 2.0, Scalar.White);
 
-                        //frame.PutText(objectInfo.MotionInfo.Speed.ToString("F0"), new Point(objectInfo.X+10, objectInfo.Y), HersheyFonts.HersheyPlain, 2.0, Scalar.LightCyan);
+                        frame.PutText(objectInfo.MotionInfo.Speed.ToString("F0"), new Point(objectInfo.X+10, objectInfo.Y), HersheyFonts.HersheyPlain, 2.0, Scalar.LightCyan);
                         //frame.Rectangle(new Point(objectInfo.X, objectInfo.Y), new Point(objectInfo.X + objectInfo.Width, objectInfo.Y + objectInfo.Height), Scalar.Red);
 
                         if (!string.IsNullOrEmpty(message))
@@ -124,7 +128,10 @@ namespace Overlord.UI.ConsoleApp
 
                 sw.Stop();
 
-                Cv2.ImShow(pipeline.Name, frame);
+                if (!noDisplay)
+                {
+                    Cv2.ImShow(pipeline.Name, frame.Resize(new Size(1280, 720)));
+                }
 
                 int delay = 25 - (int)sw.ElapsedMilliseconds;
                 if (delay < 1)

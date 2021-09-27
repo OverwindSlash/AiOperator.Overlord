@@ -2,7 +2,7 @@
   "profiles": {
     "Overlord.UI.ConsoleApp": {
       "commandName": "Project",
-      "commandLineArgs": "-i 0"
+      "commandLineArgs": "-i 2"
     }
   }
 }

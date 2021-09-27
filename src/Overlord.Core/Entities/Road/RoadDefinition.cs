@@ -36,6 +36,9 @@ namespace Overlord.Core.Entities.Road
         public int EmergencyLaneForbiddenDurationFrame { get; set; }
         public int StopEventSpeedUpperLimit { get; set; }
         public int StopEventEnableDurationSec { get; set; }
+        public int SlowVehicleSpeedUpperLimit { get; set; }
+        public int SlowVehicleSpeedLowerLimit { get; set; }
+        public int SlowVehicleEnableDurationSec { get; set; }
 
         public List<AnalysisArea> AnalysisAreas
         {

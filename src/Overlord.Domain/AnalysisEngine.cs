@@ -110,6 +110,10 @@ namespace Overlord.Domain
             eventDetectionHandler.AddEventAlgorithm(stoppedAlg);
             pipeline.Subscribe(stoppedAlg);
 
+            SlowVehicleEventAlg slowVehicleEventAlg = new SlowVehicleEventAlg(captureRoot, settings.Fps, eventProcessor, eventPublisher);
+            eventDetectionHandler.AddEventAlgorithm(slowVehicleEventAlg);
+            pipeline.Subscribe(slowVehicleEventAlg);
+
             ForbiddenTypeEventAlg forbiddenAlg = new ForbiddenTypeEventAlg(captureRoot, eventProcessor, eventPublisher);
             eventDetectionHandler.AddEventAlgorithm(forbiddenAlg);
             pipeline.Subscribe(forbiddenAlg);

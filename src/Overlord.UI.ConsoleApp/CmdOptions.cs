@@ -16,7 +16,7 @@ namespace Overlord.UI.ConsoleApp
         [Option('r', "road definition", Required = false, Default = "", HelpText = "road definition file")]
         public string RoadDefinitionFile { get; set; }
 
-        [Option('n', "no display", Required = false, Default = true, HelpText = "no display")]
+        [Option('n', "no display", Required = false, Default = false, HelpText = "no display")]
         public bool NoDisplay { get; set; }
     }
 }
