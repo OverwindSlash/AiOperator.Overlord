@@ -16,7 +16,9 @@ namespace Overlord.Domain.EventAlg
         private readonly int _fps;
         private readonly HashSet<string> _suitableTypes;
         private readonly ConcurrentDictionary<string, FixedSizedQueue<TrafficObjectInfo>> _toiHistory;
-        private FixedSizedQueue<long> _recentStopEvents;
+
+        // laneIndex -> array of TimeStamp
+        private ConcurrentDictionary<int, FixedSizedQueue<long>> _recentStopEvents;
 
         // image and video capture base dir.
         private readonly string _stopSnapshotDir;
@@ -78,7 +80,7 @@ namespace Overlord.Domain.EventAlg
             _minStopEventsToJudgeJam = roadDefinition.MinStopEventsToJudgeJam;
             _jamJudgeDurationSec = roadDefinition.JamJudgeDurationSec;
 
-            _recentStopEvents = new FixedSizedQueue<long>(_minStopEventsToJudgeJam);
+            _recentStopEvents = new ConcurrentDictionary<int, FixedSizedQueue<long>>();
         }
 
         public override void DetectEvent(TrafficObjectInfo toi, FrameInfo frameInfo)
@@ -118,6 +120,11 @@ namespace Overlord.Domain.EventAlg
                     {
                         toi.EventStoppedVehicleRaised = true;
 
+                        await Task.Run(async () =>
+                        {
+                            await JudgeAndReportJam(toi);
+                        });
+
                         string timestamp = DateTime.Now.ToString(TimestampPattern);
                         string normalizedFilename = toi.Id.Replace(":", "_");
 
@@ -137,9 +144,6 @@ namespace Overlord.Domain.EventAlg
                         stoppedEvent.LocalImageFilePath = snapshotFile;
                         stoppedEvent.LocalVideoFilePath = videoFile;
                         bool result = await _eventPublisher.Publish(stoppedEvent);
-
-                        // determined jam event
-                        await JudgeAndReportJam(toi);
                     }
                 });
             }
@@ -148,14 +152,21 @@ namespace Overlord.Domain.EventAlg
         private async Task JudgeAndReportJam(TrafficObjectInfo toi)
         {
             long ticks = DateTime.Now.Ticks;
-            _recentStopEvents.Enqueue(ticks);
 
-            if ((_recentStopEvents.Count() == _minStopEventsToJudgeJam) && (_recentStopEvents.Peek(out var fist)))
+            if (!_recentStopEvents.ContainsKey(toi.LaneIndex))
+            {
+                _recentStopEvents.TryAdd(toi.LaneIndex, new FixedSizedQueue<long>(_minStopEventsToJudgeJam));
+            }
+
+            FixedSizedQueue<long> recentStopEventsById = _recentStopEvents[toi.LaneIndex];
+            recentStopEventsById.Enqueue(ticks);
+
+            if ((recentStopEventsById.Count() == _minStopEventsToJudgeJam) && (recentStopEventsById.Peek(out var fist)))
             {
                 long elapseSeconds = (ticks - fist) / 10000000;
                 if (elapseSeconds < _jamJudgeDurationSec)
                 {
-                    if (_eventProcessor.IsEventNeedTrigger($"Jam"))
+                    if (_eventProcessor.IsEventNeedTrigger($"Jam_{toi.LaneIndex}"))
                     {
                         toi.EventRoadJamRaised = true;
 
@@ -205,7 +216,7 @@ namespace Overlord.Domain.EventAlg
         {
             if (_toiHistory.Keys.Contains(id))
             {
-                _toiHistory.TryRemove(id, out var value);
+                _toiHistory.TryRemove(id, out var value1);
             }
         }
     }

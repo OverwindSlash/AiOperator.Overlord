@@ -1,5 +1,5 @@
-﻿using System;
-using Overlord.Domain.Interfaces;
+﻿using Overlord.Domain.Interfaces;
+using System;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 
@@ -33,7 +33,15 @@ namespace Overlord.Domain.Event
                 events.Add(trafficEvent);
             }
 
-            return await _publisher.ReportEvent(trafficEvent);;
+            try
+            {
+                //return await _publisher.ReportEvent(trafficEvent);
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
         }
 
         public void OnCompleted()

@@ -79,6 +79,7 @@ namespace Overlord.UI.ConsoleApp
                 pipeline.Analyze(frameInfo);
 
                 // DrawRegion(pipeline.RoadDef.AnalysisAreas[0], frame, Scalar.Red);
+                // DrawRegion(pipeline.RoadDef.ExcludedAreas[0], frame, Scalar.Red);
                 // DrawRegion(pipeline.RoadDef.Lanes[0], frame, Scalar.Blue);
                 // DrawRegion(pipeline.RoadDef.Lanes[1], frame, Scalar.White);
                 // DrawRegion(pipeline.RoadDef.Lanes[2], frame, Scalar.Yellow);
@@ -92,7 +93,7 @@ namespace Overlord.UI.ConsoleApp
                         //frame.Rectangle(new Point(toi.X, toi.Y), new Point(toi.X + toi.Width, toi.Y + toi.Height), Scalar.Red);
 
                         // Display id.
-                        //frame.PutText(objectInfo.TrackingId.ToString(), new Point(objectInfo.X, objectInfo.Y - 20), HersheyFonts.HersheyPlain, 1.0, Scalar.White);
+                        //frame.PutText(toi.TrackingId.ToString(), new Point(toi.X, toi.Y - 20), HersheyFonts.HersheyPlain, 1.0, Scalar.White);
 
                         // Display speed.
                         //frame.PutText(toi.MotionInfo.Speed.ToString("F0"), new Point(toi.X+10, toi.Y), HersheyFonts.HersheyPlain, 1.0, Scalar.LightCyan);

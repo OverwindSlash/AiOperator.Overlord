@@ -14,7 +14,9 @@ namespace Overlord.Domain.EventAlg
     {
         private readonly int _fps;
         private readonly ConcurrentDictionary<string, FixedSizedQueue<TrafficObjectInfo>> _toiHistory;
-        private FixedSizedQueue<long> _recentSlowEvents;
+
+        // laneIndex -> array of TimeStamp
+        private ConcurrentDictionary<int, FixedSizedQueue<long>> _recentSlowEvents;
 
         // image and video capture base dir.
         private readonly string _slowSnapshotDir;
@@ -70,7 +72,7 @@ namespace Overlord.Domain.EventAlg
             _minSlowEventsToJudgeAmble = roadDefinition.MinSlowEventsToJudgeAmble;
             _ambleJudgeDurationSec = roadDefinition.AmbleJudgeDurationSec;
 
-            _recentSlowEvents = new FixedSizedQueue<long>(_minSlowEventsToJudgeAmble);
+            _recentSlowEvents = new ConcurrentDictionary<int, FixedSizedQueue<long>>();
         }
 
         public override void DetectEvent(TrafficObjectInfo toi, FrameInfo frameInfo)
@@ -105,6 +107,11 @@ namespace Overlord.Domain.EventAlg
                     {
                         toi.EventSlowVehicleRaised = true;
 
+                        await Task.Run(async () =>
+                        {
+                            await JudgeAndReportAmble(toi);
+                        });
+
                         string timestamp = DateTime.Now.ToString(TimestampPattern);
                         string normalizedFilename = toi.Id.Replace(":", "_");
 
@@ -124,9 +131,6 @@ namespace Overlord.Domain.EventAlg
                         slowVehicleEvent.LocalImageFilePath = snapshotFile;
                         slowVehicleEvent.LocalVideoFilePath = videoFile;
                         bool result = await _eventPublisher.Publish(slowVehicleEvent);
-
-                        // determined amble event
-                        await JudgeAndReportAmble(toi);
                     }
                 });
             }
@@ -135,14 +139,21 @@ namespace Overlord.Domain.EventAlg
         private async Task JudgeAndReportAmble(TrafficObjectInfo toi)
         {
             long ticks = DateTime.Now.Ticks;
-            _recentSlowEvents.Enqueue(ticks);
 
-            if ((_recentSlowEvents.Count() == _minSlowEventsToJudgeAmble) && (_recentSlowEvents.Peek(out var fist)))
+            if (!_recentSlowEvents.ContainsKey(toi.LaneIndex))
+            {
+                _recentSlowEvents.TryAdd(toi.LaneIndex, new FixedSizedQueue<long>(_minSlowEventsToJudgeAmble));
+            }
+
+            FixedSizedQueue<long> recentSlowEventsById = _recentSlowEvents[toi.LaneIndex];
+            recentSlowEventsById.Enqueue(ticks);
+
+            if ((recentSlowEventsById.Count() == _minSlowEventsToJudgeAmble) && (recentSlowEventsById.Peek(out var fist)))
             {
                 long elapseSeconds = (ticks - fist) / 10000000;
                 if (elapseSeconds < _ambleJudgeDurationSec)
                 {
-                    if (_eventProcessor.IsEventNeedTrigger($"Amble"))
+                    if (_eventProcessor.IsEventNeedTrigger($"Amble_{toi.LaneIndex}"))
                     {
                         toi.EventRoadAmbleRaised = true;
 

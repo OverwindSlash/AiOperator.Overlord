@@ -44,7 +44,7 @@ namespace Overlord.Domain.Services
                 }
 
                 NormalizedPoint point = new NormalizedPoint(_roadDefinition.ImageWidth, _roadDefinition.ImageHeight,
-                    toi.BottomCenterX, toi.BottomCenterY);
+                    toi.CenterX, toi.CenterY);
 
                 foreach (AnalysisArea analysisArea in _analysisAreas)
                 {

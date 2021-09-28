@@ -16,13 +16,13 @@
   "EmergencyLaneForbiddenDurationFrame": 25,
   "StopEventSpeedUpperLimit": 10,
   "StopEventEnableDurationSec": 3,
-  "SlowVehicleSpeedUpperLimit": 30,
+  "SlowVehicleSpeedUpperLimit": 40,
   "SlowVehicleSpeedLowerLimit": 10,
   "SlowVehicleEnableDurationSec": 3,
   "MinSlowEventsToJudgeAmble": 3,
-  "AmbleJudgeDurationSec": 15,
+  "AmbleJudgeDurationSec": 30,
   "MinStopEventsToJudgeJam": 3,
-  "JamJudgeDurationSec": 15,
+  "JamJudgeDurationSec": 30,
   "AnalysisAreas": [
     {
       "Name": "driveway region",
