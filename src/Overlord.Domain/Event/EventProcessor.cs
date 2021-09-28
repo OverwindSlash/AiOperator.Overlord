@@ -54,12 +54,12 @@ namespace Overlord.Domain.Event
             }
         }
 
-        public TrafficEvent CreateForbiddenEvent(string deviceNo, int laneIndex, int typeId, long trackingId)
+        public TrafficEvent CreateForbiddenTypeEvent(string deviceNo, int laneIndex, int typeId, long trackingId)
         {
             return _trafficEventGenerator.CreateForbiddenEvent(deviceNo, laneIndex, typeId, trackingId);
         }
 
-        public TrafficEvent CreateStoppedEvent(string deviceNo, int laneIndex, int typeId, long trackingId)
+        public TrafficEvent CreateStoppedVehicleEvent(string deviceNo, int laneIndex, int typeId, long trackingId)
         {
             return _trafficEventGenerator.CreateStoppedEvent(deviceNo, laneIndex, typeId, trackingId);
         }
@@ -67,6 +67,16 @@ namespace Overlord.Domain.Event
         public TrafficEvent CreateSlowVehicleEvent(string deviceNo, int laneIndex, int typeId, long trackingId)
         {
             return _trafficEventGenerator.CreateSlowEvent(deviceNo, laneIndex, typeId, trackingId);
+        }
+
+        public TrafficEvent CreateRoadAmbleEvent(string deviceNo, int laneIndex, int typeId, long trackingId)
+        {
+            return _trafficEventGenerator.CreateAmbleEvent(deviceNo, laneIndex, typeId, trackingId);
+        }
+
+        public TrafficEvent CreateRoadJamEvent(string deviceNo, int laneIndex, int typeId, long trackingId)
+        {
+            return _trafficEventGenerator.CreateJamEvent(deviceNo, laneIndex, typeId, trackingId);
         }
 
         public void OnCompleted()
@@ -95,7 +105,5 @@ namespace Overlord.Domain.Event
             string stopEventId = $"S_{id}";
             _lastEventTime.TryRemove(stopEventId, out var value2);
         }
-
-        
     }
 }

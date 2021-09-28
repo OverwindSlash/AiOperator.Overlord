@@ -14,11 +14,15 @@
   "IsDoubleLineCounting": false,
   "DriveLaneForbiddenDurationFrame": 25,
   "EmergencyLaneForbiddenDurationFrame": 25,
-  "StopEventSpeedUpperLimit": 5,
-  "StopEventEnableDurationSec": 5,
+  "StopEventSpeedUpperLimit": 10,
+  "StopEventEnableDurationSec": 3,
   "SlowVehicleSpeedUpperLimit": 30,
   "SlowVehicleSpeedLowerLimit": 10,
   "SlowVehicleEnableDurationSec": 3,
+  "MinSlowEventsToJudgeAmble": 3,
+  "AmbleJudgeDurationSec": 15,
+  "MinStopEventsToJudgeJam": 3,
+  "JamJudgeDurationSec": 15,
   "AnalysisAreas": [
     {
       "Name": "driveway region",

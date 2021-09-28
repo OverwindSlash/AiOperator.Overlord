@@ -44,21 +44,29 @@ namespace Overlord.Core.Entities.Frame
         public PlateInfo PlateInfo { get; set; }
         public MotionInfo MotionInfo { get; set; }
 
-        // Event occurred flag
-        public bool InEventSlowSpeed { get; set; }
-        public bool InEventFastSpeed { get; set; }
-        public bool InEventCrushLine { get; set; }
-        public bool InEventLaneChanged { get; set; }
-        public bool InEventEnterForbiddenRegion { get; set; }
+        // Status occurred flag
+        public bool InStatusSlowSpeed { get; set; }
+        public bool InStatusFastSpeed { get; set; }
+        public bool InStatusCrushLine { get; set; }
+        public bool InStatusLaneChanged { get; set; }
+        public bool InStatusEnterForbiddenRegion { get; set; }
+        public bool InStatusStopped { get; set; }
+        public bool InStatusReversed { get; set; }
+        public bool InStatusWasteDropped { get; set; }
+        public bool InStatusUnderConstruction { get; set; }
+        public bool InStatusDangerousGoods { get; set; }
+
+        // Event raised
+        public bool EventStoppedVehicleRaised { get; set; }
+        public bool EventRoadJamRaised { get; set; }
+        public bool EventSlowVehicleRaised { get; set; }
+        public bool EventRoadAmbleRaised { get; set; }
+        public bool EventForbiddenTypeRaised { get; set; }
         public bool InEventPersonTrespass { get; set; }
         public bool InEventTruckTrespass { get; set; }
         public bool InEventNonMotorTrespass { get; set; }
         public bool InEventEmergencyLaneOccupied { get; set; }
-        public bool InEventStopped { get; set; }
-        public bool InEventReversed { get; set; }
-        public bool InEventWasteDropped{ get; set; }
-        public bool InEventUnderConstruction{ get; set; }
-        public bool InEventDangerousGoods{ get; set; }
+        
 
         public TrafficObjectInfo()
         {

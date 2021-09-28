@@ -39,6 +39,11 @@ namespace Overlord.Core.Entities.Road
         public int SlowVehicleSpeedUpperLimit { get; set; }
         public int SlowVehicleSpeedLowerLimit { get; set; }
         public int SlowVehicleEnableDurationSec { get; set; }
+        public int MinSlowEventsToJudgeAmble { get; set; }
+        public int AmbleJudgeDurationSec { get; set; }
+        public int MinStopEventsToJudgeJam { get; set; }
+        public int JamJudgeDurationSec { get; set; }
+
 
         public List<AnalysisArea> AnalysisAreas
         {

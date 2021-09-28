@@ -84,42 +84,28 @@ namespace Overlord.UI.ConsoleApp
                 // DrawRegion(pipeline.RoadDef.Lanes[2], frame, Scalar.Yellow);
                 // DrawRegion(pipeline.RoadDef.Lanes[3], frame, Scalar.Blue);
 
-                foreach (TrafficObjectInfo objectInfo in frameInfo.ObjectInfos)
+                foreach (TrafficObjectInfo toi in frameInfo.ObjectInfos)
                 {
-                    //frame.Rectangle(new Point(objectInfo.X, objectInfo.Y), new Point(objectInfo.X + objectInfo.Width, objectInfo.Y + objectInfo.Height), Scalar.Red);
-
-                    if (objectInfo.IsAnalyzable)
+                    if (toi.IsAnalyzable)
                     {
-                        string message = string.Empty;
+                        // Display box for all objects.
+                        //frame.Rectangle(new Point(toi.X, toi.Y), new Point(toi.X + toi.Width, toi.Y + toi.Height), Scalar.Red);
 
-                        if (objectInfo.InEventSlowSpeed)
+                        // Display id.
+                        //frame.PutText(objectInfo.TrackingId.ToString(), new Point(objectInfo.X, objectInfo.Y - 20), HersheyFonts.HersheyPlain, 1.0, Scalar.White);
+
+                        // Display speed.
+                        //frame.PutText(toi.MotionInfo.Speed.ToString("F0"), new Point(toi.X+10, toi.Y), HersheyFonts.HersheyPlain, 1.0, Scalar.LightCyan);
+
+                        string statusMsg = CheckTrafficObjectInfoStatus(toi);
+
+                        if (!string.IsNullOrEmpty(statusMsg))
                         {
-                            message += "S "; 
-                            //Console.WriteLine($"慢速事件：{objectInfo.Id}");
+                            frame.PutText(statusMsg, new Point(toi.X, toi.Y + 20), HersheyFonts.HersheyPlain, 1.0, Scalar.Red);
+                            frame.Rectangle(new Point(toi.X, toi.Y), new Point(toi.X + toi.Width, toi.Y + toi.Height), Scalar.Red);
                         }
 
-                        if (objectInfo.InEventEnterForbiddenRegion)
-                        {
-                            message += "F ";
-                            //Console.WriteLine($"禁行事件：{objectInfo.Id}");
-                        }
-
-                        if (objectInfo.InEventStopped)
-                        {
-                            message += "P ";
-                            //Console.WriteLine($"禁停事件：{objectInfo.Id}");
-                        }
-
-                        //frame.PutText(objectInfo.TrackingId.ToString(), new Point(objectInfo.X, objectInfo.Y - 20), HersheyFonts.HersheyPlain, 2.0, Scalar.White);
-
-                        frame.PutText(objectInfo.MotionInfo.Speed.ToString("F0"), new Point(objectInfo.X+10, objectInfo.Y), HersheyFonts.HersheyPlain, 2.0, Scalar.LightCyan);
-                        //frame.Rectangle(new Point(objectInfo.X, objectInfo.Y), new Point(objectInfo.X + objectInfo.Width, objectInfo.Y + objectInfo.Height), Scalar.Red);
-
-                        if (!string.IsNullOrEmpty(message))
-                        {
-                            frame.PutText(message, new Point(objectInfo.X, objectInfo.Y + 20), HersheyFonts.HersheyPlain, 1.0, Scalar.Red);
-                            frame.Rectangle(new Point(objectInfo.X, objectInfo.Y), new Point(objectInfo.X + objectInfo.Width, objectInfo.Y + objectInfo.Height), Scalar.Red);
-                        }
+                        PromptTrafficObjectInfoEvents(toi);
 
                         //g.DrawString($"{objectInfo.Id} L:{objectInfo.LaneIndex} O:{objectInfo.Offset.ToString("F1")}", new Font("Consolas", 10F), new SolidBrush(Color.White), new PointF(objectInfo.X + 10, objectInfo.Y + 10));
                         //g.DrawString($"{objectInfo.Id} {objectInfo.Offset.ToString("F0")}", new Font("Consolas", 10F), new SolidBrush(Color.White), new PointF(objectInfo.X + 10, objectInfo.Y + 10));
@@ -144,6 +130,59 @@ namespace Overlord.UI.ConsoleApp
                 }
 
                 sw.Reset();
+            }
+        }
+
+        private static string CheckTrafficObjectInfoStatus(TrafficObjectInfo objectInfo)
+        {
+            string message = string.Empty;
+
+            if (objectInfo.InStatusSlowSpeed)
+            {
+                message += "S ";
+                //Console.WriteLine($"慢速事件：{objectInfo.Id}");
+            }
+
+            if (objectInfo.InStatusEnterForbiddenRegion)
+            {
+                message += "F ";
+                //Console.WriteLine($"禁行事件：{objectInfo.Id}");
+            }
+
+            if (objectInfo.InStatusStopped)
+            {
+                message += "P ";
+                //Console.WriteLine($"禁停事件：{objectInfo.Id}");
+            }
+
+            return message;
+        }
+
+        private static void PromptTrafficObjectInfoEvents(TrafficObjectInfo objectInfo)
+        {
+            if (objectInfo.EventSlowVehicleRaised)
+            {
+                Console.WriteLine($"车辆慢速事件：{objectInfo.Id}");
+            }
+
+            if (objectInfo.EventForbiddenTypeRaised)
+            {
+                Console.WriteLine($"禁行闯入事件：{objectInfo.Id}");
+            }
+
+            if (objectInfo.EventStoppedVehicleRaised)
+            {
+                Console.WriteLine($"车辆停驶事件：{objectInfo.Id}");
+            }
+
+            if (objectInfo.EventRoadAmbleRaised)
+            {
+                Console.WriteLine($"道路缓行事件：车道{objectInfo.LaneIndex}");
+            }
+
+            if (objectInfo.EventRoadJamRaised)
+            {
+                Console.WriteLine($"道路拥堵事件：车道{objectInfo.LaneIndex}");
             }
         }
 

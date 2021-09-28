@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OpenCvSharp;
+﻿using OpenCvSharp;
 using Overlord.Core.DataStructures;
 using Overlord.Core.Entities.Frame;
 using Overlord.Core.Entities.Road;
 using Overlord.Domain.Event;
+using System;
+using System.Collections.Concurrent;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace Overlord.Domain.EventAlg
 {
@@ -17,32 +14,50 @@ namespace Overlord.Domain.EventAlg
     {
         private readonly int _fps;
         private readonly ConcurrentDictionary<string, FixedSizedQueue<TrafficObjectInfo>> _toiHistory;
+        private FixedSizedQueue<long> _recentSlowEvents;
 
         // image and video capture base dir.
-        private readonly string _snapshotDir;
-        private readonly string _videoDir;
+        private readonly string _slowSnapshotDir;
+        private readonly string _slowVideoDir;
+        private readonly string _ambleSnapshotDir;
+        private readonly string _ambleVideoDir;
 
         private int _slowVehicleSpeedUpperLimit;
         private int _slowVehicleSpeedLowerLimit;
         private int _slowVehicleEnableDurationSec;
+        private int _minSlowEventsToJudgeAmble;
+        private int _ambleJudgeDurationSec;
 
         public SlowVehicleEventAlg(string captureRoot, int fps, EventProcessor eventProcessor, EventPublisher eventPublisher)
             : base(captureRoot, eventProcessor, eventPublisher)
         {
-            _toiHistory = new ConcurrentDictionary<string, FixedSizedQueue<TrafficObjectInfo>>();
             _fps = fps;
+            _toiHistory = new ConcurrentDictionary<string, FixedSizedQueue<TrafficObjectInfo>>();
 
-            _snapshotDir = Path.Combine(_captureRoot, "Snapshot", "Slow");
-            _videoDir = Path.Combine(_captureRoot, "Video", "Slow");
+            _slowSnapshotDir = Path.Combine(_captureRoot, "Snapshot", "Slow");
+            _slowVideoDir = Path.Combine(_captureRoot, "Video", "Slow");
 
-            if (!Directory.Exists(_snapshotDir))
+            if (!Directory.Exists(_slowSnapshotDir))
             {
-                Directory.CreateDirectory(_snapshotDir);
+                Directory.CreateDirectory(_slowSnapshotDir);
             }
 
-            if (!Directory.Exists(_videoDir))
+            if (!Directory.Exists(_slowVideoDir))
             {
-                Directory.CreateDirectory(_videoDir);
+                Directory.CreateDirectory(_slowVideoDir);
+            }
+
+            _ambleSnapshotDir = Path.Combine(_captureRoot, "Snapshot", "Amble");
+            _ambleVideoDir = Path.Combine(_captureRoot, "Video", "Amble");
+
+            if (!Directory.Exists(_ambleSnapshotDir))
+            {
+                Directory.CreateDirectory(_ambleSnapshotDir);
+            }
+
+            if (!Directory.Exists(_ambleVideoDir))
+            {
+                Directory.CreateDirectory(_ambleVideoDir);
             }
         }
 
@@ -52,6 +67,10 @@ namespace Overlord.Domain.EventAlg
             _slowVehicleSpeedUpperLimit = roadDefinition.SlowVehicleSpeedUpperLimit;
             _slowVehicleSpeedLowerLimit = roadDefinition.SlowVehicleSpeedLowerLimit;
             _slowVehicleEnableDurationSec = roadDefinition.SlowVehicleEnableDurationSec;
+            _minSlowEventsToJudgeAmble = roadDefinition.MinSlowEventsToJudgeAmble;
+            _ambleJudgeDurationSec = roadDefinition.AmbleJudgeDurationSec;
+
+            _recentSlowEvents = new FixedSizedQueue<long>(_minSlowEventsToJudgeAmble);
         }
 
         public override void DetectEvent(TrafficObjectInfo toi, FrameInfo frameInfo)
@@ -78,23 +97,25 @@ namespace Overlord.Domain.EventAlg
 
             if (queue.IsPositive())
             {
-                toi.InEventSlowSpeed = true;
+                toi.InStatusSlowSpeed = true;
 
                 Task.Run(async () =>
                 {
                     if (_eventProcessor.IsEventNeedTrigger($"S_{toi.Id}"))
                     {
+                        toi.EventSlowVehicleRaised = true;
+
                         string timestamp = DateTime.Now.ToString(TimestampPattern);
                         string normalizedFilename = toi.Id.Replace(":", "_");
 
                         // take snapshot
                         Mat eventSceneImage = _snapshotService.GetSceneByByFrameId(toi.FrameId);
-                        string snapshotFile = Path.Combine(_snapshotDir, $"{timestamp}_{normalizedFilename}.jpg");
+                        string snapshotFile = Path.Combine(_slowSnapshotDir, $"{timestamp}_{normalizedFilename}.jpg");
                         eventSceneImage.Rectangle(new Point(toi.X, toi.Y), new Point(toi.X + toi.Width, toi.Y + toi.Height), Scalar.Red, 1);
                         eventSceneImage.SaveImage(snapshotFile);
 
                         // save video
-                        string videoFile = Path.Combine(_videoDir, $"{timestamp}_{normalizedFilename}.mp4");
+                        string videoFile = Path.Combine(_slowVideoDir, $"{timestamp}_{normalizedFilename}.mp4");
                         _snapshotService.GenerateSnapVideo(videoFile);
 
                         // report event
@@ -103,8 +124,49 @@ namespace Overlord.Domain.EventAlg
                         slowVehicleEvent.LocalImageFilePath = snapshotFile;
                         slowVehicleEvent.LocalVideoFilePath = videoFile;
                         bool result = await _eventPublisher.Publish(slowVehicleEvent);
+
+                        // determined amble event
+                        await JudgeAndReportAmble(toi);
                     }
                 });
+            }
+        }
+
+        private async Task JudgeAndReportAmble(TrafficObjectInfo toi)
+        {
+            long ticks = DateTime.Now.Ticks;
+            _recentSlowEvents.Enqueue(ticks);
+
+            if ((_recentSlowEvents.Count() == _minSlowEventsToJudgeAmble) && (_recentSlowEvents.Peek(out var fist)))
+            {
+                long elapseSeconds = (ticks - fist) / 10000000;
+                if (elapseSeconds < _ambleJudgeDurationSec)
+                {
+                    if (_eventProcessor.IsEventNeedTrigger($"Amble"))
+                    {
+                        toi.EventRoadAmbleRaised = true;
+
+                        string timestamp = DateTime.Now.ToString(TimestampPattern);
+                        string normalizedFilename = $"Lane_{toi.LaneIndex}";
+
+                        // take snapshot
+                        Mat eventSceneImage = _snapshotService.GetSceneByByFrameId(toi.FrameId);
+                        string snapshotFile = Path.Combine(_ambleSnapshotDir, $"{timestamp}_{normalizedFilename}.jpg");
+                        eventSceneImage.Rectangle(new Point(toi.X, toi.Y), new Point(toi.X + toi.Width, toi.Y + toi.Height), Scalar.Red, 1);
+                        eventSceneImage.SaveImage(snapshotFile);
+
+                        // save video
+                        string videoFile = Path.Combine(_ambleVideoDir, $"{timestamp}_{normalizedFilename}.mp4");
+                        _snapshotService.GenerateSnapVideo(videoFile);
+
+                        // report event
+                        TrafficEvent roadAmbleEvent = _eventProcessor.CreateRoadAmbleEvent(_roadDefinition.DeviceNo, toi.LaneIndex, toi.TypeId, toi.TrackingId);
+                        roadAmbleEvent.EventCategory = "Amble";
+                        roadAmbleEvent.LocalImageFilePath = snapshotFile;
+                        roadAmbleEvent.LocalVideoFilePath = videoFile;
+                        bool result = await _eventPublisher.Publish(roadAmbleEvent);
+                    }
+                }
             }
         }
 

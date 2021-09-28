@@ -105,35 +105,35 @@ namespace Overlord.Domain.Services
 
         public void GenerateSnapVideo(string videoFile)
         {
-            Task.Run(() =>
-            {
-                int imageWidth = 1920;
-                int imageHeight = 1080;
+            //Task.Run(() =>
+            //{
+            //    int imageWidth = 1920;
+            //    int imageHeight = 1080;
 
-                List<long> frameIds = _scenesOfFrame.Keys.ToList();
-                long id = frameIds[0];
-                if (_scenesOfFrame.TryGetValue(id, out var sample))
-                {
-                    imageWidth = sample.Width;
-                    imageHeight = sample.Height;
-                }
+            //    List<long> frameIds = _scenesOfFrame.Keys.ToList();
+            //    long id = frameIds[0];
+            //    if (_scenesOfFrame.TryGetValue(id, out var sample))
+            //    {
+            //        imageWidth = sample.Width;
+            //        imageHeight = sample.Height;
+            //    }
 
-                using var writer = new VideoWriter();
-                var success = writer.Open(videoFile, VideoCaptureAPIs.ANY, FourCC.MP4V, 25, new Size(imageWidth, imageHeight));
-                if (!success)
-                {
-                    return;
-                }
+            //    using var writer = new VideoWriter();
+            //    var success = writer.Open(videoFile, VideoCaptureAPIs.ANY, FourCC.MP4V, 25, new Size(imageWidth, imageHeight));
+            //    if (!success)
+            //    {
+            //        return;
+            //    }
 
-                List<long> keys = _scenesOfFrame.Keys.OrderBy(id => id).ToList();
-                foreach (long frameId in keys)
-                {
-                    if (_scenesOfFrame.TryGetValue(frameId, out var image))
-                    {
-                        writer.Write(image);
-                    }
-                }
-            });
+            //    List<long> keys = _scenesOfFrame.Keys.OrderBy(id => id).ToList();
+            //    foreach (long frameId in keys)
+            //    {
+            //        if (_scenesOfFrame.TryGetValue(frameId, out var image))
+            //        {
+            //            writer.Write(image);
+            //        }
+            //    }
+            //});
         }
 
         public void OnCompleted()

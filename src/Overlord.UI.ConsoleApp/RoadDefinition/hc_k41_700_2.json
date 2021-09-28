@@ -19,6 +19,10 @@
   "SlowVehicleSpeedUpperLimit": 30,
   "SlowVehicleSpeedLowerLimit": 10,
   "SlowVehicleEnableDurationSec": 5,
+  "MinSlowEventsToJudgeAmble": 5,
+  "AmbleJudgeDurationSec": 10,
+  "MinStopEventsToJudgeJam": 5,
+  "JamJudgeDurationSec": 10,
   "AnalysisAreas": [
     {
       "Name": "driveway region",

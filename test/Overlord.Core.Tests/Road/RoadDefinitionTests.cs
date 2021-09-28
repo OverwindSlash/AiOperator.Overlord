@@ -16,7 +16,8 @@ namespace Overlord.Core.Tests.Road
                                 "\"IsObjectAnalyzableRetain\":false,\"MaxObjectSnapshots\":10,\"MotionCalculationFrameInterval\":10," +
                                 "\"UvQuadrilateral\":[1326,598,901,620,1025,299,1131,276],\"LonLatQuadrilateral\":[120.658646,31.224102,120.65872,31.224012,120.65726,31.223541,120.656845,31.223684]," +
                                 "\"IsDoubleLineCounting\":false,\"DriveLaneForbiddenDurationFrame\":10,\"EmergencyLaneForbiddenDurationFrame\":15,\"StopEventSpeedUpperLimit\":10,\"StopEventEnableDurationSec\":5," +
-                                "\"SlowVehicleSpeedUpperLimit\":30,\"SlowVehicleSpeedLowerLimit\":10,\"SlowVehicleEnableDurationSec\":5," + 
+                                "\"SlowVehicleSpeedUpperLimit\":30,\"SlowVehicleSpeedLowerLimit\":10,\"SlowVehicleEnableDurationSec\":5,\"MinSlowEventsToJudgeAmble\":5,\"AmbleJudgeDurationSec\":10," +
+                                "\"MinStopEventsToJudgeJam\":5,\"JamJudgeDurationSec\":10," + 
                                 "\"AnalysisAreas\":[" +
                                 "{\"Name\":\"driveway region\",\"Points\":[" +
                                 "{\"NormalizedX\":0,\"NormalizedY\":0.6462962962962963}," +
@@ -106,6 +107,11 @@ namespace Overlord.Core.Tests.Road
             roadDefinition.SlowVehicleSpeedUpperLimit = 30;
             roadDefinition.SlowVehicleSpeedLowerLimit = 10;
             roadDefinition.SlowVehicleEnableDurationSec = 5;
+            roadDefinition.MinSlowEventsToJudgeAmble = 5;
+            roadDefinition.AmbleJudgeDurationSec = 10;
+            roadDefinition.MinStopEventsToJudgeJam = 5;
+            roadDefinition.JamJudgeDurationSec = 10;
+
 
             {
                 // analysis area
@@ -304,6 +310,10 @@ namespace Overlord.Core.Tests.Road
             roadDefinition.SlowVehicleSpeedUpperLimit = 30;
             roadDefinition.SlowVehicleSpeedLowerLimit = 10;
             roadDefinition.SlowVehicleEnableDurationSec = 5;
+            roadDefinition.MinSlowEventsToJudgeAmble = 5;
+            roadDefinition.AmbleJudgeDurationSec = 10;
+            roadDefinition.MinStopEventsToJudgeJam = 5;
+            roadDefinition.JamJudgeDurationSec = 10;
 
             {
                 // tracking area
@@ -461,6 +471,10 @@ namespace Overlord.Core.Tests.Road
             roadDefinition.SlowVehicleSpeedUpperLimit = 30;
             roadDefinition.SlowVehicleSpeedLowerLimit = 10;
             roadDefinition.SlowVehicleEnableDurationSec = 5;
+            roadDefinition.MinSlowEventsToJudgeAmble = 5;
+            roadDefinition.AmbleJudgeDurationSec = 10;
+            roadDefinition.MinStopEventsToJudgeJam = 5;
+            roadDefinition.JamJudgeDurationSec = 10;
 
             {
                 // tracking area
@@ -633,6 +647,10 @@ namespace Overlord.Core.Tests.Road
             roadDefinition.SlowVehicleSpeedUpperLimit = 30;
             roadDefinition.SlowVehicleSpeedLowerLimit = 10;
             roadDefinition.SlowVehicleEnableDurationSec = 5;
+            roadDefinition.MinSlowEventsToJudgeAmble = 5;
+            roadDefinition.AmbleJudgeDurationSec = 10;
+            roadDefinition.MinStopEventsToJudgeJam = 5;
+            roadDefinition.JamJudgeDurationSec = 10;
 
             {
                 // tracking area

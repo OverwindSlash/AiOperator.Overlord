@@ -80,7 +80,7 @@ namespace Overlord.Domain.EventAlg
                     return;
                 }
 
-                toi.InEventEnterForbiddenRegion = true;
+                toi.InStatusEnterForbiddenRegion = true;
 
                 bool isPositive = false;
                 if (lane.Type == LaneType.DriveLane)
@@ -88,7 +88,7 @@ namespace Overlord.Domain.EventAlg
                     if (!_driveLaneToiHistory.ContainsKey(toi.Id))
                     {
                         _driveLaneToiHistory.TryAdd(toi.Id, new FixedSizedQueue<TrafficObjectInfo>(
-                            _driveLaneForbiddenDurationFrame, item => item.InEventEnterForbiddenRegion));
+                            _driveLaneForbiddenDurationFrame, item => item.InStatusEnterForbiddenRegion));
                     }
 
                     FixedSizedQueue<TrafficObjectInfo> driveLaneHistory = _driveLaneToiHistory[toi.Id];
@@ -101,7 +101,7 @@ namespace Overlord.Domain.EventAlg
                     if (!_emergencyLaneToiHistory.ContainsKey(toi.Id))
                     {
                         _emergencyLaneToiHistory.TryAdd(toi.Id, new FixedSizedQueue<TrafficObjectInfo>(
-                            _emergencyLaneForbiddenDurationFrame, item => item.InEventEnterForbiddenRegion));
+                            _emergencyLaneForbiddenDurationFrame, item => item.InStatusEnterForbiddenRegion));
                     }
 
                     FixedSizedQueue<TrafficObjectInfo> emergencyLaneHistory = _emergencyLaneToiHistory[toi.Id];
@@ -115,6 +115,8 @@ namespace Overlord.Domain.EventAlg
                     {
                         if (_eventProcessor.IsEventNeedTrigger($"F_{toi.Id}"))
                         {
+                            toi.EventForbiddenTypeRaised = true;
+
                             string timestamp = DateTime.Now.ToString(TimestampPattern);
                             string normalizedFilename = toi.Id.Replace(":", "_");
 
@@ -129,7 +131,7 @@ namespace Overlord.Domain.EventAlg
                             _snapshotService.GenerateSnapVideo(videoFile);
 
                             // report event
-                            TrafficEvent forbiddenEvent = _eventProcessor.CreateForbiddenEvent(_roadDefinition.DeviceNo, toi.LaneIndex, toi.TypeId, toi.TrackingId);
+                            TrafficEvent forbiddenEvent = _eventProcessor.CreateForbiddenTypeEvent(_roadDefinition.DeviceNo, toi.LaneIndex, toi.TypeId, toi.TrackingId);
                             forbiddenEvent.EventCategory = "Forbidden";
                             forbiddenEvent.LocalImageFilePath = snapshotFile;
                             forbiddenEvent.LocalVideoFilePath = videoFile;
