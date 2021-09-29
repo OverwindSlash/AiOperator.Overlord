@@ -17,6 +17,9 @@
     <None Update="RoadDefinition\cj_k32_500.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="RoadDefinition\hc_k29_100.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="RoadDefinition\hc_k34_700_gx.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
