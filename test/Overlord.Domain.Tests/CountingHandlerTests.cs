@@ -60,6 +60,7 @@ namespace Overlord.Domain.Tests
         public void TestCountingHandler_DoubleLaneCounting()
         {
             RoadDefinition roadDefinition = RoadDefinition.LoadFromJson("RoadDefinition/hc_k41_700_2.json");
+            roadDefinition.IsDoubleLineCounting = true;
             roadDefinition.MotionCalculationFrameInterval = 5;
             roadDefinition.SetImageSize(1920, 1080);
 
