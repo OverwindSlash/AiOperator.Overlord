@@ -80,10 +80,12 @@ namespace Overlord.UI.ConsoleApp
 
                 // DrawRegion(pipeline.RoadDef.AnalysisAreas[0], frame, Scalar.Red);
                 // DrawRegion(pipeline.RoadDef.ExcludedAreas[0], frame, Scalar.Red);
-                // DrawRegion(pipeline.RoadDef.Lanes[0], frame, Scalar.Blue);
-                // DrawRegion(pipeline.RoadDef.Lanes[1], frame, Scalar.White);
-                // DrawRegion(pipeline.RoadDef.Lanes[2], frame, Scalar.Yellow);
-                // DrawRegion(pipeline.RoadDef.Lanes[3], frame, Scalar.Blue);
+                DrawRegion(pipeline.RoadDef.Lanes[0], frame, Scalar.Blue);
+                DrawRegion(pipeline.RoadDef.Lanes[1], frame, Scalar.White);
+                DrawRegion(pipeline.RoadDef.Lanes[2], frame, Scalar.Yellow);
+                DrawRegion(pipeline.RoadDef.Lanes[3], frame, Scalar.Blue);
+                DrawRegion(pipeline.RoadDef.Lanes[4], frame, Scalar.White);
+                DrawRegion(pipeline.RoadDef.Lanes[5], frame, Scalar.Yellow);
 
                 foreach (TrafficObjectInfo toi in frameInfo.ObjectInfos)
                 {
