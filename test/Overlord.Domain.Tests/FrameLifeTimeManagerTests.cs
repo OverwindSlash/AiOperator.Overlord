@@ -53,19 +53,19 @@ namespace Overlord.Domain.Tests
             FrameInfo fi1 = new FrameInfo(1L, new Mat());
             List<TrafficObjectInfo> tois1 = new List<TrafficObjectInfo>();
             tois1.Add(new TrafficObjectInfo() {Type = "car", TrackingId = 1});
-            fi1.ObjectInfos = tois1;
+            fi1.TrafficObjectInfos = tois1;
 
             FrameInfo fi2 = new FrameInfo(2L, new Mat());
             List<TrafficObjectInfo> tois2 = new List<TrafficObjectInfo>();
             tois2.Add(new TrafficObjectInfo() { Type = "car", TrackingId = 1 });
             tois2.Add(new TrafficObjectInfo() { Type = "person", TrackingId = 1 });
-            fi2.ObjectInfos = tois2;
+            fi2.TrafficObjectInfos = tois2;
 
             FrameInfo fi3 = new FrameInfo(3L, new Mat());
             List<TrafficObjectInfo> tois3 = new List<TrafficObjectInfo>();
             tois3.Add(new TrafficObjectInfo() { Type = "person", TrackingId = 2 });
             tois3.Add(new TrafficObjectInfo() { Type = "truck", TrackingId = 1 });
-            fi3.ObjectInfos = tois3;
+            fi3.TrafficObjectInfos = tois3;
 
 
             frameLtManager.AddFrameInfo(fi1);
@@ -94,7 +94,7 @@ namespace Overlord.Domain.Tests
             FrameInfo fi1 = Substitute.For<FrameInfo>(1L, fi1Scene);
             List<TrafficObjectInfo> tois1 = new List<TrafficObjectInfo>();
             tois1.Add(new TrafficObjectInfo() { Type = "car", TrackingId = 1 });
-            fi1.ObjectInfos = tois1;
+            fi1.TrafficObjectInfos = tois1;
 
 
             Mat fi2Scene = Substitute.For<Mat>();
@@ -102,24 +102,24 @@ namespace Overlord.Domain.Tests
             List<TrafficObjectInfo> tois2 = new List<TrafficObjectInfo>();
             tois2.Add(new TrafficObjectInfo() { Type = "car", TrackingId = 1 });
             tois2.Add(new TrafficObjectInfo() { Type = "person", TrackingId = 1 });
-            fi2.ObjectInfos = tois2;
+            fi2.TrafficObjectInfos = tois2;
 
             FrameInfo fi3 = new FrameInfo(3L, new Mat());
             List<TrafficObjectInfo> tois3 = new List<TrafficObjectInfo>();
             tois3.Add(new TrafficObjectInfo() { Type = "person", TrackingId = 2 });
             tois3.Add(new TrafficObjectInfo() { Type = "truck", TrackingId = 1 });
-            fi3.ObjectInfos = tois3;
+            fi3.TrafficObjectInfos = tois3;
 
             FrameInfo fi4 = new FrameInfo(3L, new Mat());
             List<TrafficObjectInfo> tois4 = new List<TrafficObjectInfo>();
             tois4.Add(new TrafficObjectInfo() { Type = "person", TrackingId = 2 });
             tois4.Add(new TrafficObjectInfo() { Type = "truck", TrackingId = 1 });
-            fi4.ObjectInfos = tois4;
+            fi4.TrafficObjectInfos = tois4;
 
             FrameInfo fi5 = new FrameInfo(3L, new Mat());
             List<TrafficObjectInfo> tois5 = new List<TrafficObjectInfo>();
             tois5.Add(new TrafficObjectInfo() { Type = "truck", TrackingId = 1 });
-            fi5.ObjectInfos = tois5;
+            fi5.TrafficObjectInfos = tois5;
 
 
             frameLtManager.AddFrameInfo(fi1);
@@ -167,25 +167,25 @@ namespace Overlord.Domain.Tests
             FrameInfo fi1 = new FrameInfo(1L, new Mat());
             List<TrafficObjectInfo> tois1 = new List<TrafficObjectInfo>();
             tois1.Add(new TrafficObjectInfo() { Type = "car", TrackingId = 1 });
-            fi1.ObjectInfos = tois1;
+            fi1.TrafficObjectInfos = tois1;
 
             FrameInfo fi2 = new FrameInfo(2L, new Mat());
             List<TrafficObjectInfo> tois2 = new List<TrafficObjectInfo>();
             tois2.Add(new TrafficObjectInfo() { Type = "car", TrackingId = 1 });
             tois2.Add(new TrafficObjectInfo() { Type = "person", TrackingId = 1 });
-            fi2.ObjectInfos = tois2;
+            fi2.TrafficObjectInfos = tois2;
 
             FrameInfo fi3 = new FrameInfo(3L, new Mat());
             List<TrafficObjectInfo> tois3 = new List<TrafficObjectInfo>();
             tois3.Add(new TrafficObjectInfo() { Type = "person", TrackingId = 2 });
             tois3.Add(new TrafficObjectInfo() { Type = "truck", TrackingId = 1 });
-            fi3.ObjectInfos = tois3;
+            fi3.TrafficObjectInfos = tois3;
 
             FrameInfo fi4 = new FrameInfo(3L, new Mat());
             List<TrafficObjectInfo> tois4 = new List<TrafficObjectInfo>();
             tois4.Add(new TrafficObjectInfo() { Type = "person", TrackingId = 2 });
             tois4.Add(new TrafficObjectInfo() { Type = "truck", TrackingId = 1 });
-            fi4.ObjectInfos = tois4;
+            fi4.TrafficObjectInfos = tois4;
 
             frameLtManager.AddFrameInfo(fi1);
             frameLtManager.AddFrameInfo(fi2);
@@ -198,7 +198,7 @@ namespace Overlord.Domain.Tests
             FrameInfo fi5 = new FrameInfo(3L, new Mat());
             List<TrafficObjectInfo> tois5 = new List<TrafficObjectInfo>();
             tois5.Add(new TrafficObjectInfo() { Type = "truck", TrackingId = 1 });
-            fi5.ObjectInfos = tois5;
+            fi5.TrafficObjectInfos = tois5;
 
             frameLtManager.AddFrameInfo(fi5);
 
@@ -217,19 +217,19 @@ namespace Overlord.Domain.Tests
             FrameInfo fi1 = new FrameInfo(1L, new Mat());
             List<TrafficObjectInfo> tois1 = new List<TrafficObjectInfo>();
             tois1.Add(new TrafficObjectInfo() { Type = "car", TrackingId = 1 });
-            fi1.ObjectInfos = tois1;
+            fi1.TrafficObjectInfos = tois1;
 
             FrameInfo fi2 = new FrameInfo(2L, new Mat());
             List<TrafficObjectInfo> tois2 = new List<TrafficObjectInfo>();
             tois2.Add(new TrafficObjectInfo() { Type = "car", TrackingId = 1 });
             tois2.Add(new TrafficObjectInfo() { Type = "person", TrackingId = 1 });
-            fi2.ObjectInfos = tois2;
+            fi2.TrafficObjectInfos = tois2;
 
             FrameInfo fi3 = new FrameInfo(3L, new Mat());
             List<TrafficObjectInfo> tois3 = new List<TrafficObjectInfo>();
             tois3.Add(new TrafficObjectInfo() { Type = "person", TrackingId = 2 });
             tois3.Add(new TrafficObjectInfo() { Type = "truck", TrackingId = 1 });
-            fi3.ObjectInfos = tois3;
+            fi3.TrafficObjectInfos = tois3;
 
             frameLtManager.AddFrameInfo(fi1);
             frameLtManager.AddFrameInfo(fi2);
@@ -242,7 +242,7 @@ namespace Overlord.Domain.Tests
             List<TrafficObjectInfo> tois4 = new List<TrafficObjectInfo>();
             tois4.Add(new TrafficObjectInfo() { Type = "person", TrackingId = 2 });
             tois4.Add(new TrafficObjectInfo() { Type = "truck", TrackingId = 1 });
-            fi4.ObjectInfos = tois4;
+            fi4.TrafficObjectInfos = tois4;
 
             frameLtManager.AddFrameInfo(fi4);
 

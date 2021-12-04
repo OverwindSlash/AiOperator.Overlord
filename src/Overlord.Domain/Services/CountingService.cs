@@ -74,7 +74,7 @@ namespace Overlord.Domain.Services
         {
             if (_objsCounted.ContainsKey(toi.Id))
             {
-                toi.IsCounted = true;
+                toi.WasCounted = true;
                 return;
             }
 

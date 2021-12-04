@@ -24,7 +24,7 @@ namespace Overlord.Domain.Handlers
 
         public override FrameInfo Analyze(FrameInfo frameInfo)
         {
-            foreach (TrafficObjectInfo toi in frameInfo.ObjectInfos)
+            foreach (TrafficObjectInfo toi in frameInfo.TrafficObjectInfos)
             {
                 _motionService.AddTrafficObjectInfoHistory(frameInfo.FrameId, toi);
             }

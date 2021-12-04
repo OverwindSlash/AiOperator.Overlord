@@ -72,7 +72,7 @@ namespace Overlord.Domain.Tests
             FrameInfo frameInfo = new FrameInfo(0L, mat);
             pipeline.Analyze(frameInfo);
 
-            Assert.AreEqual(14, frameInfo.ObjectInfos.Count);
+            Assert.AreEqual(14, frameInfo.TrafficObjectInfos.Count);
         }
 
         [Test]
@@ -98,7 +98,7 @@ namespace Overlord.Domain.Tests
             FrameInfo frameInfo = new FrameInfo(1L, mat);
             pipeline.Analyze(frameInfo);
 
-            Assert.AreEqual(14, frameInfo.ObjectInfos.Count);
+            Assert.AreEqual(14, frameInfo.TrafficObjectInfos.Count);
             Assert.AreEqual(1, snapshotHandler.Service.GetCacheSceneCount());
         }
     }

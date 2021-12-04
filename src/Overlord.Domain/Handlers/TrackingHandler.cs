@@ -15,7 +15,7 @@ namespace Overlord.Domain.Handlers
 
         public override FrameInfo Analyze(FrameInfo frameInfo)
         {
-            _tracker.Track(frameInfo.ObjectInfos);
+            _tracker.Track(frameInfo.TrafficObjectInfos);
             return frameInfo;
         }
     }

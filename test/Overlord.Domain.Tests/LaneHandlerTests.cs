@@ -38,10 +38,10 @@ namespace Overlord.Domain.Tests
             laneHandler.SetRoadDefinition(roadDefinition);
 
             laneHandler.Analyze(frameInfo);
-            Assert.AreEqual(10, frameInfo.ObjectInfos.Count);
-            foreach (TrafficObjectInfo toi in frameInfo.ObjectInfos)
+            Assert.AreEqual(10, frameInfo.TrafficObjectInfos.Count);
+            foreach (TrafficObjectInfo toi in frameInfo.TrafficObjectInfos)
             {
-                Assert.True(toi.IsLaneCalculated);
+                Assert.True(toi.WasLaneCalculated);
             }
 
             // foreach (Lane lane in roadDefinition.Lanes)
@@ -82,17 +82,17 @@ namespace Overlord.Domain.Tests
             laneHandler.SetRoadDefinition(roadDefinition);
             laneHandler.Analyze(frameInfo);
 
-            Assert.AreEqual(10, frameInfo.ObjectInfos.Count);
-            Assert.AreEqual(3, frameInfo.ObjectInfos[0].LaneIndex); // truck:1
-            Assert.AreEqual(3, frameInfo.ObjectInfos[1].LaneIndex); // truck:2
-            Assert.AreEqual(2, frameInfo.ObjectInfos[2].LaneIndex); // truck:3
-            Assert.AreEqual(4, frameInfo.ObjectInfos[3].LaneIndex); // person:1
-            Assert.AreEqual(-1, frameInfo.ObjectInfos[4].LaneIndex); // car:1, out of analysis region
-            Assert.AreEqual(2, frameInfo.ObjectInfos[5].LaneIndex); // car:2
-            Assert.AreEqual(-1, frameInfo.ObjectInfos[6].LaneIndex); // car:3, out of analysis region
-            Assert.AreEqual(3, frameInfo.ObjectInfos[7].LaneIndex); // car:4
-            Assert.AreEqual(-1, frameInfo.ObjectInfos[8].LaneIndex); // car:5, out of analysis region
-            Assert.AreEqual(4, frameInfo.ObjectInfos[9].LaneIndex); // car:6
+            Assert.AreEqual(10, frameInfo.TrafficObjectInfos.Count);
+            Assert.AreEqual(3, frameInfo.TrafficObjectInfos[0].LaneIndex); // truck:1
+            Assert.AreEqual(3, frameInfo.TrafficObjectInfos[1].LaneIndex); // truck:2
+            Assert.AreEqual(2, frameInfo.TrafficObjectInfos[2].LaneIndex); // truck:3
+            Assert.AreEqual(4, frameInfo.TrafficObjectInfos[3].LaneIndex); // person:1
+            Assert.AreEqual(-1, frameInfo.TrafficObjectInfos[4].LaneIndex); // car:1, out of analysis region
+            Assert.AreEqual(2, frameInfo.TrafficObjectInfos[5].LaneIndex); // car:2
+            Assert.AreEqual(-1, frameInfo.TrafficObjectInfos[6].LaneIndex); // car:3, out of analysis region
+            Assert.AreEqual(3, frameInfo.TrafficObjectInfos[7].LaneIndex); // car:4
+            Assert.AreEqual(-1, frameInfo.TrafficObjectInfos[8].LaneIndex); // car:5, out of analysis region
+            Assert.AreEqual(4, frameInfo.TrafficObjectInfos[9].LaneIndex); // car:6
         }
     }
 }

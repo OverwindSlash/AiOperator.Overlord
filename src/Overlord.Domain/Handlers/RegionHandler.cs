@@ -21,7 +21,7 @@ namespace Overlord.Domain.Handlers
 
         public override FrameInfo Analyze(FrameInfo frameInfo)
         {
-            _regionService.DetermindAnalysisObjects(frameInfo.ObjectInfos);
+            _regionService.DetermindAnalysisObjects(frameInfo.TrafficObjectInfos);
             return frameInfo;
         }
     }

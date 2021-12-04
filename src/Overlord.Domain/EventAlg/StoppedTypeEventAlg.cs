@@ -95,7 +95,7 @@ namespace Overlord.Domain.EventAlg
                 return;
             }
 
-            if (!toi.IsMotionCalculated)
+            if (!toi.WasMotionCalculated)
             {
                 return;
             }

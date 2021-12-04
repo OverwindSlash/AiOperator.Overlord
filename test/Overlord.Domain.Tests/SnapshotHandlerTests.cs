@@ -23,7 +23,7 @@ namespace Overlord.Domain.Tests
 
             FrameInfo frameInfo = new FrameInfo(1L, mat);
             string json = File.ReadAllText("Json/Traffic001_AnalysisResult.json");
-            frameInfo.ObjectInfos = JsonSerializer.Deserialize<List<TrafficObjectInfo>>(json);
+            frameInfo.TrafficObjectInfos = JsonSerializer.Deserialize<List<TrafficObjectInfo>>(json);
 
             SnapshotHandler handler = new SnapshotHandler();
             handler.SetRoadDefinition(roadDefinition);

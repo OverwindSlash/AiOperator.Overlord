@@ -40,8 +40,8 @@ namespace Overlord.Domain.Tests
 
                 FrameInfo frameInfo = new FrameInfo(i, mat);
                 string json = File.ReadAllText($"Json/pl_0000{i:D2}.json");
-                frameInfo.ObjectInfos = JsonSerializer.Deserialize<List<TrafficObjectInfo>>(json);
-                foreach (TrafficObjectInfo toi in frameInfo.ObjectInfos)
+                frameInfo.TrafficObjectInfos = JsonSerializer.Deserialize<List<TrafficObjectInfo>>(json);
+                foreach (TrafficObjectInfo toi in frameInfo.TrafficObjectInfos)
                 {
                     toi.FrameId = frameInfo.FrameId;
                     toi.TimeStamp = timestamp.AddMilliseconds(200 * i);
@@ -82,8 +82,8 @@ namespace Overlord.Domain.Tests
 
                 FrameInfo frameInfo = new FrameInfo(i, mat);
                 string json = File.ReadAllText($"Json/count_0000{i:D2}.json");
-                frameInfo.ObjectInfos = JsonSerializer.Deserialize<List<TrafficObjectInfo>>(json);
-                foreach (TrafficObjectInfo toi in frameInfo.ObjectInfos)
+                frameInfo.TrafficObjectInfos = JsonSerializer.Deserialize<List<TrafficObjectInfo>>(json);
+                foreach (TrafficObjectInfo toi in frameInfo.TrafficObjectInfos)
                 {
                     toi.FrameId = frameInfo.FrameId;
                     toi.TimeStamp = timestamp.AddMilliseconds(200 * i);
@@ -125,8 +125,8 @@ namespace Overlord.Domain.Tests
 
                 FrameInfo frameInfo = new FrameInfo(i, mat);
                 string json = File.ReadAllText($"Json/count_0000{i:D2}.json");
-                frameInfo.ObjectInfos = JsonSerializer.Deserialize<List<TrafficObjectInfo>>(json);
-                foreach (TrafficObjectInfo toi in frameInfo.ObjectInfos)
+                frameInfo.TrafficObjectInfos = JsonSerializer.Deserialize<List<TrafficObjectInfo>>(json);
+                foreach (TrafficObjectInfo toi in frameInfo.TrafficObjectInfos)
                 {
                     toi.FrameId = frameInfo.FrameId;
                     toi.TimeStamp = timestamp.AddMilliseconds(200 * i);
@@ -170,8 +170,8 @@ namespace Overlord.Domain.Tests
 
                 FrameInfo frameInfo = new FrameInfo(i, mat);
                 string json = File.ReadAllText($"Json/count_0000{i:D2}.json");
-                frameInfo.ObjectInfos = JsonSerializer.Deserialize<List<TrafficObjectInfo>>(json);
-                foreach (TrafficObjectInfo toi in frameInfo.ObjectInfos)
+                frameInfo.TrafficObjectInfos = JsonSerializer.Deserialize<List<TrafficObjectInfo>>(json);
+                foreach (TrafficObjectInfo toi in frameInfo.TrafficObjectInfos)
                 {
                     toi.FrameId = frameInfo.FrameId;
                     toi.TimeStamp = timestamp.AddMilliseconds(200 * i);

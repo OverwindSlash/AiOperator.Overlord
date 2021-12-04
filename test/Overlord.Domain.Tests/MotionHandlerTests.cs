@@ -25,7 +25,7 @@ namespace Overlord.Domain.Tests
 
             FrameInfo frameInfo = new FrameInfo(1L, mat);
             string json = File.ReadAllText("Json/pl_000001.json");
-            frameInfo.ObjectInfos = JsonSerializer.Deserialize<List<TrafficObjectInfo>>(json);
+            frameInfo.TrafficObjectInfos = JsonSerializer.Deserialize<List<TrafficObjectInfo>>(json);
 
             // mock speeder.
             ISpeeder speeder = Substitute.For<ISpeeder>();
@@ -47,7 +47,7 @@ namespace Overlord.Domain.Tests
 
             FrameInfo frameInfo = new FrameInfo(1L, mat);
             string json = File.ReadAllText("Json/pl_000001.json");
-            frameInfo.ObjectInfos = JsonSerializer.Deserialize<List<TrafficObjectInfo>>(json);
+            frameInfo.TrafficObjectInfos = JsonSerializer.Deserialize<List<TrafficObjectInfo>>(json);
 
             // mock speeder.
             ISpeeder speeder = Substitute.For<ISpeeder>();
@@ -56,7 +56,7 @@ namespace Overlord.Domain.Tests
             handler.SetRoadDefinition(roadDefinition);
             handler.Analyze(frameInfo);
 
-            Assert.AreEqual(1, handler.Service.GetMotionHistoryById(frameInfo.ObjectInfos[0].Id).Count);
+            Assert.AreEqual(1, handler.Service.GetMotionHistoryById(frameInfo.TrafficObjectInfos[0].Id).Count);
         }
 
         [Test]
@@ -70,13 +70,13 @@ namespace Overlord.Domain.Tests
             using Mat mat1 = new Mat("Images/pl_000001.jpg", ImreadModes.Color);
             FrameInfo frameInfo1 = new FrameInfo(1L, mat1);
             string json1 = File.ReadAllText("Json/pl_000001.json");
-            frameInfo1.ObjectInfos = JsonSerializer.Deserialize<List<TrafficObjectInfo>>(json1);
+            frameInfo1.TrafficObjectInfos = JsonSerializer.Deserialize<List<TrafficObjectInfo>>(json1);
 
             // frame2
             using Mat mat2 = new Mat("Images/pl_000002.jpg", ImreadModes.Color);
             FrameInfo frameInfo2 = new FrameInfo(2L, mat2);
             string json2 = File.ReadAllText("Json/pl_000002.json");
-            frameInfo2.ObjectInfos = JsonSerializer.Deserialize<List<TrafficObjectInfo>>(json2);
+            frameInfo2.TrafficObjectInfos = JsonSerializer.Deserialize<List<TrafficObjectInfo>>(json2);
 
             // mock speeder.
             ISpeeder speeder = Substitute.For<ISpeeder>();
@@ -126,8 +126,8 @@ namespace Overlord.Domain.Tests
 
                 FrameInfo frameInfo = new FrameInfo(i, mat);
                 string json = File.ReadAllText($"Json/pl_0000{i:D2}.json");
-                frameInfo.ObjectInfos = JsonSerializer.Deserialize<List<TrafficObjectInfo>>(json);
-                foreach (TrafficObjectInfo toi in frameInfo.ObjectInfos)
+                frameInfo.TrafficObjectInfos = JsonSerializer.Deserialize<List<TrafficObjectInfo>>(json);
+                foreach (TrafficObjectInfo toi in frameInfo.TrafficObjectInfos)
                 {
                     toi.FrameId = frameInfo.FrameId;
                     toi.TimeStamp = timestamp.AddMilliseconds(200 * i);

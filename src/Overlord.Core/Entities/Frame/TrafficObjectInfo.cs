@@ -8,12 +8,12 @@ namespace Overlord.Core.Entities.Frame
         public long FrameId { get; set; }
         public DateTime TimeStamp { get; set; }
 
-        // traffic object type and id
+        // object type and id
         public string Id => $"{Type}:{TrackingId}";
         public int TypeId { get; set; }
         public string Type { get; set; }
-        public long TrackingId { get; set; }
         public float Confidence { get; set; }
+        public long TrackingId { get; set; }
 
         // BBox
         public int X { get; set; }
@@ -31,12 +31,12 @@ namespace Overlord.Core.Entities.Frame
 
         // processed flag of each analysis step
         public bool IsAnalyzable { get; set; }
-        public bool IsCaptured { get; set; }
-        public bool IsLaneCalculated { get; set; }
-        public bool IsPlateRecognized { get; set; }
-        public bool IsMotionCalculated => MotionInfo.IsMotionCalculated;
-        public bool IsCounted { get; set; }
-        public bool IsEventDetected { get; set; }
+        public bool WasSnapshoted { get; set; }
+        public bool WasLaneCalculated { get; set; }
+        public bool WasPlateRecognized => PlateInfo.IsPlateRecognized;
+        public bool WasMotionCalculated => MotionInfo.IsMotionCalculated;
+        public bool WasCounted { get; set; }
+        public bool WasEventDetected { get; set; }
         
         // processed result of each analysis step
         public Mat Snapshot { get; set; }
@@ -45,28 +45,52 @@ namespace Overlord.Core.Entities.Frame
         public MotionInfo MotionInfo { get; set; }
 
         // Status occurred flag
+        // velocity related
         public bool InStatusSlowSpeed { get; set; }
         public bool InStatusFastSpeed { get; set; }
+        public bool InStatusStopped { get; set; }
+        public bool InStatusReversed { get; set; }
+
+        // region related
         public bool InStatusCrushLine { get; set; }
         public bool InStatusLaneChanged { get; set; }
         public bool InStatusEnterForbiddenRegion { get; set; }
-        public bool InStatusStopped { get; set; }
-        public bool InStatusReversed { get; set; }
+        
+        // detection related
         public bool InStatusWasteDropped { get; set; }
         public bool InStatusUnderConstruction { get; set; }
         public bool InStatusDangerousGoods { get; set; }
 
+        // TODO: Consider removing event raised flags to FrameInfo
         // Event raised
-        public bool EventStoppedVehicleRaised { get; set; }
-        public bool EventRoadJamRaised { get; set; }
+        // velocity related
         public bool EventSlowVehicleRaised { get; set; }
+        public bool EventFastVehicleRaised { get; set; }
+        public bool EventStoppedVehicleRaised { get; set; }
+        public bool EventReversedVehicleRaised { get; set; }
         public bool EventRoadAmbleRaised { get; set; }
+        public bool EventRoadJamRaised { get; set; }
+
+        // region related
+        public bool EventCrushLineRaised { get; set; }
+        public bool EventLaneChangedRaised { get; set; }
         public bool EventForbiddenTypeRaised { get; set; }
-        public bool InEventPersonTrespass { get; set; }
-        public bool InEventTruckTrespass { get; set; }
-        public bool InEventNonMotorTrespass { get; set; }
-        public bool InEventEmergencyLaneOccupied { get; set; }
+        public bool EventPersonTrespassRaised { get; set; }
+        public bool EventTruckTrespassRaised { get; set; }
+        public bool EventNonMotorTrespassRaised { get; set; }
+        public bool EventEmergencyLaneOccupiedRaised { get; set; }
         
+        // detection related
+        public bool EventWasteDroppedRaised { get; set; }
+        public bool EventUnderConstructionRaised { get; set; }
+        public bool EventDangerousGoodsRaised { get; set; }
+        
+        // complex event
+        public bool EventTrafficAccidentRaised { get; set; }
+        public bool EventRoadRescueRaised { get; set; }
+        public bool EventQueueOverrunRaised { get; set; }
+        public bool EventIllegalDropOffRaised { get; set; }
+        public bool EventCameraMovementRaised { get; set; }
 
         public TrafficObjectInfo()
         {
@@ -74,6 +98,7 @@ namespace Overlord.Core.Entities.Frame
             MotionInfo = new MotionInfo();
         }
 
+        // check whether a object is within this object
         public bool IsContainObject(TrafficObjectInfo toi)
         {
             return (X < toi.X) && (Y < toi.Y) && ((X + Width) > (toi.X + toi.Width)) &&

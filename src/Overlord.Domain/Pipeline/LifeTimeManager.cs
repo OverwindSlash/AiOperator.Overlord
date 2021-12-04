@@ -78,7 +78,7 @@ namespace Overlord.Domain.Pipeline
 
                 if (lastFrameInfo != null)
                 {
-                    foreach (TrafficObjectInfo toi in lastFrameInfo.ObjectInfos)
+                    foreach (TrafficObjectInfo toi in lastFrameInfo.TrafficObjectInfos)
                     {
                         int existenceCount = GetExistenceCountById(toi.Id);
 
@@ -105,12 +105,12 @@ namespace Overlord.Domain.Pipeline
 
         private void RemoveExpiredIdsFromIdInWhichSlots(FrameInfo lastFrameInfo, int currentIndex)
         {
-            if (lastFrameInfo.ObjectInfos == null)
+            if (lastFrameInfo.TrafficObjectInfos == null)
             {
                 return;
             }
 
-            foreach (TrafficObjectInfo toi in lastFrameInfo.ObjectInfos)
+            foreach (TrafficObjectInfo toi in lastFrameInfo.TrafficObjectInfos)
             {
                 if (!_idInWhichSlots.ContainsKey(toi.Id))
                 {
@@ -127,12 +127,12 @@ namespace Overlord.Domain.Pipeline
 
         private void AddNewIdsToIdInWhichSlots(FrameInfo newFrameInfo, int currentIndex)
         {
-            if (newFrameInfo.ObjectInfos == null)
+            if (newFrameInfo.TrafficObjectInfos == null)
             {
                 return;
             }
 
-            foreach (TrafficObjectInfo toi in newFrameInfo.ObjectInfos)
+            foreach (TrafficObjectInfo toi in newFrameInfo.TrafficObjectInfos)
             {
                 if (!_idInWhichSlots.ContainsKey(toi.Id))
                 {

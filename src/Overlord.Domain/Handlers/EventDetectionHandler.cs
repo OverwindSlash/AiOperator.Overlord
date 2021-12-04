@@ -50,7 +50,7 @@ namespace Overlord.Domain.Handlers
 
         public override FrameInfo Analyze(FrameInfo frameInfo)
         {
-            foreach (TrafficObjectInfo toi in frameInfo.ObjectInfos)
+            foreach (TrafficObjectInfo toi in frameInfo.TrafficObjectInfos)
             {
                 Parallel.ForEach(_eventAlgorithms, alg => alg.DetectEvent(toi, frameInfo));
             }

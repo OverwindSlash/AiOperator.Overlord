@@ -87,7 +87,7 @@ namespace Overlord.UI.ConsoleApp
                 DrawRegion(pipeline.RoadDef.Lanes[4], frame, Scalar.White);
                 DrawRegion(pipeline.RoadDef.Lanes[5], frame, Scalar.Yellow);
 
-                foreach (TrafficObjectInfo toi in frameInfo.ObjectInfos)
+                foreach (TrafficObjectInfo toi in frameInfo.TrafficObjectInfos)
                 {
                     if (toi.IsAnalyzable)
                     {

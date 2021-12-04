@@ -145,7 +145,7 @@ namespace Overlord.Domain.EventAlg
         private static bool IsInSpecialCases(TrafficObjectInfo toi, FrameInfo frameInfo)
         {
             // exclude person in vehicle
-            foreach (TrafficObjectInfo otherToi in frameInfo.ObjectInfos)
+            foreach (TrafficObjectInfo otherToi in frameInfo.TrafficObjectInfos)
             {
                 if (otherToi.IsContainObject(toi))
                 {

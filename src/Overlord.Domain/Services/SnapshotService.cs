@@ -48,7 +48,7 @@ namespace Overlord.Domain.Services
 
         public void AddSnapshotOfObjectById(FrameInfo frameInfo)
         {
-            foreach (TrafficObjectInfo toi in frameInfo.ObjectInfos)
+            foreach (TrafficObjectInfo toi in frameInfo.TrafficObjectInfos)
             {
                 if ((toi.X + toi.Width) > toi.Width || (toi.Y + toi.Height > toi.Height))
                 {

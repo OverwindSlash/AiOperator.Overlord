@@ -12,13 +12,13 @@ namespace Overlord.Core.Entities.Frame
 
         public Mat Scene { get; set; }
         
-        public List<TrafficObjectInfo> ObjectInfos { get; set; }
+        public List<TrafficObjectInfo> TrafficObjectInfos { get; set; }
 
         public FrameInfo(long frameId, Mat scene)
         {
             FrameId = frameId;
-            Scene = scene;
             TimeStamp = DateTime.Now;
+            Scene = scene;
         }
 
         public void Dispose()

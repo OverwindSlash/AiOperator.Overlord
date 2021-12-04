@@ -37,9 +37,9 @@ namespace Overlord.Domain.Tests
             FrameInfo frameInfo = new FrameInfo(1L, mat);
             handler.Analyze(frameInfo);
             
-            Assert.AreEqual(14, frameInfo.ObjectInfos.Count);
-            Assert.AreEqual(1L, frameInfo.ObjectInfos[0].FrameId);
-            Assert.AreEqual(frameInfo.TimeStamp, frameInfo.ObjectInfos[0].TimeStamp);
+            Assert.AreEqual(14, frameInfo.TrafficObjectInfos.Count);
+            Assert.AreEqual(1L, frameInfo.TrafficObjectInfos[0].FrameId);
+            Assert.AreEqual(frameInfo.TimeStamp, frameInfo.TrafficObjectInfos[0].TimeStamp);
         }
 
         [Test]
@@ -62,7 +62,7 @@ namespace Overlord.Domain.Tests
             FrameInfo frameInfo = new FrameInfo(0L, mat);
             handler.Analyze(frameInfo);
 
-            Assert.AreEqual(10, frameInfo.ObjectInfos.Count);
+            Assert.AreEqual(10, frameInfo.TrafficObjectInfos.Count);
         }
     }
 }
