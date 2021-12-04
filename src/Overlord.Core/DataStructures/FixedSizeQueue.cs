@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 
 namespace Overlord.Core.DataStructures
 {
-    public class FixedSizedQueue<T>
+    public class FixedSizeQueue<T> : IEnumerable<T>
     {
         private readonly ConcurrentQueue<T> _queue;
         private readonly int _sizeLimit;
@@ -15,13 +17,13 @@ namespace Overlord.Core.DataStructures
         private int _positiveItemCount;
         private readonly double _positivePercentThresh;
 
-        public FixedSizedQueue(int sizeLimit)
+        public FixedSizeQueue(int sizeLimit)
             : this(sizeLimit, _ => true)
         {
 
         }
 
-        public FixedSizedQueue(int sizeLimit, Predicate<T> conditionChecker, double positivePercentThresh = 0.7)
+        public FixedSizeQueue(int sizeLimit, Predicate<T> conditionChecker, double positivePercentThresh = 0.7)
         {
             if (sizeLimit < 1)
             {
@@ -58,6 +60,12 @@ namespace Overlord.Core.DataStructures
             }
         }
 
+        public T Dequeue()
+        {
+            _queue.TryDequeue(out T value);
+            return value;
+        }
+
         public bool IsPositive()
         {
             // The overall judgment can only be carried out when the queue is full
@@ -66,7 +74,7 @@ namespace Overlord.Core.DataStructures
                 return false;
             }
 
-            return _positiveItemCount / (double)_sizeLimit > _positivePercentThresh;
+            return _positiveItemCount / (double)_sizeLimit >= _positivePercentThresh;
         }
 
         public int Count()
@@ -78,5 +86,17 @@ namespace Overlord.Core.DataStructures
         {
             return _queue.TryPeek(out t);
         }
+        
+        #region Enumerator
+        public IEnumerator<T> GetEnumerator()
+        {
+            return _queue.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+        #endregion
     }
 }

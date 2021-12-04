@@ -62,6 +62,7 @@ namespace Overlord.Domain.Tests
             List<TrafficObjectInfo> trafficObjectInfos = new List<TrafficObjectInfo>();
             for (int i = 0; i < 14; i++)
             {
+            
                 trafficObjectInfos.Add(new TrafficObjectInfo());
             }
             detector.Detect(mat, 0.7f).Returns(trafficObjectInfos);

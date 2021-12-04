@@ -1,8 +1,10 @@
+using System;
+using System.Text;
+using NSubstitute;
 using NUnit.Framework;
 using Overlord.Core.DataStructures;
-using System;
 
-namespace InfraDataStructureTest
+namespace Overlord.Core.Tests.DataStructure
 {
     public class Tests
     {
@@ -57,7 +59,7 @@ namespace InfraDataStructureTest
         }
 
         [Test]
-        public void TestGetItem_WithoutOverflowIndex()
+        public void TestGetItem_WithNoOverflowIndex()
         {
             CircularList<int> intCircular = new CircularList<int>(10);
 
@@ -70,7 +72,7 @@ namespace InfraDataStructureTest
         }
         
         [Test]
-        public void TestGetItem_OverflowList_WithoutOverflowIndex()
+        public void TestGetItem_OverflowList_WithNoOverflowIndex()
         {
             CircularList<int> intCircular = new CircularList<int>(10);
 
@@ -94,16 +96,45 @@ namespace InfraDataStructureTest
             
             Assert.AreEqual(5, intCircular.GetItem(15));
         }
+        
+        [Test]
+        public void TestGetItem_OverflowList_WithOverflowIndex()
+        {
+            CircularList<int> intCircular = new CircularList<int>(10);
+
+            for (int i = 0; i < 20; i++)
+            {
+                intCircular.AddItem(i);
+            }
+            
+            Assert.AreEqual(14, intCircular.GetItem(14));
+        }
+        
+        [Test]
+        public void TestEnqueueDispose_WithExceedSizeLimit1()
+        {
+            CircularList<IDisposable> intCircular = new CircularList<IDisposable>(1);
+
+            IDisposable obj1 = Substitute.For<IDisposable>();
+            IDisposable obj2 = Substitute.For<IDisposable>();
+            
+            intCircular.AddItem(obj1);
+            intCircular.AddItem(obj2);
+
+            obj1.Received().Dispose();
+            obj2.DidNotReceive().Dispose();
+        }
 
         private static string ConvertToString(CircularList<int> intCircular)
         {
-            string result = String.Empty;
-            
+            StringBuilder builder = new StringBuilder();
             foreach (int item in intCircular)
             {
-                result += item.ToString();
-                result += ", ";
+                builder.Append(item.ToString());
+                builder.Append(", ");
             }
+
+            string result = builder.ToString();
             result = result.TrimEnd(' ');
             result = result.TrimEnd(',');
 

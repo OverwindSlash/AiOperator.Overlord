@@ -24,6 +24,10 @@ namespace Overlord.Core.Entities.Frame
         public void Dispose()
         {
             Scene?.Dispose();
+            foreach (TrafficObjectInfo trafficObjectInfo in TrafficObjectInfos)
+            {
+                trafficObjectInfo.Dispose();
+            }
         }
     }
 }

@@ -66,7 +66,6 @@ namespace Overlord.Core.DataStructures
         }
 
         #region Enumerator
-
         public IEnumerator<T> GetEnumerator()
         {
             return _slots.GetEnumerator();

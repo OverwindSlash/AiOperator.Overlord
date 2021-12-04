@@ -13,8 +13,8 @@ namespace Overlord.Domain.EventAlg
 {
     public class ForbiddenTypeEventAlg : EventAlgorithmBase, IObserver<ObjectExpiredEvent>
     {
-        private readonly ConcurrentDictionary<string, FixedSizedQueue<TrafficObjectInfo>> _driveLaneToiHistory;
-        private readonly ConcurrentDictionary<string, FixedSizedQueue<TrafficObjectInfo>> _emergencyLaneToiHistory;
+        private readonly ConcurrentDictionary<string, FixedSizeQueue<TrafficObjectInfo>> _driveLaneToiHistory;
+        private readonly ConcurrentDictionary<string, FixedSizeQueue<TrafficObjectInfo>> _emergencyLaneToiHistory;
 
         private int _driveLaneForbiddenDurationFrame;
         private int _emergencyLaneForbiddenDurationFrame;
@@ -29,8 +29,8 @@ namespace Overlord.Domain.EventAlg
         public ForbiddenTypeEventAlg(string captureRoot, EventProcessor eventProcessor, EventPublisher eventPublisher)
             : base(captureRoot, eventProcessor, eventPublisher)
         {
-            _driveLaneToiHistory = new ConcurrentDictionary<string, FixedSizedQueue<TrafficObjectInfo>>();
-            _emergencyLaneToiHistory = new ConcurrentDictionary<string, FixedSizedQueue<TrafficObjectInfo>>();
+            _driveLaneToiHistory = new ConcurrentDictionary<string, FixedSizeQueue<TrafficObjectInfo>>();
+            _emergencyLaneToiHistory = new ConcurrentDictionary<string, FixedSizeQueue<TrafficObjectInfo>>();
            
             _snapshotDir = Path.Combine(_captureRoot, "Snapshot", "Forbidden");
             _videoDir = Path.Combine(_captureRoot, "Video", "Forbidden");
@@ -87,11 +87,11 @@ namespace Overlord.Domain.EventAlg
                 {
                     if (!_driveLaneToiHistory.ContainsKey(toi.Id))
                     {
-                        _driveLaneToiHistory.TryAdd(toi.Id, new FixedSizedQueue<TrafficObjectInfo>(
+                        _driveLaneToiHistory.TryAdd(toi.Id, new FixedSizeQueue<TrafficObjectInfo>(
                             _driveLaneForbiddenDurationFrame, item => item.InStatusEnterForbiddenRegion));
                     }
 
-                    FixedSizedQueue<TrafficObjectInfo> driveLaneHistory = _driveLaneToiHistory[toi.Id];
+                    FixedSizeQueue<TrafficObjectInfo> driveLaneHistory = _driveLaneToiHistory[toi.Id];
                     driveLaneHistory.Enqueue(toi);
                     isPositive = driveLaneHistory.IsPositive();
                 }
@@ -100,11 +100,11 @@ namespace Overlord.Domain.EventAlg
                 {
                     if (!_emergencyLaneToiHistory.ContainsKey(toi.Id))
                     {
-                        _emergencyLaneToiHistory.TryAdd(toi.Id, new FixedSizedQueue<TrafficObjectInfo>(
+                        _emergencyLaneToiHistory.TryAdd(toi.Id, new FixedSizeQueue<TrafficObjectInfo>(
                             _emergencyLaneForbiddenDurationFrame, item => item.InStatusEnterForbiddenRegion));
                     }
 
-                    FixedSizedQueue<TrafficObjectInfo> emergencyLaneHistory = _emergencyLaneToiHistory[toi.Id];
+                    FixedSizeQueue<TrafficObjectInfo> emergencyLaneHistory = _emergencyLaneToiHistory[toi.Id];
                     emergencyLaneHistory.Enqueue(toi);
                     isPositive = emergencyLaneHistory.IsPositive();
                 }

@@ -13,10 +13,10 @@ namespace Overlord.Domain.EventAlg
     public class SlowVehicleEventAlg : EventAlgorithmBase, IObserver<ObjectExpiredEvent>
     {
         private readonly int _fps;
-        private readonly ConcurrentDictionary<string, FixedSizedQueue<TrafficObjectInfo>> _toiHistory;
+        private readonly ConcurrentDictionary<string, FixedSizeQueue<TrafficObjectInfo>> _toiHistory;
 
         // laneIndex -> array of TimeStamp
-        private ConcurrentDictionary<int, FixedSizedQueue<long>> _recentSlowEvents;
+        private ConcurrentDictionary<int, FixedSizeQueue<long>> _recentSlowEvents;
 
         // image and video capture base dir.
         private readonly string _slowSnapshotDir;
@@ -34,7 +34,7 @@ namespace Overlord.Domain.EventAlg
             : base(captureRoot, eventProcessor, eventPublisher)
         {
             _fps = fps;
-            _toiHistory = new ConcurrentDictionary<string, FixedSizedQueue<TrafficObjectInfo>>();
+            _toiHistory = new ConcurrentDictionary<string, FixedSizeQueue<TrafficObjectInfo>>();
 
             _slowSnapshotDir = Path.Combine(_captureRoot, "Snapshot", "Slow");
             _slowVideoDir = Path.Combine(_captureRoot, "Video", "Slow");
@@ -72,7 +72,7 @@ namespace Overlord.Domain.EventAlg
             _minSlowEventsToJudgeAmble = roadDefinition.MinSlowEventsToJudgeAmble;
             _ambleJudgeDurationSec = roadDefinition.AmbleJudgeDurationSec;
 
-            _recentSlowEvents = new ConcurrentDictionary<int, FixedSizedQueue<long>>();
+            _recentSlowEvents = new ConcurrentDictionary<int, FixedSizeQueue<long>>();
         }
 
         public override void DetectEvent(TrafficObjectInfo toi, FrameInfo frameInfo)
@@ -90,7 +90,7 @@ namespace Overlord.Domain.EventAlg
             if (!_toiHistory.ContainsKey(toi.Id))
             {
                 _toiHistory.TryAdd(toi.Id,
-                    new FixedSizedQueue<TrafficObjectInfo>(_slowVehicleEnableDurationSec * _fps,
+                    new FixedSizeQueue<TrafficObjectInfo>(_slowVehicleEnableDurationSec * _fps,
                         toi => toi.MotionInfo.Speed <= _slowVehicleSpeedUpperLimit && toi.MotionInfo.Speed >= _slowVehicleSpeedLowerLimit));
             }
 
@@ -142,10 +142,10 @@ namespace Overlord.Domain.EventAlg
 
             if (!_recentSlowEvents.ContainsKey(toi.LaneIndex))
             {
-                _recentSlowEvents.TryAdd(toi.LaneIndex, new FixedSizedQueue<long>(_minSlowEventsToJudgeAmble));
+                _recentSlowEvents.TryAdd(toi.LaneIndex, new FixedSizeQueue<long>(_minSlowEventsToJudgeAmble));
             }
 
-            FixedSizedQueue<long> recentSlowEventsById = _recentSlowEvents[toi.LaneIndex];
+            FixedSizeQueue<long> recentSlowEventsById = _recentSlowEvents[toi.LaneIndex];
             recentSlowEventsById.Enqueue(ticks);
 
             if ((recentSlowEventsById.Count() == _minSlowEventsToJudgeAmble) && (recentSlowEventsById.Peek(out var fist)))

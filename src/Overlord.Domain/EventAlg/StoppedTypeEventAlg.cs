@@ -15,10 +15,10 @@ namespace Overlord.Domain.EventAlg
     {
         private readonly int _fps;
         private readonly HashSet<string> _suitableTypes;
-        private readonly ConcurrentDictionary<string, FixedSizedQueue<TrafficObjectInfo>> _toiHistory;
+        private readonly ConcurrentDictionary<string, FixedSizeQueue<TrafficObjectInfo>> _toiHistory;
 
         // laneIndex -> array of TimeStamp
-        private ConcurrentDictionary<int, FixedSizedQueue<long>> _recentStopEvents;
+        private ConcurrentDictionary<int, FixedSizeQueue<long>> _recentStopEvents;
 
         // image and video capture base dir.
         private readonly string _stopSnapshotDir;
@@ -42,7 +42,7 @@ namespace Overlord.Domain.EventAlg
             _suitableTypes.Add("motorbike");
             _suitableTypes.Add("train");
 
-            _toiHistory = new ConcurrentDictionary<string, FixedSizedQueue<TrafficObjectInfo>>();
+            _toiHistory = new ConcurrentDictionary<string, FixedSizeQueue<TrafficObjectInfo>>();
             _fps = fps;
 
             _stopSnapshotDir = Path.Combine(_captureRoot, "Snapshot", "Stopped");
@@ -80,7 +80,7 @@ namespace Overlord.Domain.EventAlg
             _minStopEventsToJudgeJam = roadDefinition.MinStopEventsToJudgeJam;
             _jamJudgeDurationSec = roadDefinition.JamJudgeDurationSec;
 
-            _recentStopEvents = new ConcurrentDictionary<int, FixedSizedQueue<long>>();
+            _recentStopEvents = new ConcurrentDictionary<int, FixedSizeQueue<long>>();
         }
 
         public override void DetectEvent(TrafficObjectInfo toi, FrameInfo frameInfo)
@@ -103,7 +103,7 @@ namespace Overlord.Domain.EventAlg
             if (!_toiHistory.ContainsKey(toi.Id))
             {
                 _toiHistory.TryAdd(toi.Id,
-                    new FixedSizedQueue<TrafficObjectInfo>(_stopEvnetEnableDurationSec * _fps,
+                    new FixedSizeQueue<TrafficObjectInfo>(_stopEvnetEnableDurationSec * _fps,
                         toi => toi.MotionInfo.Speed <= _stopEvnetSpeedUpperLimit));
             }
 
@@ -155,10 +155,10 @@ namespace Overlord.Domain.EventAlg
 
             if (!_recentStopEvents.ContainsKey(toi.LaneIndex))
             {
-                _recentStopEvents.TryAdd(toi.LaneIndex, new FixedSizedQueue<long>(_minStopEventsToJudgeJam));
+                _recentStopEvents.TryAdd(toi.LaneIndex, new FixedSizeQueue<long>(_minStopEventsToJudgeJam));
             }
 
-            FixedSizedQueue<long> recentStopEventsById = _recentStopEvents[toi.LaneIndex];
+            FixedSizeQueue<long> recentStopEventsById = _recentStopEvents[toi.LaneIndex];
             recentStopEventsById.Enqueue(ticks);
 
             if ((recentStopEventsById.Count() == _minStopEventsToJudgeJam) && (recentStopEventsById.Peek(out var fist)))
