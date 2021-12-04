@@ -16,13 +16,17 @@ namespace Overlord.Core.Entities.Road
         public string RoadName { get; set; }
         public string DeviceNo { get; set; }
         public string PrePositionName { get; set; }
+
+        #region Parameters
+        // Object detection parameters
         public float DetectionThresh { get; set; }
         public bool TrackingChangeHistory { get; set; }
         public int TrackingFramesStory { get; set; }
         public int TrackingMaxDistance { get; set; }
 
-        // Analysis step parameters
-        public bool IsObjectAnalyzableRetain { get; set; }
+        // Analysis parameters
+        // whether IsAnalyzable flag remain true when out of AnalysisArea
+        public bool IsObjectAnalyzableRetain { get; set; }  
         public int MaxObjectSnapshots { get; set; }
         public int MotionCalculationFrameInterval { get; set; }
         public List<int> UvQuadrilateral { get; set; }
@@ -43,7 +47,7 @@ namespace Overlord.Core.Entities.Road
         public int AmbleJudgeDurationSec { get; set; }
         public int MinStopEventsToJudgeJam { get; set; }
         public int JamJudgeDurationSec { get; set; }
-
+        #endregion
 
         public List<AnalysisArea> AnalysisAreas
         {
@@ -93,24 +97,36 @@ namespace Overlord.Core.Entities.Road
             CountLines = new List<Tuple<EnterLine, LeaveLine>>();
 
             DetectionThresh = 0.7f;
-            IsObjectAnalyzableRetain = false;
             TrackingChangeHistory = true;
             TrackingFramesStory = 50;
             TrackingMaxDistance = 40;
 
+            IsObjectAnalyzableRetain = false;
             MaxObjectSnapshots = 10;
             MotionCalculationFrameInterval = 10;
-
             UvQuadrilateral = new List<int>(8);
             LonLatQuadrilateral = new List<float>(8);
 
-            IsDoubleLineCounting = true;
+            IsDoubleLineCounting = false;
+            
+            DriveLaneForbiddenDurationFrame = 25;
+            EmergencyLaneForbiddenDurationFrame = 25;
+            StopEventSpeedUpperLimit = 10;
+            StopEventEnableDurationSec = 5;
+            SlowVehicleSpeedUpperLimit = 40;
+            SlowVehicleSpeedLowerLimit = 10;
+            SlowVehicleEnableDurationSec = 5;
+            MinSlowEventsToJudgeAmble = 5;
+            AmbleJudgeDurationSec = 10;
+            MinStopEventsToJudgeJam = 5;
+            JamJudgeDurationSec = 10;
         }
         
         public override void SetImageSize(int width, int height)
         {
             base.SetImageSize(width, height);
             
+            // change image size of each contained definition objects.
             foreach (var area in AnalysisAreas)
             {
                 area.SetImageSize(width, height);
@@ -158,29 +174,16 @@ namespace Overlord.Core.Entities.Road
             CountLines.Add(new Tuple<EnterLine, LeaveLine>(enterLine, leaveLine));
         }
         
-        private void ValidateImageWidthAndHeight(NormalizedPolygon poiRegion)
+        private void ValidateImageWidthAndHeight(ImageBasedGeometric poiGeometric)
         {
             if (!IsInitialized())
             {
-                base.SetImageSize(poiRegion.ImageWidth, poiRegion.ImageHeight);
+                base.SetImageSize(poiGeometric.ImageWidth, poiGeometric.ImageHeight);
             }
 
-            if ((poiRegion.ImageWidth != ImageWidth) || (poiRegion.ImageHeight != ImageHeight))
+            if ((poiGeometric.ImageWidth != ImageWidth) || (poiGeometric.ImageHeight != ImageHeight))
             {
-                throw new ArgumentException($"poi region does not match scale of others.");
-            }
-        }
-        
-        private void ValidateImageWidthAndHeight(NormalizedLine poiLine)
-        {
-            if (!IsInitialized())
-            {
-                base.SetImageSize(poiLine.ImageWidth, poiLine.ImageHeight);
-            }
-
-            if ((poiLine.ImageWidth != ImageWidth) || (poiLine.ImageHeight != ImageHeight))
-            {
-                throw new ArgumentException($"poi line does not match scale of others.");
+                throw new ArgumentException($"poi geometric does not match scale of others.");
             }
         }
 
@@ -195,6 +198,7 @@ namespace Overlord.Core.Entities.Road
             string jsonString = File.ReadAllText(filename);
             var roadDefinition = JsonSerializer.Deserialize<RoadDefinition>(jsonString);
 
+            // Temporary disable load count line definition.
             // foreach (Tuple<EnterLine, LeaveLine> countLine in roadDefinition.CountLines)
             // {
             //     countLine.Item1.LeaveLine = countLine.Item2;

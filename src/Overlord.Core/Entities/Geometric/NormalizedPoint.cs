@@ -51,7 +51,10 @@ namespace Overlord.Core.Entities.Geometric
             set => _normalizedY = value;
         }
 
-        // For generate point by json deserialization
+        // For point generation by json deserialization
+        // 1. Use constructor to create a new NormalizedPoint object.
+        // 2. Use Properties set method to set _normalizedX and _normalizedY.
+        // 3. Manual call SetImageSize to specify real image width and height to calculate _originalX and _originalY
         public NormalizedPoint()
         {
             _normalizedX = 0;
@@ -66,7 +69,7 @@ namespace Overlord.Core.Entities.Geometric
             _originalY = (int)Math.Round(height * _normalizedY);
         }
 
-        // For generate point by hand
+        // For point generation by hand, specify image length, width and point x, y
         public NormalizedPoint(int imageWidth, int imageHeight, int originalX, int originalY)
             : base (imageWidth, imageHeight)
         {

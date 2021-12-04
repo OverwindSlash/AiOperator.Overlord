@@ -17,7 +17,11 @@ namespace Overlord.Core.Entities.Geometric
             set => _points = value;
         }
 
-        // For generate polygon by json deserialization
+        // For polygon generation by json deserialization
+        // 1. Use constructor to create a new NormalizedPolygon object.
+        // 2. Use Properties set method to set _points.
+        // 3. Manual call SetImageSize to specify real image width and height,
+        // then call the SetImageSize functions of each NormalizedPoint object.
         public NormalizedPolygon()
         {
             Points = new List<NormalizedPoint>();
@@ -33,7 +37,7 @@ namespace Overlord.Core.Entities.Geometric
             }
         }
 
-        // For generate polygon by hand
+        // For polygon generation by hand
         public NormalizedPolygon(List<NormalizedPoint> points)
         {
             if ((points == null) || (points.Count == 0))
@@ -47,7 +51,7 @@ namespace Overlord.Core.Entities.Geometric
             {
                 if ((point.ImageWidth != imageWidth) || (point.ImageHeight != imageHeight))
                 {
-                    throw new ArgumentException("there is at least one point does not match scale of others.");
+                    throw new ArgumentException("point does not match scale of others.");
                 }
             }
             
@@ -58,6 +62,7 @@ namespace Overlord.Core.Entities.Geometric
 
         public void AddPoint(NormalizedPoint point)
         {
+            // When first point to be add.
             if (!IsInitialized())
             {
                 base.SetImageSize(point.ImageWidth, point.ImageHeight);

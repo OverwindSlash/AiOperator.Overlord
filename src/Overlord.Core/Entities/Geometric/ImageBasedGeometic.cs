@@ -45,7 +45,7 @@ namespace Overlord.Core.Entities.Geometric
         {
             if ((width < 0) && (height < 0))
             {
-                return;
+                throw new ArgumentException("image width or height not correct.");
             }
             
             _imageWidth = width;
@@ -53,7 +53,7 @@ namespace Overlord.Core.Entities.Geometric
             _initialized = true;
         }
 
-        public bool IsInitialized()
+        protected bool IsInitialized()
         {
             return _initialized;
         }
@@ -62,7 +62,7 @@ namespace Overlord.Core.Entities.Geometric
         {
             if (!_initialized)
             {
-                throw new ArgumentException("Image width or height not set");
+                throw new ArgumentException("image width or height not set");
             }
         }
     }

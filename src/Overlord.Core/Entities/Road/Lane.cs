@@ -23,11 +23,11 @@ namespace Overlord.Core.Entities.Road
             set
             {
                 _type = value;
-                SetDefaultForbiddenTypes(_type);
+                SetLaneDefaultForbiddenTypes(_type);
             }
         }
 
-        private void SetDefaultForbiddenTypes(LaneType type)
+        private void SetLaneDefaultForbiddenTypes(LaneType type)
         {
             switch (type)
             {

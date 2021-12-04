@@ -10,12 +10,13 @@ namespace Overlord.Core.DataStructures
 
         private readonly object _lockObject;
 
+        // predicate which check whether item if positive or not.
         private readonly Predicate<T> _conditionChecker;
         private int _positiveItemCount;
         private readonly double _positivePercentThresh;
 
         public FixedSizedQueue(int sizeLimit)
-            : this(sizeLimit, t => true)
+            : this(sizeLimit, _ => true)
         {
 
         }
@@ -24,8 +25,9 @@ namespace Overlord.Core.DataStructures
         {
             if (sizeLimit < 1)
             {
-                throw new ArgumentException("fixed sized queue size limit not correct.");
+                throw new ArgumentException("queue size limit not correct.");
             }
+            
             _queue = new ConcurrentQueue<T>();
             _sizeLimit = sizeLimit;
             _lockObject = new object();
@@ -46,8 +48,7 @@ namespace Overlord.Core.DataStructures
 
             lock (_lockObject)
             {
-                T overflow = default(T);
-                while (_queue.Count > _sizeLimit && _queue.TryDequeue(out overflow))
+                while (_queue.Count > _sizeLimit && _queue.TryDequeue(out var overflow))
                 {
                     if (_conditionChecker(overflow))
                     {
@@ -59,6 +60,7 @@ namespace Overlord.Core.DataStructures
 
         public bool IsPositive()
         {
+            // The overall judgment can only be carried out when the queue is full
             if (_queue.Count < _sizeLimit)
             {
                 return false;

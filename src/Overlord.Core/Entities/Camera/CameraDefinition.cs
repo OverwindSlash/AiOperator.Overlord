@@ -10,6 +10,6 @@ namespace Overlord.Core.Entities.Camera
         public Size VideoSize { get; set; }
         public float Latitude { get; set; }
         public float Longtitude { get; set; }
-        public List<PreserPosition> PreserPositions { get; set; }
+        public List<PresetPosition> PresetPositions { get; set; }
     }
 }

@@ -27,7 +27,11 @@ namespace Overlord.Core.Entities.Geometric
             set => _stop = value;
         }
 
-        // For generate line by json deserialization
+        // For line generation by json deserialization
+        // 1. Use constructor to create a new NormalizedLine object.
+        // 2. Use Properties set method to set _start and _stop.
+        // 3. Manual call SetImageSize to specify real image width and height,
+        // then call the SetImageSize functions of _start and _stop object respectively.
         public NormalizedLine()
         {
             _start = new NormalizedPoint();
@@ -42,7 +46,7 @@ namespace Overlord.Core.Entities.Geometric
             _stop.SetImageSize(width, height);
         }
 
-        // For generate line by hand
+        // For line generation by hand
         public NormalizedLine(NormalizedPoint start, NormalizedPoint stop)
         {
             if ((start == null) || (stop == null))
@@ -52,7 +56,7 @@ namespace Overlord.Core.Entities.Geometric
 
             if ((start.ImageWidth != stop.ImageWidth) || (start.ImageHeight != stop.ImageHeight))
             {
-                throw new ArgumentException("start point and stop point are not in same scale.");
+                throw new ArgumentException("start and stop are not in same scale.");
             }
             
             base.SetImageSize(start.ImageWidth, start.ImageHeight);
@@ -63,9 +67,12 @@ namespace Overlord.Core.Entities.Geometric
 
         public bool IsCrossedLine(NormalizedPoint p1, NormalizedPoint p2)
         {
-            NormalizedPoint cmp = new NormalizedPoint(ImageWidth, ImageHeight, _start.OriginalX - p1.OriginalX, _start.OriginalY - p1.OriginalY);
-            NormalizedPoint r = new NormalizedPoint(ImageWidth, ImageHeight, p2.OriginalX - p1.OriginalX, p2.OriginalY - p1.OriginalY);
-            NormalizedPoint s = new NormalizedPoint(ImageWidth, ImageHeight, _stop.OriginalX - _start.OriginalX, _stop.OriginalY - _start.OriginalY);
+            NormalizedPoint cmp = new NormalizedPoint(ImageWidth, ImageHeight,
+                _start.OriginalX - p1.OriginalX, _start.OriginalY - p1.OriginalY);
+            NormalizedPoint r = new NormalizedPoint(ImageWidth, ImageHeight,
+                p2.OriginalX - p1.OriginalX, p2.OriginalY - p1.OriginalY);
+            NormalizedPoint s = new NormalizedPoint(ImageWidth, ImageHeight,
+                _stop.OriginalX - _start.OriginalX, _stop.OriginalY - _start.OriginalY);
 
             double cmpXr = cmp.OriginalX * r.OriginalY - cmp.OriginalY * r.OriginalX;
             double cmpXs = cmp.OriginalX * s.OriginalY - cmp.OriginalY * s.OriginalX;
