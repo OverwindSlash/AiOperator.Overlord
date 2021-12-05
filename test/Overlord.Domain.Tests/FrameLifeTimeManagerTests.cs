@@ -96,7 +96,6 @@ namespace Overlord.Domain.Tests
             tois1.Add(new TrafficObjectInfo() { Type = "car", TrackingId = 1 });
             fi1.TrafficObjectInfos = tois1;
 
-
             Mat fi2Scene = Substitute.For<Mat>();
             FrameInfo fi2 = Substitute.For<FrameInfo>(2L, fi2Scene);
             List<TrafficObjectInfo> tois2 = new List<TrafficObjectInfo>();

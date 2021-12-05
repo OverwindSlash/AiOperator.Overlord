@@ -146,11 +146,11 @@ namespace Overlord.Core.Tests.Geometric
             // points to check
             NormalizedPoint inPoint = new NormalizedPoint(ImageWidth, ImageHeight, 433, 142);
             bool inResult = polygon1.IsPointInPolygon(inPoint);
-            Assert.AreEqual(true, inResult);
+            Assert.True(inResult);
 
             NormalizedPoint outPoint = new NormalizedPoint(ImageWidth, ImageHeight, 618, 194);
             bool outResult = polygon1.IsPointInPolygon(outPoint);
-            Assert.AreEqual(false, outResult);
+            Assert.False(outResult);
         }
     }
 }

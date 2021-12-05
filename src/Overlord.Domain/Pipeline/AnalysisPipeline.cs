@@ -10,7 +10,7 @@ namespace Overlord.Domain.Pipeline
 {
     public class AnalysisPipeline : IDisposable, IObservable<ObjectExpiredEvent>, IObservable<FrameExpiredEvent>
     {
-        private const int DefaultFrameLiftTime = 125;
+        private const int DefaultFrameLifeTime = 125;
         private readonly List<IAnalysisHandler> _analysisHandlers;
         private readonly FrameLifeTimeManager _frameLifeTimeManager;
 
@@ -34,7 +34,7 @@ namespace Overlord.Domain.Pipeline
         public AnalysisPipeline()
         {
             _analysisHandlers = new List<IAnalysisHandler>();
-            _frameLifeTimeManager = new FrameLifeTimeManager(DefaultFrameLiftTime);
+            _frameLifeTimeManager = new FrameLifeTimeManager(DefaultFrameLifeTime);
             _initialized = false;
         }
 

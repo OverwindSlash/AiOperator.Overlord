@@ -32,7 +32,7 @@ namespace Overlord.Core.Entities.Road
         public List<int> UvQuadrilateral { get; set; }
         public List<float> LonLatQuadrilateral { get; set; }
 
-        // Counting
+        // Counting parameters
         public bool IsDoubleLineCounting { get; set; }
 
         // Event detection parameters

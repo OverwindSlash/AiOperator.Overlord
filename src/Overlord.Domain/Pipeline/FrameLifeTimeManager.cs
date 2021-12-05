@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Overlord.Core.DataStructures;
@@ -7,28 +7,43 @@ using Overlord.Domain.Event;
 
 namespace Overlord.Domain.Pipeline
 {
-    public class FrameLifeTimeManager : IObservable<ObjectExpiredEvent>, IObservable<FrameExpiredEvent>
+    public class FrameLifeTimeManager : CircularList<FrameInfo>, IObservable<ObjectExpiredEvent>, IObservable<FrameExpiredEvent>
     {
-        private readonly CircularList<FrameInfo> _frameInfos;
         private readonly Dictionary<string, HashSet<int>> _idInWhichSlots;
 
         private readonly List<IObserver<ObjectExpiredEvent>> _objExpiredObservers;
         private readonly List<IObserver<FrameExpiredEvent>> _frmExpiredObservers;
 
-        public FrameLifeTimeManager(int frameCount)
+        public FrameLifeTimeManager(int frameCount) : base(frameCount)
         {
             if (frameCount < 1)
             {
                 throw new ArgumentException("invalid frame count.");
             }
-
-            _frameInfos = new CircularList<FrameInfo>(frameCount);
+            
             _idInWhichSlots = new Dictionary<string, HashSet<int>>();
 
             _objExpiredObservers = new List<IObserver<ObjectExpiredEvent>>();
             _frmExpiredObservers = new List<IObserver<FrameExpiredEvent>>();
         }
 
+        #region Observer related
+        public IDisposable Subscribe(IObserver<ObjectExpiredEvent> observer)
+        {
+            if (!_objExpiredObservers.Contains(observer))
+                _objExpiredObservers.Add(observer);
+
+            return new Unsubscriber<ObjectExpiredEvent>(_objExpiredObservers, observer);
+        }
+
+        public IDisposable Subscribe(IObserver<FrameExpiredEvent> observer)
+        {
+            if (!_frmExpiredObservers.Contains(observer))
+                _frmExpiredObservers.Add(observer);
+
+            return new Unsubscriber<FrameExpiredEvent>(_frmExpiredObservers, observer);
+        }
+        
         private class Unsubscriber<T> : IDisposable
         {
             private readonly List<IObserver<T>> _observers;
@@ -48,59 +63,63 @@ namespace Overlord.Domain.Pipeline
                 }
             }
         }
-
-        public IDisposable Subscribe(IObserver<ObjectExpiredEvent> observer)
+        
+        private void NotifyObservers(ObjectExpiredEvent cleanUpEvent)
         {
-            if (!_objExpiredObservers.Contains(observer))
-                _objExpiredObservers.Add(observer);
-
-            return new Unsubscriber<ObjectExpiredEvent>(_objExpiredObservers, observer);
+            foreach (IObserver<ObjectExpiredEvent> observer in _objExpiredObservers)
+            {
+                observer.OnNext(cleanUpEvent);
+            }
         }
 
-        public IDisposable Subscribe(IObserver<FrameExpiredEvent> observer)
+        private void NotifyObservers(FrameExpiredEvent cleanUpEvent)
         {
-            if (!_frmExpiredObservers.Contains(observer))
-                _frmExpiredObservers.Add(observer);
-
-            return new Unsubscriber<FrameExpiredEvent>(_frmExpiredObservers, observer);
+            foreach (IObserver<FrameExpiredEvent> observer in _frmExpiredObservers)
+            {
+                observer.OnNext(cleanUpEvent);
+            }
         }
+        #endregion
 
         public void AddFrameInfo(FrameInfo newFrameInfo)
         {
-            int currentIndex = _frameInfos.CurrentIndex;
+            int currentIndex = this.CurrentIndex;
 
+            // Add the new FrameInfo to the current Slot and update _idInWhichSlots.
+            // this function will increase CurrentIndex
+            this.AddItem(newFrameInfo);
+            
+            AddNewIdsToIdInWhichSlots(newFrameInfo, currentIndex);
+        }
+
+        protected override void CleanUpSlot(int currentIndex)
+        {
             // Get FrameInfo to be expired.
-            FrameInfo lastFrameInfo = _frameInfos.GetItem(currentIndex);
+            FrameInfo lastFrameInfo = this.GetItem(currentIndex);
             if (lastFrameInfo != null)
             {
                 // Remove ids of expired FrameInfo from _idInWhichSlots.
                 RemoveExpiredIdsFromIdInWhichSlots(lastFrameInfo, currentIndex);
 
-                if (lastFrameInfo != null)
+                foreach (TrafficObjectInfo toi in lastFrameInfo.TrafficObjectInfos)
                 {
-                    foreach (TrafficObjectInfo toi in lastFrameInfo.TrafficObjectInfos)
+                    int existenceCount = GetExistenceCountById(toi.Id);
+
+                    // If the existenceCount = 0, it means that the object with the specified id has not
+                    // reappeared in this lifecycle, and the id can be deleted directly.
+                    if (existenceCount == 0)
                     {
-                        int existenceCount = GetExistenceCountById(toi.Id);
-
-                        // If the existenceCount = 0, it means that the object with the specified id has not reappeared in this lifecycle, and the id can be deleted.
-                        if (existenceCount == 0)
-                        {
-                            _idInWhichSlots.Remove(toi.Id);
-                            NotifyObservers(new ObjectExpiredEvent(toi));   // Notify object expired.
-                        }
+                        _idInWhichSlots.Remove(toi.Id);
+                        NotifyObservers(new ObjectExpiredEvent(toi));   // Notify object expired.
                     }
-
-                    // Notify frame expired.
-                    NotifyObservers(new FrameExpiredEvent(lastFrameInfo));
-
-                    // Clean up last frame.
-                    lastFrameInfo.Dispose();
                 }
-            }
 
-            // Add the new FrameInfo to the current Slot and update _idInWhichSlots.
-            _frameInfos.AddItem(newFrameInfo);
-            AddNewIdsToIdInWhichSlots(newFrameInfo, currentIndex);
+                // Notify frame expired.
+                NotifyObservers(new FrameExpiredEvent(lastFrameInfo));
+
+                // Clean up last frame.
+                lastFrameInfo.Dispose();
+            }
         }
 
         private void RemoveExpiredIdsFromIdInWhichSlots(FrameInfo lastFrameInfo, int currentIndex)
@@ -165,38 +184,22 @@ namespace Overlord.Domain.Pipeline
 
         public FrameInfo GetFrameInfoByIndex(int index)
         {
-            if (index < 0 || index > _frameInfos.Count() - 1)
+            if (index < 0 || index > this.Count() - 1)
             {
                 throw new ArgumentException("index out of range.");
             }
 
-            return _frameInfos.GetItem(index);
+            return this.GetItem(index);
         }
 
         public int GetFrameCount()
         {
-            return _frameInfos.Count();
+            return this.Count();
         }
 
         public int GetCurrentIndex()
         {
-            return _frameInfos.CurrentIndex;
-        }
-
-        private void NotifyObservers(ObjectExpiredEvent cleanUpEvent)
-        {
-            foreach (IObserver<ObjectExpiredEvent> observer in _objExpiredObservers)
-            {
-                observer.OnNext(cleanUpEvent);
-            }
-        }
-
-        private void NotifyObservers(FrameExpiredEvent cleanUpEvent)
-        {
-            foreach (IObserver<FrameExpiredEvent> observer in _frmExpiredObservers)
-            {
-                observer.OnNext(cleanUpEvent);
-            }
+            return this.CurrentIndex;
         }
     }
 }

@@ -46,8 +46,7 @@ namespace Overlord.Domain
             using var capture = new VideoCapture(videoUri, VideoCaptureAPIs.FFMPEG);
             if (!capture.IsOpened())
             {
-                // TODO: Report error!
-                return (0, 0);
+                throw new ArgumentException($"can not open video uri: {videoUri}");
             }
 
             int width = capture.FrameWidth;
