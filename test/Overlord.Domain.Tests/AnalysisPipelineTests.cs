@@ -21,7 +21,8 @@ namespace Overlord.Domain.Tests
         [Test]
         public void TestAnalysisPipelineGeneration_WithoutCorrectRoadDefinition()
         {
-            AnalysisPipeline pipeline = new AnalysisPipeline();
+            DependencyRegister dependencyRegister = DependencyRegister.GetInstance();
+            AnalysisPipeline pipeline = new AnalysisPipeline(dependencyRegister);
             Assert.Catch<TypeInitializationException>(() =>
             {
                 FrameInfo frameInfo = new FrameInfo(0L, new Mat());
@@ -32,7 +33,8 @@ namespace Overlord.Domain.Tests
         [Test]
         public void TestAnalysisPipelineGeneration_WithCorrectRoadDefinition()
         {
-            AnalysisPipeline pipeline = new AnalysisPipeline();
+            DependencyRegister dependencyRegister = DependencyRegister.GetInstance();
+            AnalysisPipeline pipeline = new AnalysisPipeline(dependencyRegister);
             pipeline.LoadRoadDefinition("RoadDefinition/demoRd.json", ImageWidth, ImageHeight);
 
             Assert.AreEqual(2, pipeline.RoadDef.AnalysisAreas.Count);
@@ -52,7 +54,8 @@ namespace Overlord.Domain.Tests
         [Test]
         public void TestAnalysisPipeline_AddHandler()
         {
-            AnalysisPipeline pipeline = new AnalysisPipeline();
+            DependencyRegister dependencyRegister = DependencyRegister.GetInstance();
+            AnalysisPipeline pipeline = new AnalysisPipeline(dependencyRegister);
             pipeline.LoadRoadDefinition("RoadDefinition/demoRd.json", ImageWidth, ImageHeight);
 
             using Mat mat = new Mat("Images/Traffic_001.jpg", ImreadModes.Color);
@@ -79,7 +82,8 @@ namespace Overlord.Domain.Tests
         [Test]
         public void TestAnalysisPipeline_AddDetectionAndSnapshotHandlers()
         {
-            AnalysisPipeline pipeline = new AnalysisPipeline();
+            DependencyRegister dependencyRegister = DependencyRegister.GetInstance();
+            AnalysisPipeline pipeline = new AnalysisPipeline(dependencyRegister);
             pipeline.LoadRoadDefinition("RoadDefinition/demoRd.json", ImageWidth, ImageHeight);
 
             using Mat mat = new Mat("Images/Traffic_001.jpg", ImreadModes.Color);

@@ -37,7 +37,7 @@ namespace Overlord.Domain.Event
             {
                 return await _publisher.ReportEvent(trafficEvent);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return false;
             }

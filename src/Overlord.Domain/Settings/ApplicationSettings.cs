@@ -9,7 +9,7 @@ namespace Overlord.Domain.Settings
     {
         public double PositivePercentThresh { get; set; }
 
-        public List<PipelineSetting> PipelineSettings { get; set; }
+        public List<PipelineSettings> PipelineSettings { get; set; }
 
         public void LoadFromJson(string filename)
         {

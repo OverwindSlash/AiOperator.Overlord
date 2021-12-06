@@ -52,9 +52,9 @@ namespace Overlord.Application
             _engine = new AnalysisEngine(_dependencyRegister);
         }
 
-        public AnalysisPipeline OpenAnalysisPipeline(PipelineSetting pipelineSetting)
+        public AnalysisPipeline OpenAnalysisPipeline(PipelineSettings pipelineSettings)
         {
-            return _engine.AddAndGetPipeline(pipelineSetting);
+            return _engine.AddAndGetPipeline(pipelineSettings);
         }
     }
 }

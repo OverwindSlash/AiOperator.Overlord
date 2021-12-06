@@ -1,6 +1,6 @@
 namespace Overlord.Domain.Settings
 {
-    public class PipelineSetting
+    public class PipelineSettings
     {
         public string Name { get; set; }
         public string VideoUri { get; set; }
