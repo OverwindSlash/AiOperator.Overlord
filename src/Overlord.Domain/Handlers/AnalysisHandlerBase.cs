@@ -13,6 +13,8 @@ namespace Overlord.Domain.Handlers
             _roadDefinition = roadDefinition ?? throw new ArgumentException("road definition not initialized.");
         }
 
+
+        // accept a FrameInfo object and perform analysis on it.
         public virtual FrameInfo Analyze(FrameInfo frameInfo)
         {
             return frameInfo;

@@ -76,6 +76,7 @@ namespace Overlord.Domain.Pipeline
             // Region
             RegionHandler regionHandler = new RegionHandler();
             this.AddAnalysisHandler(regionHandler);
+            this.Subscribe(regionHandler.Service);
 
             // Tracking
             IMultiObjectTracker tracker = _dependencyRegister.GetTracker(pipelineIndex);

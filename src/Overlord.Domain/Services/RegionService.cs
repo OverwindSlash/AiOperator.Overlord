@@ -2,14 +2,13 @@
 using Overlord.Core.Entities.Geometric;
 using Overlord.Core.Entities.Road;
 using Overlord.Domain.Event;
-using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Overlord.Domain.Services
 {
-    public class RegionService : IObserver<ObjectExpiredEvent>
+    public class RegionService : ObserverBase<ObjectExpiredEvent>
     {
         private RoadDefinition _roadDefinition;
         private bool _isObjectAnalyzableRetain;
@@ -39,7 +38,7 @@ namespace Overlord.Domain.Services
             {
                 if (_isObjectAnalyzableRetain && _allTrackingIdsUnderAnalysis.ContainsKey(toi.Id))
                 {
-                    toi.IsAnalyzable = false;
+                    toi.IsAnalyzable = true;
                     continue;
                 }
 
@@ -76,26 +75,16 @@ namespace Overlord.Domain.Services
             return _allTrackingIdsUnderAnalysis.Count;
         }
 
-        public void OnCompleted()
-        {
-            // Do nothing
-        }
 
-        public void OnError(Exception error)
-        {
-            // Do nothing
-        }
-
-        public void OnNext(ObjectExpiredEvent value)
+        public override void OnNext(ObjectExpiredEvent value)
         {
             Task.Run(() =>
             {
                 ReleaseAnalyzableObjectById(value.Id);
             });
-
         }
 
-        public void ReleaseAnalyzableObjectById(string id)
+        private void ReleaseAnalyzableObjectById(string id)
         {
             if (_allTrackingIdsUnderAnalysis.ContainsKey(id))
             {

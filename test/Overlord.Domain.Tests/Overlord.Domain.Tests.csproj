@@ -190,6 +190,9 @@
     <None Update="Json\Traffic002_AnalysisResult.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="RoadDefinition\cj_k32_500.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="RoadDefinition\demoRd.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

@@ -8,6 +8,8 @@ namespace Overlord.Domain.Handlers
     {
         private readonly RegionService _regionService;
 
+        public RegionService Service => _regionService;
+
         public RegionHandler()
         {
             _regionService = new RegionService();
