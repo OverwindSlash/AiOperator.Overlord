@@ -10,14 +10,14 @@ using System.Threading.Tasks;
 
 namespace Overlord.Domain.Services
 {
-    public class MotionService : IObserver<ObjectExpiredEvent>
+    public class MotionService : ObserverBase<ObjectExpiredEvent>
     {
         private RoadDefinition _roadDefinition;
         private int _motionCalculationFrameInterval;
 
-        private ISpeeder _speeder;
+        private readonly ISpeeder _speeder;
 
-        // objectId -> (frameId, toi)
+        // object motion history. objectId -> (frameId, toi)
         private readonly ConcurrentDictionary<string, SortedList<long, TrafficObjectInfo>> _motionHistory;
 
         public MotionService(ISpeeder speeder)
@@ -74,13 +74,15 @@ namespace Overlord.Domain.Services
             TrafficObjectInfo currentToi = objectToiHistory.Values.Last();
             MotionInfo currentMotionInfo = currentToi.MotionInfo;
 
+            // motion calculation will be available when history count is bigger than _motionCalculationFrameInterval
             if (historyCount > _motionCalculationFrameInterval)
             {
+                // record motion information of previous internal in current TrafficObjectInfo object.
                 TrafficObjectInfo lastToi = objectToiHistory.Values[(historyCount - 1) - _motionCalculationFrameInterval];
                 MotionInfo lastMotionInfo = lastToi.MotionInfo;
 
-                currentMotionInfo.LastToiFrameId = lastToi.FrameId;
-                currentMotionInfo.LastToiTimespan = currentToi.TimeStamp - lastToi.TimeStamp;
+                currentMotionInfo.PrevIntervalToiFrameId = lastToi.FrameId;
+                currentMotionInfo.PrevIntervalToiTimespan = currentToi.TimeStamp - lastToi.TimeStamp;
 
                 currentMotionInfo.XOffset = currentToi.CenterX - lastToi.CenterX;
                 currentMotionInfo.YOffset = currentToi.CenterY - lastToi.CenterY;
@@ -90,9 +92,9 @@ namespace Overlord.Domain.Services
                 if (_speeder != null)
                 {
                     currentMotionInfo.Distance = _speeder.CalculateDistance(currentToi);
-                    currentMotionInfo.Speed = currentMotionInfo.Distance / currentMotionInfo.LastToiTimespan.TotalHours;
+                    currentMotionInfo.Speed = currentMotionInfo.Distance / currentMotionInfo.PrevIntervalToiTimespan.TotalHours;
                     currentMotionInfo.Direction = _speeder.CalculateDirection(currentToi);
-                    currentMotionInfo.IsMotionCalculated = true;
+                    currentMotionInfo.IsSpeedCalculated = true;
                 }
             }
         }
@@ -107,17 +109,8 @@ namespace Overlord.Domain.Services
             return new SortedList<long, TrafficObjectInfo>();
         }
 
-        public void OnCompleted()
-        {
-            // Do nothing
-        }
-
-        public void OnError(Exception error)
-        {
-            // Do nothing
-        }
-
-        public void OnNext(ObjectExpiredEvent value)
+        
+        public override void OnNext(ObjectExpiredEvent value)
         {
             Task.Run(() =>
             {

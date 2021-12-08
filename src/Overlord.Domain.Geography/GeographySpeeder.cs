@@ -16,7 +16,7 @@ namespace Overlord.Domain.Geography
 
         public double CalculateSpeed(TrafficObjectInfo toi)
         {
-            return CalculateDistance(toi) / toi.MotionInfo.LastToiTimespan.TotalHours;
+            return CalculateDistance(toi) / toi.MotionInfo.PrevIntervalToiTimespan.TotalHours;
         }
 
         public double CalculateDistance(TrafficObjectInfo toi)

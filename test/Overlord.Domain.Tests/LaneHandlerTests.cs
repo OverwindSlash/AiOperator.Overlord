@@ -17,7 +17,10 @@ namespace Overlord.Domain.Tests
         [Test]
         public void TestGenerateLaneHandler()
         {
+            float detectThresh = 0.6f;
+
             RoadDefinition roadDefinition = RoadDefinition.LoadFromJson("RoadDefinition/hc_k41_700_2.json");
+            roadDefinition.DetectionThresh = detectThresh;
             roadDefinition.SetImageSize(1920, 1080);
 
             using Mat mat = new Mat("Images/Traffic_002.jpg", ImreadModes.Color);
@@ -26,38 +29,39 @@ namespace Overlord.Domain.Tests
             IObjectDetector detector = Substitute.For<IObjectDetector>();
             string json = File.ReadAllText("Json/Traffic002_AnalysisResult.json");
             List<TrafficObjectInfo> trafficObjectInfos = JsonSerializer.Deserialize<List<TrafficObjectInfo>>(json);
-            detector.Detect(mat, 0.6f).Returns(trafficObjectInfos);
+            detector.Detect(mat, detectThresh).Returns(trafficObjectInfos);
 
             FrameInfo frameInfo = new FrameInfo(0L, mat);
 
+            // 1. do detection
             DetectionHandler detectionHandler = new DetectionHandler(detector);
             detectionHandler.SetRoadDefinition(roadDefinition);
             detectionHandler.Analyze(frameInfo);
 
+            // 2. do region check
+            RegionHandler regionHandler = new RegionHandler();
+            regionHandler.SetRoadDefinition(roadDefinition);
+            regionHandler.Analyze(frameInfo);
+
+            // 3. do lane calculation
             LaneHandler laneHandler = new LaneHandler();
             laneHandler.SetRoadDefinition(roadDefinition);
-
             laneHandler.Analyze(frameInfo);
+
             Assert.AreEqual(10, frameInfo.TrafficObjectInfos.Count);
             foreach (TrafficObjectInfo toi in frameInfo.TrafficObjectInfos)
             {
                 Assert.True(toi.WasLaneCalculated);
             }
-
-            // foreach (Lane lane in roadDefinition.Lanes)
-            // {
-            //     List<IEnumerable<Point>> points = new List<IEnumerable<Point>>();
-            //     points.Add(lane.Points.Select(np => new Point(np.OriginalX, np.OriginalY)).AsEnumerable());
-            //     mat.Polylines(points, true, Scalar.Black, 1);
-            // }
-            //
-            // Window.ShowImages(mat);
         }
 
         [Test]
         public void TestLaneHandlerAnalysis()
         {
+            float detectThresh = 0.6f;
+
             RoadDefinition roadDefinition = RoadDefinition.LoadFromJson("RoadDefinition/hc_k41_700_2.json");
+            roadDefinition.DetectionThresh = detectThresh;
             roadDefinition.SetImageSize(1920, 1080);
 
             using Mat mat = new Mat("Images/Traffic_002.jpg", ImreadModes.Color);
@@ -66,33 +70,36 @@ namespace Overlord.Domain.Tests
             IObjectDetector detector = Substitute.For<IObjectDetector>();
             string json = File.ReadAllText("Json/Traffic002_AnalysisResult.json");
             List<TrafficObjectInfo> trafficObjectInfos = JsonSerializer.Deserialize<List<TrafficObjectInfo>>(json);
-            detector.Detect(mat, 0.6f).Returns(trafficObjectInfos);
+            detector.Detect(mat, detectThresh).Returns(trafficObjectInfos);
 
             FrameInfo frameInfo = new FrameInfo(0L, mat);
 
+            // 1. do detection
             DetectionHandler detectionHandler = new DetectionHandler(detector);
             detectionHandler.SetRoadDefinition(roadDefinition);
             detectionHandler.Analyze(frameInfo);
 
+            // 2. do region check
             RegionHandler regionHandler = new RegionHandler();
             regionHandler.SetRoadDefinition(roadDefinition);
             regionHandler.Analyze(frameInfo);
 
+            // 3. do lane calculation
             LaneHandler laneHandler = new LaneHandler();
             laneHandler.SetRoadDefinition(roadDefinition);
             laneHandler.Analyze(frameInfo);
 
             Assert.AreEqual(10, frameInfo.TrafficObjectInfos.Count);
-            Assert.AreEqual(3, frameInfo.TrafficObjectInfos[0].LaneIndex); // truck:1
-            Assert.AreEqual(3, frameInfo.TrafficObjectInfos[1].LaneIndex); // truck:2
-            Assert.AreEqual(2, frameInfo.TrafficObjectInfos[2].LaneIndex); // truck:3
-            Assert.AreEqual(4, frameInfo.TrafficObjectInfos[3].LaneIndex); // person:1
+            Assert.AreEqual(3, frameInfo.TrafficObjectInfos[0].LaneIndex);  // truck:1
+            Assert.AreEqual(3, frameInfo.TrafficObjectInfos[1].LaneIndex);  // truck:2
+            Assert.AreEqual(2, frameInfo.TrafficObjectInfos[2].LaneIndex);  // truck:3
+            Assert.AreEqual(4, frameInfo.TrafficObjectInfos[3].LaneIndex);  // person:1
             Assert.AreEqual(-1, frameInfo.TrafficObjectInfos[4].LaneIndex); // car:1, out of analysis region
-            Assert.AreEqual(2, frameInfo.TrafficObjectInfos[5].LaneIndex); // car:2
+            Assert.AreEqual(2, frameInfo.TrafficObjectInfos[5].LaneIndex);  // car:2
             Assert.AreEqual(-1, frameInfo.TrafficObjectInfos[6].LaneIndex); // car:3, out of analysis region
-            Assert.AreEqual(3, frameInfo.TrafficObjectInfos[7].LaneIndex); // car:4
+            Assert.AreEqual(3, frameInfo.TrafficObjectInfos[7].LaneIndex);  // car:4
             Assert.AreEqual(-1, frameInfo.TrafficObjectInfos[8].LaneIndex); // car:5, out of analysis region
-            Assert.AreEqual(4, frameInfo.TrafficObjectInfos[9].LaneIndex); // car:6
+            Assert.AreEqual(4, frameInfo.TrafficObjectInfos[9].LaneIndex);  // car:6
         }
     }
 }

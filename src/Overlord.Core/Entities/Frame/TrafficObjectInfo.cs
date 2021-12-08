@@ -34,7 +34,7 @@ namespace Overlord.Core.Entities.Frame
         public bool WasSnapshoted { get; set; }
         public bool WasLaneCalculated { get; set; }
         public bool WasPlateRecognized => PlateInfo.IsPlateRecognized;
-        public bool WasMotionCalculated => MotionInfo.IsMotionCalculated;
+        public bool WasSpeedCalculated => MotionInfo.IsSpeedCalculated;
         public bool WasCounted { get; set; }
         public bool WasEventDetected { get; set; }
         

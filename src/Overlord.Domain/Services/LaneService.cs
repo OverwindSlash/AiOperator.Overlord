@@ -10,8 +10,8 @@ namespace Overlord.Domain.Services
         private RoadDefinition _roadDefinition;
         private List<Lane> _lanes;
 
-        public const int NotNeedToCalculateLane = -1;
-        public const int WrongLaneIndex = 0;
+        public const int NoNeedToCalculateLane = -1;
+        public const int NotInAnyLaneIndex = 0;
 
         public void SetRoadDefinition(RoadDefinition roadDefinition)
         {
@@ -25,7 +25,7 @@ namespace Overlord.Domain.Services
 
             if (!toi.IsAnalyzable)
             {
-                return NotNeedToCalculateLane;
+                return NoNeedToCalculateLane;
             }
 
             NormalizedPoint point = new NormalizedPoint(
@@ -39,7 +39,7 @@ namespace Overlord.Domain.Services
                 }
             }
 
-            return WrongLaneIndex;
+            return NotInAnyLaneIndex;
         }
     }
 }

@@ -16,6 +16,7 @@ namespace Overlord.Domain.Tests
     [TestFixture]
     public class MotionHandlerTests
     {
+        [Test]
         public void TestGenerateMotionHandler()
         {
             RoadDefinition roadDefinition = RoadDefinition.LoadFromJson("RoadDefinition/hc_k41_700_2.json");
@@ -95,8 +96,8 @@ namespace Overlord.Domain.Tests
             Assert.AreEqual(817, toi1.CenterY);
 
             TrafficObjectInfo toi2 = motionHistoryById[2];
-            Assert.AreEqual(1, toi2.MotionInfo.LastToiFrameId);
-            Assert.AreEqual(200, toi2.MotionInfo.LastToiTimespan.TotalMilliseconds);
+            Assert.AreEqual(1, toi2.MotionInfo.PrevIntervalToiFrameId);
+            Assert.AreEqual(200, toi2.MotionInfo.PrevIntervalToiTimespan.TotalMilliseconds);
             Assert.AreEqual(1124, toi2.CenterX);
             Assert.AreEqual(765, toi2.CenterY);
             Assert.AreEqual(46, toi2.MotionInfo.XOffset);
@@ -150,14 +151,14 @@ namespace Overlord.Domain.Tests
             // boundary of frame not be calculated 
             Assert.AreEqual(0, toi5.MotionInfo.XOffset);
             Assert.AreEqual(0, toi5.MotionInfo.YOffset);
-            Assert.AreEqual(0, toi5.MotionInfo.LastToiFrameId);
-            Assert.AreEqual(0, toi5.MotionInfo.LastToiTimespan.TotalMilliseconds);
+            Assert.AreEqual(0, toi5.MotionInfo.PrevIntervalToiFrameId);
+            Assert.AreEqual(0, toi5.MotionInfo.PrevIntervalToiTimespan.TotalMilliseconds);
 
             // first calculated frame
             Assert.AreEqual(toi6.CenterX - toi1.CenterX, toi6.MotionInfo.XOffset);
             Assert.AreEqual(toi6.CenterY - toi1.CenterY, toi6.MotionInfo.YOffset);
-            Assert.AreEqual(1, toi6.MotionInfo.LastToiFrameId);
-            Assert.AreEqual(1000, toi6.MotionInfo.LastToiTimespan.TotalMilliseconds);
+            Assert.AreEqual(1, toi6.MotionInfo.PrevIntervalToiFrameId);
+            Assert.AreEqual(1000, toi6.MotionInfo.PrevIntervalToiTimespan.TotalMilliseconds);
             Assert.AreEqual(79.82, toi6.MotionInfo.Speed, 0.01);
             Assert.AreEqual(79, toi6.MotionInfo.Direction, 1);
 
@@ -165,16 +166,16 @@ namespace Overlord.Domain.Tests
             // second frame
             Assert.AreEqual(toi7.CenterX - toi2.CenterX, toi7.MotionInfo.XOffset);
             Assert.AreEqual(toi7.CenterY - toi2.CenterY, toi7.MotionInfo.YOffset);
-            Assert.AreEqual(2, toi7.MotionInfo.LastToiFrameId);
-            Assert.AreEqual(1000, toi7.MotionInfo.LastToiTimespan.TotalMilliseconds);
+            Assert.AreEqual(2, toi7.MotionInfo.PrevIntervalToiFrameId);
+            Assert.AreEqual(1000, toi7.MotionInfo.PrevIntervalToiTimespan.TotalMilliseconds);
             Assert.AreEqual(82.84, toi7.MotionInfo.Speed, 0.01);
             Assert.AreEqual(78, toi7.MotionInfo.Direction, 1);
 
             // last frame
             Assert.AreEqual(toi10.CenterX - toi5.CenterX, toi10.MotionInfo.XOffset);
             Assert.AreEqual(toi10.CenterY - toi5.CenterY, toi10.MotionInfo.YOffset);
-            Assert.AreEqual(5, toi10.MotionInfo.LastToiFrameId);
-            Assert.AreEqual(1000, toi10.MotionInfo.LastToiTimespan.TotalMilliseconds);
+            Assert.AreEqual(5, toi10.MotionInfo.PrevIntervalToiFrameId);
+            Assert.AreEqual(1000, toi10.MotionInfo.PrevIntervalToiTimespan.TotalMilliseconds);
             Assert.AreEqual(88.44, toi10.MotionInfo.Speed, 0.01);
             Assert.AreEqual(77, toi10.MotionInfo.Direction, 1);
         }
