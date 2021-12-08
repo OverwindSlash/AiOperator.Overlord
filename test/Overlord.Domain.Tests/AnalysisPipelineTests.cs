@@ -104,7 +104,7 @@ namespace Overlord.Domain.Tests
             pipeline.Analyze(frameInfo);
 
             Assert.AreEqual(14, frameInfo.TrafficObjectInfos.Count);
-            Assert.AreEqual(1, snapshotHandler.Service.GetCacheSceneCount());
+            Assert.AreEqual(1, snapshotHandler.Service.GetCachedSceneCount());
         }
     }
 }

@@ -1,12 +1,11 @@
 ﻿using OpenCvSharp;
+using Overlord.Core.Entities.Frame;
+using Overlord.Core.Entities.Road;
 using Overlord.Domain.Event;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Overlord.Core.Entities.Frame;
-using Overlord.Core.Entities.Road;
-using System.Linq;
 
 namespace Overlord.Domain.Services
 {
@@ -15,7 +14,7 @@ namespace Overlord.Domain.Services
         // frameId -> Scene
         private readonly ConcurrentDictionary<long, Mat> _scenesOfFrame;
 
-        // objectId -> (confidence, objectMat)
+        // object snapshot list by confidence -> (confidence, objectMat)
         private readonly ConcurrentDictionary<string, SortedList<float, Mat>> _snapshotsOfObject;
 
         private RoadDefinition _roadDefinition;
@@ -50,7 +49,7 @@ namespace Overlord.Domain.Services
         {
             foreach (TrafficObjectInfo toi in frameInfo.TrafficObjectInfos)
             {
-                if ((toi.X + toi.Width) > toi.Width || (toi.Y + toi.Height > toi.Height))
+                if ((toi.X + toi.Width) > _roadDefinition.ImageWidth || (toi.Y + toi.Height > _roadDefinition.ImageHeight))
                 {
                     continue;
                 }
@@ -82,17 +81,18 @@ namespace Overlord.Domain.Services
             {
                 for (int i = 0; i < snapshotsById.Count - _maxObjectSnapshots; i++)
                 {
+                    // remove tail (lowest confidence)
                     snapshotsById.RemoveAt(_maxObjectSnapshots + i);
                 }
             }
         }
 
-        public int GetCacheSceneCount()
+        public int GetCachedSceneCount()
         {
             return _scenesOfFrame.Count;
         }
 
-        public Mat GetSceneByByFrameId(long frameId)
+        public Mat GetSceneByFrameId(long frameId)
         {
             if (_scenesOfFrame.ContainsKey(frameId))
             {
@@ -101,6 +101,16 @@ namespace Overlord.Domain.Services
             }
 
             return new Mat();
+        }
+
+        public SortedList<float, Mat> GetObjectSnapshotsByObjectId(string id)
+        {
+            if (!_snapshotsOfObject.ContainsKey(id))
+            {
+                return new SortedList<float, Mat>();
+            }
+
+            return _snapshotsOfObject[id];
         }
 
         public void GenerateSnapVideo(string videoFile)

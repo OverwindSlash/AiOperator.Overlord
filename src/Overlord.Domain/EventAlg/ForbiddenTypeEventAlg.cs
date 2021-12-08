@@ -121,7 +121,7 @@ namespace Overlord.Domain.EventAlg
                             string normalizedFilename = toi.Id.Replace(":", "_");
 
                             // take snapshot
-                            Mat eventSceneImage = _snapshotService.GetSceneByByFrameId(toi.FrameId);
+                            Mat eventSceneImage = _snapshotService.GetSceneByFrameId(toi.FrameId);
                             string snapshotFile = Path.Combine(_snapshotDir, $"{timestamp}_{normalizedFilename}.jpg");
                             eventSceneImage.Rectangle(new Point(toi.X, toi.Y), new Point(toi.X + toi.Width, toi.Y + toi.Height), Scalar.Red, 1);
                             eventSceneImage.SaveImage(snapshotFile);
