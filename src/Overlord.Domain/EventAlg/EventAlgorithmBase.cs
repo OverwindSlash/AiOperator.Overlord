@@ -6,7 +6,7 @@ using System;
 
 namespace Overlord.Domain.EventAlg
 {
-    public abstract class EventAlgorithmBase : IEventAlgorithm
+    public abstract class EventAlgorithmBase : ObserverBase<ObjectExpiredEvent>, IEventAlgorithm
     {
         protected const string TimestampPattern = "yyyyMMddHHmmss";
 

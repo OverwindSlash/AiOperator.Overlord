@@ -151,8 +151,8 @@ namespace Overlord.Domain.Tests
             Assert.AreEqual(1, eventProcessor.LastEventTime.Count);
             Assert.True(eventProcessor.LastEventTime.Keys.Contains("P_car:2"));
 
-            //Assert.AreEqual(1, eventPublisher.PublishedEventsByCategory.Count);
-            //Assert.AreEqual(1, eventPublisher.PublishedEventsByCategory["Stopped"].Count);
+            Assert.AreEqual(1, eventPublisher.PublishedEventsByCategory.Count);
+            Assert.AreEqual(1, eventPublisher.PublishedEventsByCategory["Stopped"].Count);
         }
     }
 }

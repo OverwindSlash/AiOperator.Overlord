@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Overlord.Domain.EventAlg
 {
-    public class SlowVehicleEventAlg : EventAlgorithmBase, IObserver<ObjectExpiredEvent>
+    public class SlowVehicleEventAlg : EventAlgorithmBase
     {
         private readonly int _fps;
         private readonly ConcurrentDictionary<string, FixedSizeQueue<TrafficObjectInfo>> _toiHistory;
@@ -181,17 +181,7 @@ namespace Overlord.Domain.EventAlg
             }
         }
 
-        public void OnCompleted()
-        {
-            // Do nothing
-        }
-
-        public void OnError(Exception error)
-        {
-            // Do nothing
-        }
-
-        public void OnNext(ObjectExpiredEvent value)
+        public override void OnNext(ObjectExpiredEvent value)
         {
             Task.Run(() =>
             {

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Overlord.Domain.EventAlg
 {
-    public class ForbiddenTypeEventAlg : EventAlgorithmBase, IObserver<ObjectExpiredEvent>
+    public class ForbiddenTypeEventAlg : EventAlgorithmBase
     {
         private readonly ConcurrentDictionary<string, FixedSizeQueue<TrafficObjectInfo>> _driveLaneToiHistory;
         private readonly ConcurrentDictionary<string, FixedSizeQueue<TrafficObjectInfo>> _emergencyLaneToiHistory;
@@ -165,17 +165,7 @@ namespace Overlord.Domain.EventAlg
             return false;
         }
 
-        public void OnCompleted()
-        {
-            // Do nothing
-        }
-
-        public void OnError(Exception error)
-        {
-            // Do nothing
-        }
-
-        public void OnNext(ObjectExpiredEvent value)
+        public override void OnNext(ObjectExpiredEvent value)
         {
             Task.Run(() =>
             {

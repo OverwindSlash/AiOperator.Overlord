@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Overlord.Domain.EventAlg
 {
-    public class StoppedTypeEventAlg : EventAlgorithmBase, IObserver<ObjectExpiredEvent>
+    public class StoppedTypeEventAlg : EventAlgorithmBase
     {
         private readonly int _fps;
         private readonly HashSet<string> _suitableTypes;
@@ -194,17 +194,7 @@ namespace Overlord.Domain.EventAlg
             }
         }
 
-        public void OnCompleted()
-        {
-            // Do nothing
-        }
-
-        public void OnError(Exception error)
-        {
-            // Do nothing
-        }
-
-        public void OnNext(ObjectExpiredEvent value)
+        public override void OnNext(ObjectExpiredEvent value)
         {
             Task.Run(() =>
             {

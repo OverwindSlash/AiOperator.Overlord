@@ -7,6 +7,7 @@ using Overlord.Domain.Event;
 using Overlord.Domain.EventAlg;
 using Overlord.Domain.Handlers;
 using Overlord.Domain.Interfaces;
+using Overlord.Domain.Services;
 using Overlord.Domain.Settings;
 
 namespace Overlord.Domain.Pipeline
@@ -22,6 +23,7 @@ namespace Overlord.Domain.Pipeline
         private int _imageWidth;
         private int _imageHeight;
         private bool _initialized;
+        private SnapshotService _snapshotService;
 
         public PipelineSettings Settingses { get; set; }
         public string Name => Settingses.Name;
@@ -88,6 +90,7 @@ namespace Overlord.Domain.Pipeline
             this.AddAnalysisHandler(snapshotHandler);
             this.Subscribe((IObserver<ObjectExpiredEvent>)snapshotHandler.Service);
             this.Subscribe((IObserver<FrameExpiredEvent>)snapshotHandler.Service);
+            this._snapshotService = snapshotHandler.Service;
 
             // Lane
             LaneHandler laneHandler = new LaneHandler();
@@ -105,7 +108,7 @@ namespace Overlord.Domain.Pipeline
             this.Subscribe(countingHandler.Service);
 
             // Event Detection
-            EventDetectionHandler eventDetectionHandler = new EventDetectionHandler(snapshotHandler.Service);
+            EventDetectionHandler eventDetectionHandler = new EventDetectionHandler(this._snapshotService);
             this.AddAnalysisHandler(eventDetectionHandler);
 
             ITrafficEventGenerator generator = _dependencyRegister.GetEventGenerator(pipelineIndex);
