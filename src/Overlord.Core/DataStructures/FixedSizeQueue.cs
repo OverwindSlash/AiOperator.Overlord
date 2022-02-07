@@ -16,6 +16,8 @@ namespace Overlord.Core.DataStructures
         private readonly Predicate<T> _conditionChecker;
         private int _positiveItemCount;
         private readonly double _positivePercentThresh;
+        
+        public int PositiveItemCount => _positiveItemCount;
 
         public FixedSizeQueue(int sizeLimit)
             : this(sizeLimit, _ => true)
@@ -25,9 +27,9 @@ namespace Overlord.Core.DataStructures
 
         public FixedSizeQueue(int sizeLimit, Predicate<T> conditionChecker, double positivePercentThresh = 0.7)
         {
-            if (sizeLimit < 1)
+            if ((sizeLimit < 1) || (conditionChecker == null))
             {
-                throw new ArgumentException("queue size limit not correct.");
+                throw new ArgumentException("queue size limit or predicate not correct.");
             }
             
             _queue = new ConcurrentQueue<T>();
@@ -63,6 +65,11 @@ namespace Overlord.Core.DataStructures
         public T Dequeue()
         {
             _queue.TryDequeue(out T value);
+            if (_conditionChecker(value))
+            {
+                _positiveItemCount--;
+            }
+            
             return value;
         }
 

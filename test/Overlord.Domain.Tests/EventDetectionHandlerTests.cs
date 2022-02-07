@@ -145,7 +145,7 @@ namespace Overlord.Domain.Tests
                 motionHandler.Analyze(frameInfo);
                 eventDetectionHandler.Analyze(frameInfo);
 
-                Thread.Sleep(40);
+                Thread.Sleep(1000);
             }
 
             Assert.AreEqual(1, eventProcessor.LastEventTime.Count);

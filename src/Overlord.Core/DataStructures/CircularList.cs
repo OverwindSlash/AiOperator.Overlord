@@ -8,16 +8,16 @@ namespace Overlord.Core.DataStructures
     public class CircularList<T> : IEnumerable<T>
     {
         private readonly List<T> _slots;
-        private readonly int _slotCount;
+        private readonly int _slotCapacity;
         private int _currentIndex;
 
         public int CurrentIndex => _currentIndex;
 
-        public CircularList(int slotCount)
+        public CircularList(int slotCapacity)
         {
-            _slotCount = slotCount;
-            _slots = new List<T>(_slotCount);
-            for (int i = 0; i < _slotCount; i++)
+            _slotCapacity = slotCapacity;
+            _slots = new List<T>(_slotCapacity);
+            for (int i = 0; i < _slotCapacity; i++)
             {
                 _slots.Add(default(T));
             }
@@ -50,7 +50,7 @@ namespace Overlord.Core.DataStructures
         {
             if (index < 0) { return 0; }
 
-            return index % _slotCount;
+            return index % _slotCapacity;
         }
 
         protected virtual void CleanUpSlot(int currentIndex)
@@ -75,7 +75,6 @@ namespace Overlord.Core.DataStructures
         {
             return GetEnumerator();
         }
-
         #endregion
     }
 }

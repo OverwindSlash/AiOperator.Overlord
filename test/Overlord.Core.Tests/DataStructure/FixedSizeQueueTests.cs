@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using NUnit.Framework;
 using Overlord.Core.DataStructures;
@@ -20,6 +21,27 @@ namespace Overlord.Core.Tests.DataStructure
             var result = ConvertToString(queue);
             
             Assert.AreEqual("0, 1, 2, 3, 4, 5, 6, 7, 8, 9", result);
+        }
+        
+        [Test]
+        public void TestEnqueue_DefaultPredicate_WithoutExceedSizeLimit()
+        {
+            int sizeLimit = 10;
+            FixedSizeQueue<int> queue = new FixedSizeQueue<int>(sizeLimit);
+
+            for (int i = 0; i < sizeLimit; i++)
+            {
+                queue.Enqueue(i);
+            }
+            
+            Assert.IsTrue(queue.IsPositive());
+        }
+        
+        [Test]
+        public void TestEnqueue_WrongSize_WithoutExceedSizeLimit()
+        {
+            int sizeLimit = -1;
+            Assert.Catch<ArgumentException>(() => new FixedSizeQueue<int>(sizeLimit));
         }
 
         [Test]
@@ -115,6 +137,71 @@ namespace Overlord.Core.Tests.DataStructure
             }
 
             Assert.False(queue.IsPositive());
+        }
+        
+        [Test]
+        public void TestPredicate_WithExceedSizeLimit_DecreacePositiveItemCount()
+        {
+            int sizeLimit = 10;
+            FixedSizeQueue<int> queue = new FixedSizeQueue<int>(sizeLimit, 
+                i => i % 2 == 0, 0.5);
+
+            for (int i = 0; i < sizeLimit; i++)
+            {
+                queue.Enqueue(i);
+            }
+            
+            Assert.AreEqual(5, queue.PositiveItemCount);
+            
+            queue.Enqueue(11);
+            
+            Assert.AreEqual(4, queue.PositiveItemCount);
+
+            Assert.False(queue.IsPositive());
+        }
+        
+        [Test]
+        public void TestPredicate_WithOutExceedSizeLimit_DequeueItem()
+        {
+            int sizeLimit = 10;
+            FixedSizeQueue<int> queue = new FixedSizeQueue<int>(sizeLimit, 
+                i => i % 2 == 0, 0.4);
+
+            for (int i = 0; i < sizeLimit; i++)
+            {
+                queue.Enqueue(i);
+            }
+            
+            Assert.AreEqual(5, queue.PositiveItemCount);
+
+            var item = queue.Dequeue();
+
+            Assert.AreEqual(0, item);
+            Assert.AreEqual(4, queue.PositiveItemCount);
+            Assert.False(queue.IsPositive());
+            
+            queue.Enqueue(11);
+            
+            Assert.AreEqual(4, queue.PositiveItemCount);
+            Assert.IsTrue(queue.IsPositive());
+        }
+
+        [Test]
+        public void TestPeek()
+        {
+            int sizeLimit = 10;
+            FixedSizeQueue<int> queue = new FixedSizeQueue<int>(sizeLimit);
+
+            for (int i = 0; i < sizeLimit; i++)
+            {
+                queue.Enqueue(i);
+            }
+
+            bool result = queue.Peek(out int value);
+            
+            Assert.IsTrue(result);
+            Assert.AreEqual(0, value);
+            Assert.AreEqual(10, queue.Count());
         }
 
         private static string ConvertToString(FixedSizeQueue<int> fixedSizeQueue)
